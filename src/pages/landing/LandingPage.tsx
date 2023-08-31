@@ -1,8 +1,8 @@
 import "./LandingPage.css";
 import { ChangeEvent, useState } from "react";
 import Swal from "sweetalert2";
-import TabBar from "../../components/TabBar";
 import NoteEditor from "../../components/note-editor/NoteEditor";
+import TabBar from "../../components/tab-bar/TabBar";
 
 interface Tab {
   label: string;
@@ -16,7 +16,7 @@ const LandingPage = () => {
     ("000000" + Math.floor(Math.random() * 16777215).toString(16)).slice(-6);
 
   // Estado para gerenciar as tabs (cadernos)
-  const [tabs, setTabs] = useState<Tab[]>([
+  const [notebooks, setNotebooks] = useState<Tab[]>([
     {
       label: "Caderno 1",
       content: "Notas do Caderno 1",
@@ -34,22 +34,22 @@ const LandingPage = () => {
 
   // Manipulador para atualizar o conteúdo da tab ativa
   const handleContentChange = (newContent: string) => {
-    const newTabs = [...tabs];
+    const newTabs = [...notebooks];
     newTabs[activeTab].content = newContent;
-    setTabs(newTabs);
+    setNotebooks(newTabs);
   };
 
   // Função para adicionar uma nova tab
   const addNewTab = () => {
     const newTabs = [
-      ...tabs,
+      ...notebooks,
       {
-        label: `Caderno ${tabs.length + 1}`,
+        label: `Caderno ${notebooks.length + 1}`,
         content: "",
         color: generateRandomColor(),
       },
     ];
-    setTabs(newTabs);
+    setNotebooks(newTabs);
     setActiveTab(newTabs.length - 1);
   };
 
@@ -65,8 +65,8 @@ const LandingPage = () => {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        const newTabs = tabs.filter((_, index) => index !== activeTab);
-        setTabs(newTabs);
+        const newTabs = notebooks.filter((_, index) => index !== activeTab);
+        setNotebooks(newTabs);
         setActiveTab(newTabs.length - 1); // Definir a primeira tab como ativa após a exclusão
       }
     });
@@ -89,7 +89,7 @@ const LandingPage = () => {
     Swal.fire({
       title: "Renomear caderno",
       input: "text",
-      inputValue: tabs[activeTab].label,
+      inputValue: notebooks[activeTab].label,
       showCancelButton: true,
       inputValidator: (value) => {
         if (!value) {
@@ -98,9 +98,9 @@ const LandingPage = () => {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        const newTabs = [...tabs];
+        const newTabs = [...notebooks];
         newTabs[activeTab].label = result.value;
-        setTabs(newTabs);
+        setNotebooks(newTabs);
       }
     });
 
@@ -136,9 +136,9 @@ const LandingPage = () => {
   // Função para alterar a cor da tab ativa
   const changeTabColor = () => {
     if (colorPicker) {
-      const newTabs = [...tabs];
+      const newTabs = [...notebooks];
       newTabs[activeTab].color = selectedColor;
-      setTabs(newTabs);
+      setNotebooks(newTabs);
       setColorPicker(false); // Ocultar o seletor após definir a cor
     } else {
       setColorPicker(true); // Mostrar o seletor de cor
@@ -154,7 +154,7 @@ const LandingPage = () => {
       }}
     >
       <TabBar
-        tabs={tabs}
+        tabs={notebooks}
         activeTab={activeTab}
         onTabClick={handleTabClick}
         onAddTab={addNewTab}
@@ -182,7 +182,7 @@ const LandingPage = () => {
       </div>
 
       <NoteEditor
-        content={tabs[activeTab]?.content || ""}
+        content={notebooks[activeTab]?.content || ""}
         onContentChange={handleContentChange}
       />
     </div>

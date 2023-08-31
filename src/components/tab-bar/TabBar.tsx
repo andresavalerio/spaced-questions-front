@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
-import Tab from "./tab/Tab";
-import { TabData } from "../types/TabData";
+import { TabData } from "../../types/TabData";
+import Tab from "../tab/Tab";
 
 function TabBar({
   tabs,
