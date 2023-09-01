@@ -11,9 +11,7 @@ interface Tab {
 }
 
 const LandingPage = () => {
-  const generateRandomColor = () =>
-    "#" +
-    ("000000" + Math.floor(Math.random() * 16777215).toString(16)).slice(-6);
+  const generateRandomColor = () => "#" + ("000000" + Math.floor(Math.random() * 16777215).toString(16)).slice(-6);
 
   // Estado para gerenciar as tabs (cadernos)
   const [notebooks, setNotebooks] = useState<Tab[]>([
@@ -184,6 +182,7 @@ const LandingPage = () => {
       <NoteEditor
         content={notebooks[activeTab]?.content || ""}
         onContentChange={handleContentChange}
+        tabColor={notebooks[activeTab]?.color || '#FFFFFF'}
       />
     </div>
   );

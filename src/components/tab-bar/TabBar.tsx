@@ -13,6 +13,19 @@ function TabBar({
   onTabClick: (input: number) => void;
   onAddTab: MouseEventHandler;
 }) {
+  const newTabButtonStyle = {
+    padding: '10px 20px',
+    borderRadius: '8px',
+    background: '#007BFF',
+    color: 'black',
+    border: 'none',
+    cursor: 'pointer',
+    marginRight: '10px',
+    transition: 'all 0.3s',
+    backgroundColor: 'white', // Corrigido o nome da propriedade de 'background' para 'backgroundColor'
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' 
+  };  
+
   return (
     <div
       style={{
@@ -31,10 +44,9 @@ function TabBar({
           isActive={index === activeTab}
           onClick={() => onTabClick(index)}
           color={tab.color} // Certifique-se de passar a cor aqui.
-          onRename={(input: string) => null}
         />
       ))}
-      <button onClick={onAddTab} style={{ marginLeft: "10px" }}>
+      <button onClick={onAddTab} style={newTabButtonStyle}>
         +
       </button>
     </div>

@@ -6,34 +6,15 @@ function Tab({
   isActive,
   onClick,
   color = "#FFFFFF",
-  onRename,
-}: {
+  }: {
   label: string;
   isActive: boolean;
   onClick: MouseEventHandler;
   color: string;
-  onRename: (input: string) => void;
 }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [newLabel, setNewLabel] = useState(label);
-
-  const handleDoubleClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setNewLabel(e.target.value);
-  };
-
-  const handleInputBlur = () => {
-    setIsEditing(false);
-    onRename(newLabel);
-  };
-
   return (
     <div
       onClick={onClick}
-      onDoubleClick={!isEditing ? handleDoubleClick : undefined} // Evitar novo clique duplo enquanto edita
       style={{
         padding: "10px 20px",
         borderRadius: "0 8px 8px 8px",
@@ -48,17 +29,7 @@ function Tab({
         position: "relative",
       }}
     >
-      {isEditing ? (
-        <input
-          value={newLabel}
-          onChange={handleInputChange}
-          onBlur={handleInputBlur}
-          autoFocus
-          style={{ width: "100%" }}
-        />
-      ) : (
-        label
-      )}
+      {label}
       {isActive && (
         <div
           style={{
