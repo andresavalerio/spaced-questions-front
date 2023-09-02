@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react";
 import Swal from "sweetalert2";
 import NoteEditor from "../../components/note-editor/NoteEditor";
 import TabBar from "../../components/tab-bar/TabBar";
+import Header from "../../components/header/Header";
 
 interface Tab {
   label: string;
@@ -70,19 +71,6 @@ const LandingPage = () => {
     });
   };
 
-  // Função para renomear a tab ativa. Abrir o alerta com o nome atual como valor inicial e já selecionado o texto para fácil edição.
-  // title: "Renomear caderno",
-  // input: "text",
-  // inputValue: tabs[activeTab].label,
-  // showCancelButton: true,
-  // inputValidator: (value) => {
-  //   if (!value) {
-  //     return "Você precisa escrever algo!";
-  //   }
-  // },
-  // onOpen: () => {
-  //   Swal.getInput().select();
-  // },
   const renameActiveTab = () => {
     Swal.fire({
       title: "Renomear caderno",
@@ -118,39 +106,27 @@ const LandingPage = () => {
   const buttonStyle: React.CSSProperties = {
     padding: "10px 20px",
     borderRadius: "8px",
-    background: "#007BFF",
+    background: "#3A5940",
     color: "white",
     border: "none",
     cursor: "pointer",
     marginRight: "10px",
     transition: "all 0.3s",
     boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-  };
-
-  // Estados para gerenciar o seletor de cor
-  const [colorPicker, setColorPicker] = useState<boolean>(false);
-  const [selectedColor, setSelectedColor] = useState<string>("#FFFFFF");
-
-  // Função para alterar a cor da tab ativa
-  const changeTabColor = () => {
-    if (colorPicker) {
-      const newTabs = [...notebooks];
-      newTabs[activeTab].color = selectedColor;
-      setNotebooks(newTabs);
-      setColorPicker(false); // Ocultar o seletor após definir a cor
-    } else {
-      setColorPicker(true); // Mostrar o seletor de cor
-    }
+    fontFamily: "Montserrat",
+    fontWeight: 600,
   };
 
   return (
     <div
       style={{
-        backgroundImage: "url('/capa.jpg')",
-        backgroundRepeat: "repeat",
-        minHeight: "100vh",
+
       }}
     >
+      <Header
+        content={"Spaced Questions"}
+      />
+
       <TabBar
         tabs={notebooks}
         activeTab={activeTab}
@@ -158,19 +134,12 @@ const LandingPage = () => {
         onAddTab={addNewTab}
       />
 
-      <div style={{ float: "left", margin: "10px" }}>
-        {colorPicker && (
-          <input
-            type="color"
-            value={selectedColor}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setSelectedColor(e.target.value)
-            }
-          />
-        )}
-        <button onClick={changeTabColor} style={buttonStyle}>
-          {colorPicker ? "Confirmar Cor" : "Mudar Cor do Caderno"}
-        </button>
+      <NoteEditor
+        content={notebooks[activeTab]?.content || ""}
+        onContentChange={handleContentChange}
+      />
+
+      <div style={{ float: "left", margin: "0 10px 0 50px" }}>
         <button onClick={renameActiveTab} style={buttonStyle}>
           Renomear Caderno
         </button>
@@ -178,12 +147,6 @@ const LandingPage = () => {
           Excluir Caderno
         </button>
       </div>
-
-      <NoteEditor
-        content={notebooks[activeTab]?.content || ""}
-        onContentChange={handleContentChange}
-        tabColor={notebooks[activeTab]?.color || '#FFFFFF'}
-      />
     </div>
   );
 };
