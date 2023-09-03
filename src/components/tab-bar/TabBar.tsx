@@ -1,70 +1,54 @@
-import { MouseEventHandler } from "react";
+import './TabBar.css';
+import React, { useState } from "react";
 import { TabData } from "../../types/TabData";
 import Tab from "../tab/Tab";
+import Modal from '../modal-new-tab/ModalNewTab';
 
-function TabBar({
-  tabs,
-  activeTab,
-  onTabClick,
-  onAddTab,
-}: {
+interface TabBarProps {
   tabs: TabData[];
   activeTab: number;
   onTabClick: (input: number) => void;
-  onAddTab: MouseEventHandler;
-}) {
+  onAddTab: (name : string) => void;
+}
+
+const TabBar: React.FC<TabBarProps> = ({ tabs, activeTab, onTabClick, onAddTab }) => {
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
+  const handleAddTabClick = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleSaveNewTab = (name: string) => {
+    onAddTab(name);
+    setModalOpen(false);
+  };
+
   return (
-    <div
-      style={{
-        padding: "58px 48px 0",
-        display: "flex",
-        alignItems: "center",
-        background: "white",
-        borderRadius: "8px",
-      }}
-    >
+    <div className="TabBar" >
       {tabs.map((tab, index) => (
         <Tab
           key={index}
           label={tab.label}
-          isActive={index === activeTab}
+          isActive={isModalOpen ? false : index === activeTab}
           onClick={() => onTabClick(index)}
-          color={tab.color} // Certifique-se de passar a cor aqui.
         />
       ))}
-      <button onClick={onAddTab} 
-        style={{
-          width: '60px',  // Definindo uma largura específica para o botão
-          height: '33px',  // Altura do botão igual à altura da tab
-          borderRadius: '12px 12px 0 0',
-          backgroundColor: 'white',
-          color: 'black',
-          fontWeight: 'bold',
-          border: '1px #c7c7c7 solid',
-          cursor: 'pointer',
-          transition: 'all 0.3s',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',  // Centraliza horizontalmente
-          fontSize: '15px',  // Tamanho da fonte para o "+"
-          position: 'relative',  // Para possibilitar a centralização do '+'
-        }}>
-        <div 
-          style={{
-            width: '14px',
-            height: '14px',
-            borderRadius: '50%',  
-            border: "2px solid black", 
-            backgroundColor: 'white',  
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}>+</div>
+      <button className={`TabBar-buttonCreateNewTab ${isModalOpen ? 'active' : ''}`} onClick={handleAddTabClick}>
+        <div className={`TabBar-plusSign ${isModalOpen ? 'active' : ''}`}>
+          +
+        </div>
       </button>
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal}
+        onSave={handleSaveNewTab}
+        purpose="create"
+        currentName=""
+      />
     </div>
   );
 }

@@ -1,0 +1,84 @@
+.Header-userImage {
+    margin-left: 1150px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-image: url("foto-user.png");
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    position: relative;
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.Header {
+    padding: 8px 50px;
+    background: #3A5940;
+    color: white;
+    font-weight: 300;
+    margin: 0;
+    height: 60px;
+    width: 94%;
+    font-size: 1.7em;
+    display: flex;
+    align-items: center;
+    font-family: 'Montserrat';
+    position: relative;
+}
+
+.Header > div {
+    position: relative;
+}
+
+
+.Header-tooltip {
+    width: 65px;
+    height: 33px;
+    padding: auto;
+    position: absolute;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    color: red; /* Cor do texto e do ícone */
+    font-size: 0.45em;
+    font-weight: 600;
+    font-family: 'Montserrat';
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border: 1px #c7c7c7 solid;
+    cursor: pointer;
+    top: calc(100% + 16px);  /* Coloca a tooltip logo abaixo da imagem do perfil com um pequeno espaço. */
+    left: 94.3%;  
+}
+
+.Header-tooltip .faArrowRightFromBracket {
+    margin-right: 4px;  /* Ajuste esse valor conforme necessário */
+}
+
+
+.Header-tooltip::after {
+    content: "";
+    position: absolute;
+    top: -14px; 
+    left: 53%; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 14px solid white;
+    z-index: 2; 
+}
+
+/* Triângulo de borda cinza */
+.Header-tooltip::before {
+    content: "";
+    position: absolute;
+    top: -15px; 
+    left: 52%;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-bottom: 15px solid #c7c7c7;
+    z-index: 1; 
+}
+

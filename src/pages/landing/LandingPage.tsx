@@ -1,9 +1,10 @@
 import "./LandingPage.css";
-import { ChangeEvent, useState } from "react";
-import Swal from "sweetalert2";
+import { useState } from "react";
 import NoteEditor from "../../components/note-editor/NoteEditor";
 import TabBar from "../../components/tab-bar/TabBar";
 import Header from "../../components/header/Header";
+import Modal from '../../components/modal-new-tab/ModalNewTab'; 
+import ConfirmModal from '../../components/confirm-modal/ConfirmModal'; 
 
 interface Tab {
   label: string;
@@ -18,7 +19,7 @@ const LandingPage = () => {
   const [notebooks, setNotebooks] = useState<Tab[]>([
     {
       label: "Caderno 1",
-      content: "Notas do Caderno 1",
+      content: "Campo de texto.... Lorem ipsum dolom...",
       color: generateRandomColor(),
     },
   ]);
@@ -39,11 +40,11 @@ const LandingPage = () => {
   };
 
   // Função para adicionar uma nova tab
-  const addNewTab = () => {
+  const addNewTab = (name : string) => {
     const newTabs = [
       ...notebooks,
       {
-        label: `Caderno ${notebooks.length + 1}`,
+        label: !name ? `Caderno ${notebooks.length + 1}` : name,
         content: "",
         color: generateRandomColor(),
       },
@@ -52,71 +53,20 @@ const LandingPage = () => {
     setActiveTab(newTabs.length - 1);
   };
 
-  // Função para excluir a tab ativa
-  const deleteActiveTab = () => {
-    Swal.fire({
-      title: "Tem certeza?",
-      text: "Você não poderá reverter isso!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sim, delete!",
-      cancelButtonText: "Não, cancele!",
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const newTabs = notebooks.filter((_, index) => index !== activeTab);
-        setNotebooks(newTabs);
-        setActiveTab(newTabs.length - 1); // Definir a primeira tab como ativa após a exclusão
-      }
-    });
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalPurpose, setModalPurpose] = useState<"create" | "rename">("create");
+  
+  const openModal = (purpose: "create" | "rename") => {
+    setModalPurpose(purpose);
+    setModalOpen(true);
+  };
+  
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
-  const renameActiveTab = () => {
-    Swal.fire({
-      title: "Renomear caderno",
-      input: "text",
-      inputValue: notebooks[activeTab].label,
-      showCancelButton: true,
-      inputValidator: (value) => {
-        if (!value) {
-          return "Você precisa escrever algo!";
-        }
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const newTabs = [...notebooks];
-        newTabs[activeTab].label = result.value;
-        setNotebooks(newTabs);
-      }
-    });
-
-    forceInputSelection();
-  };
-
-  const forceInputSelection = () => {
-    setTimeout(() => {
-      const input = document.querySelector(".swal2-input");
-      if (input) {
-        (input as HTMLInputElement).select();
-      }
-    }, 100);
-  };
-
-  // Estilo padrão para os botões
-  const buttonStyle: React.CSSProperties = {
-    padding: "10px 20px",
-    borderRadius: "8px",
-    background: "#3A5940",
-    color: "white",
-    border: "none",
-    cursor: "pointer",
-    marginRight: "10px",
-    transition: "all 0.3s",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-    fontFamily: "Montserrat",
-    fontWeight: 600,
-  };
-
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
+    
   return (
     <div
       style={{
@@ -140,13 +90,47 @@ const LandingPage = () => {
       />
 
       <div style={{ float: "left", margin: "0 10px 0 50px" }}>
-        <button onClick={renameActiveTab} style={buttonStyle}>
+        <button 
+          className="LandingPage-buttonStyle" 
+          onClick={() => openModal("rename")}
+        >
           Renomear Caderno
         </button>
-        <button onClick={deleteActiveTab} style={buttonStyle}>
+
+        <button 
+          className="LandingPage-buttonStyle"
+          onClick={() => setConfirmModalOpen(true)}
+        >
           Excluir Caderno
         </button>
       </div>
+
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+        onSave={(name: string) => {
+          const newTabs = [...notebooks];
+          newTabs[activeTab].label = name;
+          setNotebooks(newTabs);
+          closeModal();
+        }}
+        purpose={modalPurpose}
+        currentName={notebooks[activeTab].label}
+      />    
+
+      <ConfirmModal 
+        isOpen={isConfirmModalOpen} 
+        onConfirm={() => {
+            const newTabs = notebooks.filter((_, index) => index !== activeTab);
+            setNotebooks(newTabs);
+            setActiveTab(newTabs.length - 1); // Definir a primeira tab como ativa após a exclusão
+            setConfirmModalOpen(false); // Feche o modal após a confirmação
+        }}
+        onCancel={() => {
+            setConfirmModalOpen(false); // Simplesmente feche o modal se o usuário cancelar
+        }}
+        name={notebooks[activeTab].label}
+      />
     </div>
   );
 };

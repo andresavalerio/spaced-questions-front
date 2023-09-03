@@ -1,0 +1,74 @@
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 499px;
+    height: 220px;
+    font-family: 'Montserrat';
+    transition: all 0.3s;
+}
+
+.modal-title, .modal-label {
+    font-family: 'Montserrat';
+    font-weight: 600;
+}
+
+.modal-title {
+    font-size: 1.5em;
+    padding: 24px 0 24px 32px;
+}
+
+.modal-label {
+    font-size: 0.8em;
+    border-top: 1px solid #c7c7c7;
+    padding: 24px 0 8px 32px;
+}
+
+.modal-input {
+    display: flex;
+    margin: 0 32px;
+    border-radius: 8px;
+    border: 1px solid #c7c7c7;
+    width: 435px;
+    height: 27px;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    font-size: 0.8em;
+}
+
+.modal-button {
+    border-radius: 7px;
+    background: #3A5940;
+    border: 1px solid #c7c7c7;
+    width: 67px;
+    height: 26px;
+    margin-top: 24px;
+    cursor: pointer;
+}
+
+.modal-button:first-of-type {
+    margin-left: 335px;
+}
+
+.modal-button-text {
+    font-family: 'Montserrat';
+    font-size: 0.8em;
+    font-weight: 600;
+    color: white;
+}
+
+.icon-spacing {
+    padding-right: 5px;
+}
