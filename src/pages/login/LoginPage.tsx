@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { useLoginStore } from "../../stores/login/login.store";
 import "./LoginPage.css";
 import { useState } from "react";
+import { useLoginStore } from "../../stores/login/LoginStore";
 
 const LoginPage = () => {
   const { setUser } = useLoginStore((state) => state);

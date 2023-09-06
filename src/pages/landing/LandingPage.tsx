@@ -55,7 +55,7 @@ const LandingPage = () => {
 
   // Função para excluir a tab ativa
   const deleteActiveTab = () => {
-    Swal.fire({
+    Swal.fire ({
       title: "Tem certeza?",
       text: "Você não poderá reverter isso!",
       icon: "warning",

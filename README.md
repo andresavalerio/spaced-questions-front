@@ -53,11 +53,21 @@ Service is module that has specific logic for the application, like consuming AP
 
 ### What is Store?
 
-Handles the State Management of the application, the one that let data flow throughout the app without difficulties
+Handles the State Management of the application, the one that let data flow throughout the app without difficulties and make reactivity
+
+# Implementation
+
+### How to implement a component?
+
+1. create a folder with the name of the new component in the components folder
+2. create three files
+   1. NewComponent.tsx
+   2. NewComponent.css
+   2. NewComponent.spec.tsx
+
 
 # File Structure
 
-- `src/` : root folder
   - `components/` : contains all the components
     - `first-component` 
       - FirstComponent.css : styles of component
@@ -82,4 +92,3 @@ Handles the State Management of the application, the one that let data flow thro
   - index.css : global styles
   - main.tsx : bootstrap
   - routes.tsx : define all the routing and it's rules
-

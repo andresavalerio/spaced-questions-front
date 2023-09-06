@@ -1,0 +1,20 @@
+.note-editor-textarea {
+  width: 100%;
+  min-height: 400px;
+  margin: 0;
+  padding: 0 10px;
+  line-height: 24px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #fff,
+    #fff 20px,
+    #e9e9e9 20px,
+    #e9e9e9 21px
+  );
+  background-position: 0 0;
+  border: 1.5px solid #ccc;
+  font-family: Arial, sans-serif;
+  font-size: 1.5em;
+  box-sizing: border-box;
+  resize: vertical;
+}
