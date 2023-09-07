@@ -1,3 +1,4 @@
+import React from 'react';
 import './NoteEditor.css';
 
 /**
@@ -10,12 +11,15 @@ import './NoteEditor.css';
 function NoteEditor({
   content,
   onContentChange,
+  forwardedRef,
 }: {
   content: string;
   onContentChange: (input: string) => void;
+  forwardedRef: React.RefObject<HTMLTextAreaElement>;
 }) {
   return (
     <textarea
+      ref={forwardedRef}
       value={content}
       onChange={(e) => onContentChange(e.target.value)}
       className="textarea-editor"

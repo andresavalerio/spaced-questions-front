@@ -10,23 +10,30 @@ interface ModalProps {
   }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, purpose, currentName }) => {
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter" && name.trim() !== "") {
-      onSave(name);
-    }
-  };
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        if (event.key === "Enter") {
+          event.preventDefault(); 
+      
+          if (name.trim() !== "") {
+            onSave(name);
+          }
+        }
+    };
 
-  const [name, setName] = useState<string>('');
+  const [name, setName] = useState<string>(currentName);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      setName(currentName);
       inputRef.current.focus();
       inputRef.current.select();
     }
-  }, [isOpen, currentName]);
-    
+  }, [isOpen]);
+
+  useEffect(() => {
+    setName(currentName);
+  }, [currentName]);
+      
   if (!isOpen) return null;
 
   return (

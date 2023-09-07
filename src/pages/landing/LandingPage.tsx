@@ -1,5 +1,5 @@
 import "./LandingPage.css";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import NoteEditor from "../../components/note-editor/NoteEditor";
 import TabBar from "../../components/tab-bar/TabBar";
 import Header from "../../components/header/Header";
@@ -66,7 +66,16 @@ const LandingPage = () => {
   };
 
   const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
-    
+
+  const editorRef = useRef<HTMLTextAreaElement>(null);
+
+  // Quando a guia ativa mudar ou um novo caderno é adicionado, o foco será definido no editor
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+    }
+  }, [activeTab, notebooks]);    
+
   return (
     <div
       style={{
@@ -85,6 +94,7 @@ const LandingPage = () => {
       />
 
       <NoteEditor
+        forwardedRef={editorRef}
         content={notebooks[activeTab]?.content || ""}
         onContentChange={handleContentChange}
       />

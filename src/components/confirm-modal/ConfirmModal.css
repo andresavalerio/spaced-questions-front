@@ -44,6 +44,9 @@
     height: 26px;
     margin-top: 24px;
     cursor: pointer;
+    &:hover {
+        background: #588157;
+    }
 }
 
 .confirm-modal-button:first-of-type {

@@ -12,7 +12,10 @@ interface ModalProps {
 const ConfirmModal: React.FC<ModalProps> = ({ isOpen, onCancel, onConfirm, name }) => {
     const handleKeyDown = (event: React.KeyboardEvent) => {
         if (event.key === "Enter") {
-        onConfirm();
+            event.preventDefault();
+            event.stopPropagation(); 
+                       
+            onConfirm();
         }
     };
 
