@@ -9,11 +9,11 @@ const routes: RouteObject[] = [
     element: <App />,
     children: [
       {
-        path: "/login",
+        path: "/",
         element: <LoginPage />,
       },
       {
-        path: "/",
+        path: "/landingPage",
         element: <LandingPage />,
       },
     ],

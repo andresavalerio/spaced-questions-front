@@ -3,7 +3,7 @@ import "./Header.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
-function Header({ content }: { content: string; }) {
+function Header({ content, showUserImage = true }: { content: string; showUserImage?: boolean }) {    
     const [isTooltipVisible, setTooltipVisible] = useState(false);
     const tooltipRef = useRef<HTMLDivElement | null>(null);
     const userImageRef = useRef<HTMLDivElement | null>(null);
@@ -33,19 +33,23 @@ function Header({ content }: { content: string; }) {
             </div>
 
             <div>
-                <div 
-                    className="Header-userImage" 
-                    ref={userImageRef} // Adiciona a ref ao ícone do usuário
-                    onClick={() => setTooltipVisible(!isTooltipVisible)}
-                />
-                {isTooltipVisible && (
-                    <div 
-                        className="Header-tooltip"
-                        ref={tooltipRef} // Adiciona a ref à tooltip
-                    >
-                        <FontAwesomeIcon className="faArrowRightFromBracket" icon={faArrowRightFromBracket} />
-                        <span>Sair</span>
-                    </div>
+                {showUserImage && (
+                    <>
+                        <div 
+                            className="Header-userImage" 
+                            ref={userImageRef} // Adiciona a ref ao ícone do usuário
+                            onClick={() => setTooltipVisible(!isTooltipVisible)}
+                        />
+                        {isTooltipVisible && (
+                            <div 
+                                className="Header-tooltip"
+                                ref={tooltipRef} // Adiciona a ref à tooltip
+                            >
+                                <FontAwesomeIcon className="faArrowRightFromBracket" icon={faArrowRightFromBracket} />
+                                <span>Sair</span>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>
