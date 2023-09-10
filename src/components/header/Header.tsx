@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import "./Header.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { Link } from "react-router-dom";
 
 function Header({ content, showUserImage = true }: { content: string; showUserImage?: boolean }) {    
     const [isTooltipVisible, setTooltipVisible] = useState(false);
@@ -45,8 +46,10 @@ function Header({ content, showUserImage = true }: { content: string; showUserIm
                                 className="Header-tooltip"
                                 ref={tooltipRef} // Adiciona a ref à tooltip
                             >
+                                <Link to="/">
                                 <FontAwesomeIcon className="faArrowRightFromBracket" icon={faArrowRightFromBracket} />
                                 <span>Sair</span>
+                                </Link>
                             </div>
                         )}
                     </>

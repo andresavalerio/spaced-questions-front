@@ -1,4 +1,4 @@
-.LoginPage-container {
+.Register-container {
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -8,7 +8,7 @@
     color: white;
 }
 
-.LoginPage-input {
+.Register-input {
     padding: 12px 20px;
     margin: 10px 0;
     font-size: 16px;
@@ -18,7 +18,7 @@
     width: 100%;
 }
 
-.LoginPage-button {
+.Register-button {
     padding: 10px 20px;
     border-radius: 8px;
     background: #3A5940;
@@ -32,7 +32,7 @@
     font-weight: 600;
 }
 
-.LoginPage-button:hover {
+.Register-button:hover {
     background: #588157;
 }
 
@@ -41,7 +41,7 @@
     /* Seus estilos para telas maiores aqui */
 }
 
-.LoginPage-forgotPassword {
+.Register-forgotPassword {
     display: block;
     margin-bottom: 20px;
     color: #588157;
@@ -51,13 +51,13 @@
     }
 }
 
-.LoginPage-buttons {
+.Register-buttons {
     display: flex;
     gap: 25px;
     justify-content: center;
 }
 
-.LoginPage-button--register {
+.Register-button--register {
     background: white; /* Alguma cor que diferencie o botão de registro */
     border: solid #588157; /* Alguma cor que diferencie o botão de registro */
     color: #588157; /* Alguma cor que diferencie o botão de registro */
@@ -67,7 +67,7 @@
     padding: 7px 15px;
 }
 
-.LoginPage-button--register:hover {
+.Register-button--register:hover {
     background: #588157; /* A cor no hover para o botão de registro */
     color: white; /* A cor no hover para o botão de registro */
     border: none; /* Alguma cor que diferencie o botão de registro */
