@@ -15,14 +15,10 @@ const ForgotPassword = () => {
   return (
     <div className="ForgotPassword-container">
       <Header content={"Spaced Questions"} showUserImage={false} />
-      <div
-        className="ForgotPassword-main-text" 
-      >
+      <div>
         Redefinir Senha
       </div>
-      <div
-        className="ForgotPassword-text"
-      >
+      <div>
         Insira seu e-mail para receber um link de redefinição de senha.
       </div>      
 
