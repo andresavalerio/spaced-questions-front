@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useLoginStore } from "../../stores/login/login.store";
 import "./Register.css";
 import { useState } from "react";
 import Header from "../../components/header/Header";
+import { useLoginStore } from "../../stores/login/LoginStore";
 
 const Register = () => {
   const { setUser } = useLoginStore((state) => state);

@@ -13,8 +13,8 @@ const ConfirmModal: React.FC<ModalProps> = ({ isOpen, onCancel, onConfirm, name 
     const handleKeyDown = (event: React.KeyboardEvent) => {
         if (event.key === "Enter") {
             event.preventDefault();
-            event.stopPropagation(); 
-                       
+            event.stopPropagation();
+
             onConfirm();
         }
     };
@@ -23,35 +23,36 @@ const ConfirmModal: React.FC<ModalProps> = ({ isOpen, onCancel, onConfirm, name 
 
     useEffect(() => {
         if (isOpen) {
-        confirmButtonRef.current?.focus();
+            confirmButtonRef.current?.focus();
         }
-    }, [isOpen]);    
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
         <div className="confirm-modal-background" onClick={onCancel}>
-            <div 
+            <div
                 className="confirm-modal-content"
-                onClick={e => e.stopPropagation()}  
+                onClick={e => e.stopPropagation()}
                 onKeyDown={handleKeyDown}
                 tabIndex={0}
             >
                 <div className="confirm-modal-title">
                     Deseja realmente excluir o caderno?
                 </div>
-                
-                <div className="confirm-modal-item-name">          
+
+                <div className="confirm-modal-item-name">
                     {name}
                 </div>
-    
+
                 <button onClick={onCancel} className="confirm-modal-button">
                     <div className="confirm-modal-button-text">
                         Cancelar
                     </div>
                 </button>
-    
-                <button 
-                    onClick={() => onConfirm()} 
+
+                <button
+                    onClick={() => onConfirm()}
                     ref={confirmButtonRef}
                     className="confirm-modal-button"
                 >

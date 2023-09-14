@@ -1,4 +1,4 @@
-import {} from "vitest";
+import { describe, test } from "vitest";
 // import { getTextColor } from "./Tab";
 
 describe("getTextColor", () => {
