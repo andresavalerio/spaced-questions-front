@@ -6,7 +6,7 @@
   height: 100vh;
 }
 
-/* Logo Side container */
+/* Logo container */
 .logo-container {
   grid-column: 1/2;
   grid-row: 1/2;
@@ -39,6 +39,8 @@
   display: flex;
   justify-content: center;
 }
+
+/* Fomrs Containers */
 
 .formas-container {
   color: black;
@@ -133,10 +135,44 @@
 
 /* Click Here Span */
 .not-registe-text span {
-    cursor: pointer;
-    text-decoration: underline;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
+@media only screen and (max-width: 1024px) {
+  /* Login area tamplate */
+  .login-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 120px 1fr;
+    height: 100vh;
+  }
+
+  /* Logo Side container */
+  .logo-container {
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+
+  .login-area-container {
+    grid-column: 1/2;
+    grid-row: 2/3;
+  }
+
+  /* Forms Container */
+  .forms-containt-container {
+    top: 5vh;
+    left: 10%;
+    right: 10%;
+    width: 80%;
+    padding: 10vh 5vw;
+  }
+
+  /* Logo container */
+  .logo-container {
+    font-size: 48px;
+  }
+}
 
 .LoginPage-container {
   text-align: center;
