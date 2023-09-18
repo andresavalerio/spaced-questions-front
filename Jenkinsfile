@@ -6,7 +6,7 @@ node {
     }
 
     stage('Install project') {
-      sh 'npm run install'
+      sh 'npm install'
     }
 
     stage('Build image') {
@@ -14,6 +14,6 @@ node {
     }
 
     stage('Send data to the server') {
-      
+
     }
 }
