@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { FormEventHandler, useState } from "react";
 import styles from "./LoginForms.module.css";
 
 const LoginForms = () => {
@@ -8,9 +8,18 @@ const LoginForms = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
+  const fullNameError = false;
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    let {login, password} = document.forms[0];
+    console.log(login, password)
+  }
+
   return (
     <div className={styles["forms-container"]}>
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <div className={styles["forms-containt-container"]}>
           <div className={styles["image-container"]}>
             <img src={uniLogo} alt="University" />
@@ -19,8 +28,9 @@ const LoginForms = () => {
             <label htmlFor="login">E-mail</label>
             <input type="text" id="login"></input>
           </div>
+          {}
           <div className={styles["forms-fields-container"]}>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Senha</label>
             <input type="password" id="password"></input>
           </div>
           <p className={styles["forgot-password-text"]}>
@@ -30,7 +40,7 @@ const LoginForms = () => {
             </Link>
           </p>
           <div className={styles["login-button-container"]}>
-            <Link to="/landingPage">
+            <Link style={{ textDecoration: "none" }} to="/landingPage">
               <button className={styles["login-button"]}>Login</button>
             </Link>
           </div>
