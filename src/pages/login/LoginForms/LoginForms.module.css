@@ -24,11 +24,11 @@
     display: flex;
     gap: 20px;
   
-    top: 20vh;
+    top: 10vh;
     left: 20%;
     right: 20%;
   
-    min-height: 60vh;
+    min-height: 80vh;
     width: 60%;
   
     border: 1px solid black;
