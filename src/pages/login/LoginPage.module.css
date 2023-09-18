@@ -1,10 +1,10 @@
 .LoginPage-container {
     text-align: center;
     display: flex;
+    width: 100%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
     color: white;
 }
 
@@ -36,7 +36,7 @@
     background: #588157;
 }
 
-/* Para telas maiores que 600px, você pode adicionar mais estilos específicos se necessário */
+/* Para telas maiores que 600px, vocï¿½ pode adicionar mais estilos especï¿½ficos se necessï¿½rio */
 @media only screen and (min-width: 600px) {
     /* Seus estilos para telas maiores aqui */
 }
@@ -58,9 +58,9 @@
 }
 
 .LoginPage-button--register {
-    background: white; /* Alguma cor que diferencie o botão de registro */
-    border: solid #588157; /* Alguma cor que diferencie o botão de registro */
-    color: #588157; /* Alguma cor que diferencie o botão de registro */
+    background: white; /* Alguma cor que diferencie o botï¿½o de registro */
+    border: solid #588157; /* Alguma cor que diferencie o botï¿½o de registro */
+    color: #588157; /* Alguma cor que diferencie o botï¿½o de registro */
     box-sizing: border-box;
     height: 36px;
     width: 100px;
@@ -68,8 +68,8 @@
 }
 
 .LoginPage-button--register:hover {
-    background: #588157; /* A cor no hover para o botão de registro */
-    color: white; /* A cor no hover para o botão de registro */
-    border: none; /* Alguma cor que diferencie o botão de registro */
+    background: #588157; /* A cor no hover para o botï¿½o de registro */
+    color: white; /* A cor no hover para o botï¿½o de registro */
+    border: none; /* Alguma cor que diferencie o botï¿½o de registro */
 }
 
