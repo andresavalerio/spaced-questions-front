@@ -32,8 +32,8 @@ const LoginPage = () => {
               <div className={styles["login-button-container"]}>
                 <button className={styles["login-button"]}>Login</button>
               </div>
-              <p>
-                Ainda não possui cadastro? <span>Clique aqui</span>
+              <p className={styles['not-registe-text']}>
+                Ainda não possui cadastro? <span >Clique aqui</span>
               </p>
             </div>
           </form>
