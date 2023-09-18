@@ -22,11 +22,11 @@ const LoginPage = () => {
                 <img src={uniLogo} alt="University" />
               </div>
               <div className={styles["forms-fields-container"]}>
-                <label htmlFor="login">Login</label>
+                <label htmlFor="login">E-mail</label>
                 <input type="text" id="login"></input>
               </div>
               <div className={styles["forms-fields-container"]}>
-                <label htmlFor="password">password</label>
+                <label htmlFor="password">Password</label>
                 <input type="password" id="password"></input>
               </div>
               <div className={styles["login-button-container"]}>

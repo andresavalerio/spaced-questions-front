@@ -1,173 +1,193 @@
 /* Login area tamplate */
-.login-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr ;
-    grid-template-rows: 1fr;
-    height: 100vh;
+.login-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  height: 100vh;
 }
 
 /* Logo Side container */
-.logo-container{
-    grid-column: 1/2;
-    grid-row: 1/2;
-    background-color: #3A5A40;
-    color: white;
+.logo-container {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  background-color: #3a5a40;
+  color: white;
 
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 
-    font-size: 96px;
-    font-weight: 600;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 96px;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 /* Login side container */
-.login-area-container{
-    grid-column: 2/3;;
-    grid-row: 1/2;
+.login-area-container {
+  grid-column: 2/3;
+  grid-row: 1/2;
 
-    background-color: white;
-    position: relative;
+  background-color: white;
+  position: relative;
 }
 
 /* Image Container */
-.image-container{
-    display: flex;
-    justify-content: center;
+.image-container {
+  display: flex;
+  justify-content: center;
 }
 
-
-.formas-container{
-    color: black;
+.formas-container {
+  color: black;
 }
 
-.forms-containt-container{
-    position: relative;
-    display: flex;
-    
-    top: 20vh;
-    left: 20%;
-    right: 20%;
+.forms-containt-container {
+  position: relative;
+  display: flex;
 
-    height: 60vh;
-    width: 60%;
+  top: 20vh;
+  left: 20%;
+  right: 20%;
 
-    border: 1px solid black;
-    border-radius: 10px;
+  height: 60vh;
+  width: 60%;
 
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: space-between;
-    column-gap: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
 
-    padding: 10% 5%;
-    box-sizing: border-box;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  column-gap: 20px;
 
+  padding: 10% 5%;
+  box-sizing: border-box;
 }
 
-.forms-fields-container{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.forms-fields-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.login-button-container{
-    display: flex;
-    justify-content: center;
+.login-button-container {
+  display: flex;
+  justify-content: center;
 }
 
 /* Login Button */
-.login-button{
-    height: 30px;
-    width: 47px;
-    padding: 10px 32px;
+.login-button {
+  height: 30px;
+  width: 47px;
+  padding: 10px 32px;
 
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 
-    border: 0.5px solid #000;
-    border-radius: 10px;
-    background: #588157;
-    color: white;
+  border: 0.5px solid #000;
+  border-radius: 10px;
+  background: #588157;
+  color: white;
 
-    cursor: pointer;
+  cursor: pointer;
+}
+
+/* Forms Input*/
+
+.forms-fields-container input {
+  height: 27px;
+  padding: 0 3px;
+
+  border-radius: 10px;
+  border: 0.5px solid #000;
+  background: white;
+}
+
+/* Forms Labels*/
+
+.forms-fields-container label {
+  color: #000;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }
 
 .LoginPage-container {
-    text-align: center;
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
+  text-align: center;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }
 
 .LoginPage-input {
-    padding: 12px 20px;
-    margin: 10px 0;
-    font-size: 16px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    max-width: 300px;
-    width: 100%;
+  padding: 12px 20px;
+  margin: 10px 0;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  max-width: 300px;
+  width: 100%;
 }
 
 .LoginPage-button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    background: #3A5940;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: all 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-family: Montserrat;
-    font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: #3a5940;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: Montserrat;
+  font-weight: 600;
 }
 
 .LoginPage-button:hover {
-    background: #588157;
+  background: #588157;
 }
 
 /* Para telas maiores que 600px, voc� pode adicionar mais estilos espec�ficos se necess�rio */
 @media only screen and (min-width: 600px) {
-    /* Seus estilos para telas maiores aqui */
+  /* Seus estilos para telas maiores aqui */
 }
 
 .LoginPage-forgotPassword {
-    display: block;
-    margin-bottom: 20px;
-    color: #588157;
-    text-decoration: none;
-    &:hover {
-        text-decoration: underline;
-    }
+  display: block;
+  margin-bottom: 20px;
+  color: #588157;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .LoginPage-buttons {
-    display: flex;
-    gap: 25px;
-    justify-content: center;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
 }
 
 .LoginPage-button--register {
-    background: white; /* Alguma cor que diferencie o bot�o de registro */
-    border: solid #588157; /* Alguma cor que diferencie o bot�o de registro */
-    color: #588157; /* Alguma cor que diferencie o bot�o de registro */
-    box-sizing: border-box;
-    height: 36px;
-    width: 100px;
-    padding: 7px 15px;
+  background: white; /* Alguma cor que diferencie o bot�o de registro */
+  border: solid #588157; /* Alguma cor que diferencie o bot�o de registro */
+  color: #588157; /* Alguma cor que diferencie o bot�o de registro */
+  box-sizing: border-box;
+  height: 36px;
+  width: 100px;
+  padding: 7px 15px;
 }
 
 .LoginPage-button--register:hover {
-    background: #588157; /* A cor no hover para o bot�o de registro */
-    color: white; /* A cor no hover para o bot�o de registro */
-    border: none; /* Alguma cor que diferencie o bot�o de registro */
+  background: #588157; /* A cor no hover para o bot�o de registro */
+  color: white; /* A cor no hover para o bot�o de registro */
+  border: none; /* Alguma cor que diferencie o bot�o de registro */
 }
-
