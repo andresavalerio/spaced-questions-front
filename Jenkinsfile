@@ -6,7 +6,7 @@ node {
     }
 
     stage('Install project') {
-      sh 'npm install'
+      sh 'yarn'
     }
 
     stage('Build image') {
