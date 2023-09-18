@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import "./LoginPage.css";
 import { useState } from "react";
 import Header from "../../components/header/Header";
 import { useLoginStore } from "../../stores/login/LoginStore";
+import styles from './LoginPage.module.css'
 
 
 
@@ -12,11 +12,11 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   return (
-    <div className="LoginPage-container">
+    <div className={styles['LoginPage-container']}>
       <Header content={"Spaced Questions"} showUserImage={false} />
       <h1>Digite o seu Usuário</h1>
       <input
-        className="LoginPage-input"
+        className={styles["LoginPage-input"]}
         type="text"
         value={name}
         placeholder="Nome de Usuário"
@@ -24,20 +24,20 @@ const LoginPage = () => {
         onBlur={(e) => setUser(e.target.value)}
       />
       <input 
-        className="LoginPage-input"
+        className={styles["LoginPage-input"]}
         type="password"
         placeholder="Digite sua senha"
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Link className="LoginPage-forgotPassword" to="/forgot-password">
+      <Link className={styles["LoginPage-forgotPassword"]} to="/forgot-password">
         Esqueci minha senha
       </Link>
-      <div className="LoginPage-buttons">
+      <div className={styles["LoginPage-buttons"]}>
         <Link to="/landingPage">
-          <button className="LoginPage-button">Login</button>
+          <button className={styles["LoginPage-button"]}>Login</button>
         </Link>
         <Link to="/register">
-          <button className="LoginPage-button LoginPage-button--register">Registrar</button>
+          <button className={`${styles['LoginPage-button']} ${styles['LoginPage-button--register']}`}>Registrar</button>
         </Link>
       </div>
     </div>
