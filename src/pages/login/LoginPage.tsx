@@ -2,22 +2,42 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Header from "../../components/header/Header";
 import { useLoginStore } from "../../stores/login/LoginStore";
-import styles from './LoginPage.module.css'
-
-
+import styles from "./LoginPage.module.css";
 
 const LoginPage = () => {
   const { setUser } = useLoginStore((state) => state);
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
+  const uniLogo = "unifesp-logo.svg";
+
   return (
-
-    <div className={styles['login-container']}>
-      <div className={styles['logo-container']}>Spaced Questions</div>
-      <div className={styles['login-area-container']}></div>
+    <div className={styles["login-container"]}>
+      <div className={styles["logo-container"]}>Spaced Questions</div>
+      <div className={styles["login-area-container"]}>
+        <div className={styles['forms-container']}>
+          <form action="submit">
+            <div className={styles["forms-containt-container"]}>
+              <img src={uniLogo} alt="University" />
+              <div className={styles["forms-fields-container"]}>
+                <label htmlFor="login">Login</label>
+                <input type="text" id="login"></input>
+              </div>
+              <div className={styles["forms-fields-container"]}>
+                <label htmlFor="password">password</label>
+                <input type="password" id="password"></input>
+              </div>
+              <div className={styles["login-button-container"]}>
+                <button>Login</button>
+              </div>
+              <p>
+                Ainda não possui cadastro? <span>Clique aqui</span>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-
 
     // <div className={styles['LoginPage-container']}>
 
@@ -31,7 +51,7 @@ const LoginPage = () => {
     //     onChange={(e) => setName(e.target.value)}
     //     onBlur={(e) => setUser(e.target.value)}
     //   />
-    //   <input 
+    //   <input
     //     className={styles["LoginPage-input"]}
     //     type="password"
     //     placeholder="Digite sua senha"
