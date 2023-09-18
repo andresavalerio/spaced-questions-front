@@ -137,6 +137,26 @@
 .not-registe-text span {
   cursor: pointer;
   text-decoration: underline;
+  color: #000;
+}
+
+/* Forgot Password text */
+.forgot-password-text {
+  color: #000;
+  text-align: center;
+  font-family: Montserrat, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  margin-bottom: -20px;
+}
+
+.forgot-password-text span {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #000;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -172,79 +192,4 @@
   .logo-container {
     font-size: 48px;
   }
-}
-
-.LoginPage-container {
-  text-align: center;
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
-.LoginPage-input {
-  padding: 12px 20px;
-  margin: 10px 0;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  max-width: 300px;
-  width: 100%;
-}
-
-.LoginPage-button {
-  padding: 10px 20px;
-  border-radius: 8px;
-  background: #3a5940;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-top: 20px;
-  transition: all 0.3s;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-family: Montserrat;
-  font-weight: 600;
-}
-
-.LoginPage-button:hover {
-  background: #588157;
-}
-
-/* Para telas maiores que 600px, voc� pode adicionar mais estilos espec�ficos se necess�rio */
-@media only screen and (min-width: 600px) {
-  /* Seus estilos para telas maiores aqui */
-}
-
-.LoginPage-forgotPassword {
-  display: block;
-  margin-bottom: 20px;
-  color: #588157;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.LoginPage-buttons {
-  display: flex;
-  gap: 25px;
-  justify-content: center;
-}
-
-.LoginPage-button--register {
-  background: white; /* Alguma cor que diferencie o bot�o de registro */
-  border: solid #588157; /* Alguma cor que diferencie o bot�o de registro */
-  color: #588157; /* Alguma cor que diferencie o bot�o de registro */
-  box-sizing: border-box;
-  height: 36px;
-  width: 100px;
-  padding: 7px 15px;
-}
-
-.LoginPage-button--register:hover {
-  background: #588157; /* A cor no hover para o bot�o de registro */
-  color: white; /* A cor no hover para o bot�o de registro */
-  border: none; /* Alguma cor que diferencie o bot�o de registro */
 }

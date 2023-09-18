@@ -29,48 +29,28 @@ const LoginPage = () => {
                 <label htmlFor="password">Password</label>
                 <input type="password" id="password"></input>
               </div>
+              <p className={styles["forgot-password-text"]}>
+                esqueceu sua senha?{" "}
+                <Link style={{ textDecoration: "none" }} to="/forgot-password">
+                  <span>Clique aqui</span>
+                </Link>
+              </p>
               <div className={styles["login-button-container"]}>
-                <button className={styles["login-button"]}>Login</button>
+                <Link to="/landingPage">
+                  <button className={styles["login-button"]}>Login</button>
+                </Link>
               </div>
-              <p className={styles['not-registe-text']}>
-                Ainda não possui cadastro? <span >Clique aqui</span>
+              <p className={styles["not-registe-text"]}>
+                Ainda não possui cadastro?{" "}
+                <Link style={{ textDecoration: "none" }} to="/register">
+                  <span>Clique aqui</span>
+                </Link>
               </p>
             </div>
           </form>
         </div>
       </div>
     </div>
-
-    // <div className={styles['LoginPage-container']}>
-
-    //   <Header content={"Spaced Questions"} showUserImage={false} />
-    //   <h1>Digite o seu Usuário</h1>
-    //   <input
-    //     className={styles["LoginPage-input"]}
-    //     type="text"
-    //     value={name}
-    //     placeholder="Nome de Usuário"
-    //     onChange={(e) => setName(e.target.value)}
-    //     onBlur={(e) => setUser(e.target.value)}
-    //   />
-    //   <input
-    //     className={styles["LoginPage-input"]}
-    //     type="password"
-    //     placeholder="Digite sua senha"
-    //     onChange={(e) => setPassword(e.target.value)}
-    //   />
-    //   <Link className={styles["LoginPage-forgotPassword"]} to="/forgot-password">
-    //     Esqueci minha senha
-    //   </Link>
-    //   <div className={styles["LoginPage-buttons"]}>
-    //     <Link to="/landingPage">
-    //       <button className={styles["LoginPage-button"]}>Login</button>
-    //     </Link>
-    //     <Link to="/register">
-    //       <button className={`${styles['LoginPage-button']} ${styles['LoginPage-button--register']}`}>Registrar</button>
-    //     </Link>
-    //   </div>
-    // </div>
   );
 };
 
