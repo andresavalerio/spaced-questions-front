@@ -15,10 +15,12 @@ const LoginPage = () => {
     <div className={styles["login-container"]}>
       <div className={styles["logo-container"]}>Spaced Questions</div>
       <div className={styles["login-area-container"]}>
-        <div className={styles['forms-container']}>
-          <form action="submit">
+        <div className={styles["forms-container"]}>
+          <form action="">
             <div className={styles["forms-containt-container"]}>
-              <img src={uniLogo} alt="University" />
+              <div className={styles["image-container"]}>
+                <img src={uniLogo} alt="University" />
+              </div>
               <div className={styles["forms-fields-container"]}>
                 <label htmlFor="login">Login</label>
                 <input type="text" id="login"></input>
@@ -28,7 +30,7 @@ const LoginPage = () => {
                 <input type="password" id="password"></input>
               </div>
               <div className={styles["login-button-container"]}>
-                <button>Login</button>
+                <button className={styles["login-button"]}>Login</button>
               </div>
               <p>
                 Ainda não possui cadastro? <span>Clique aqui</span>
