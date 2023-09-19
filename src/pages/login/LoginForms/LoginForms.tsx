@@ -3,7 +3,7 @@ import { FormEventHandler, useState } from "react";
 import styles from "./LoginForms.module.css";
 
 const LoginForms = () => {
-  const uniLogo = "unifesp-logo.svg";
+  const uniLogo = "logo.jpeg";
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +22,7 @@ const LoginForms = () => {
       <form onSubmit={handleSubmit}>
         <div className={styles["forms-containt-container"]}>
           <div className={styles["image-container"]}>
-            <img src={uniLogo} alt="University" />
+            <img src={uniLogo} alt="University" width={`100vw`} />
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="login">E-mail</label>
