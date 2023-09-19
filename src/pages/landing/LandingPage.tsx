@@ -77,11 +77,7 @@ const LandingPage = () => {
   }, [activeTab, notebooks]);    
 
   return (
-    <div
-      style={{
-
-      }}
-    >
+    <div>
       <Header
         content={"Spaced Questions"}
       />

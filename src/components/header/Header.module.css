@@ -1,0 +1,18 @@
+.Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 50px;
+    background: #3A5940;
+    color: white;
+    font-weight: 300;
+    margin: 0;
+    height: 60px;
+    font-size: 1.7rem;
+    font-family: 'Montserrat';
+    position: relative;
+}
+
+.Header-tooltip .faArrowRightFromBracket {
+    /* margin-right: 4px;  Ajuste esse valor conforme necess�rio */
+}

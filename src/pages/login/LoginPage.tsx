@@ -1,44 +1,23 @@
-import { Link } from "react-router-dom";
-import "./LoginPage.css";
-import { useState } from "react";
-import Header from "../../components/header/Header";
+import { Route, Routes } from "react-router-dom";
+
 import { useLoginStore } from "../../stores/login/LoginStore";
-
-
+import styles from "./LoginPage.module.css";
+import LoginForms from "./LoginForms/LoginForms";
+import ForgotPassword from "../forgot-password/ForgotPassword";
+import RegisterForms from "./RegisterForms/RegisterForms";
 
 const LoginPage = () => {
   const { setUser } = useLoginStore((state) => state);
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-
+  
   return (
-    <div className="LoginPage-container">
-      <Header content={"Spaced Questions"} showUserImage={false} />
-      <h1>Digite o seu Usuário</h1>
-      <input
-        className="LoginPage-input"
-        type="text"
-        value={name}
-        placeholder="Nome de Usuário"
-        onChange={(e) => setName(e.target.value)}
-        onBlur={(e) => setUser(e.target.value)}
-      />
-      <input 
-        className="LoginPage-input"
-        type="password"
-        placeholder="Digite sua senha"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <Link className="LoginPage-forgotPassword" to="/forgot-password">
-        Esqueci minha senha
-      </Link>
-      <div className="LoginPage-buttons">
-        <Link to="/landingPage">
-          <button className="LoginPage-button">Login</button>
-        </Link>
-        <Link to="/register">
-          <button className="LoginPage-button LoginPage-button--register">Registrar</button>
-        </Link>
+    <div className={styles["login-container"]}>
+      <div className={styles["logo-container"]}>Spaced Questions</div>
+      <div className={styles["login-area-container"]}>
+        <Routes>
+          <Route index element={<LoginForms />}></Route>
+          <Route path="register" element = {<RegisterForms />}></Route>
+          <Route path="forgot-password" element={<ForgotPassword/>}></Route>
+        </Routes>
       </div>
     </div>
   );

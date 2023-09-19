@@ -13,18 +13,21 @@ const routes: RouteObject[] = [
       {
         path: "/",
         element: <LoginPage />,
+        children: [
+          {
+            path: "login",
+          },
+          {
+            path: "register",
+          },
+          {
+            path: "forgot-password",
+          },
+        ],
       },
       {
         path: "/landingPage",
         element: <LandingPage />,
-      },
-      { 
-        path: "/forgot-password",
-        element: <ForgotPassword /> 
-      },
-      { 
-        path: "/register",
-        element: <Register /> 
       },
     ],
   },
