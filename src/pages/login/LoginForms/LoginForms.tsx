@@ -10,12 +10,12 @@ const LoginForms = () => {
 
   const fullNameError = false;
 
-  const handleSubmit = (event) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
-    let {login, password} = document.forms[0];
-    console.log(login, password)
-  }
+    let { login, password } = document.forms[0];
+    console.log(login, password);
+  };
 
   return (
     <div className={styles["forms-container"]}>
