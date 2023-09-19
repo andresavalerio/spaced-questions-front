@@ -39,7 +39,9 @@ const LoginForms = () => {
             </Link>
           </p>
           <div className={styles["login-button-container"]}>
+            <Link style={{ textDecoration: "none" }} to="/landingPage">
               <button className={styles["login-button"]}>Login</button>
+            </Link>
           </div>
           <p className={styles["not-registe-text"]}>
             Ainda não possui cadastro?
