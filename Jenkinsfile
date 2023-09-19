@@ -6,11 +6,11 @@ node {
     }
 
     stage('Install project') {
-      sh 'pnpm install'
+      sh 'yarn'
     }
 
     stage('Build image') {
-      sh 'pnpm build'
+      sh 'yarn build'
     }
 
     stage('Send data to the server') {
