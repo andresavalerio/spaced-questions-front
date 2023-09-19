@@ -28,7 +28,6 @@ const LoginForms = () => {
             <label htmlFor="login">E-mail</label>
             <input type="text" id="login"></input>
           </div>
-          {}
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="password">Senha</label>
             <input type="password" id="password"></input>
@@ -40,12 +39,10 @@ const LoginForms = () => {
             </Link>
           </p>
           <div className={styles["login-button-container"]}>
-            <Link style={{ textDecoration: "none" }} to="/landingPage">
               <button className={styles["login-button"]}>Login</button>
-            </Link>
           </div>
           <p className={styles["not-registe-text"]}>
-            Ainda não possui cadastro?{" "}
+            Ainda não possui cadastro?
             <Link style={{ textDecoration: "none" }} to="/register">
               <span>Clique aqui</span>
             </Link>
