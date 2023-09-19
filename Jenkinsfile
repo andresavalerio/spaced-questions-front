@@ -10,7 +10,7 @@ node {
     }
 
     stage('Build image') {
-      sh 'yarn build'
+      sh 'npm run build'
     }
 
     stage('Send data to the server') {
