@@ -1,12 +1,8 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import styles from "./RegisterForms.module.css";
 
 const RegisterForms = () => {
   const uniLogo = "logo.jpeg";
-
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
 
   return (
     <div className={styles["forms-container"]}>
@@ -32,13 +28,13 @@ const RegisterForms = () => {
             <input type="password" id="password-confirmation"></input>
           </div>
           <div className={styles["cadastrar-button-container"]}>
-            <Link to="/">
+            <Link to="/login">
               <button className={styles["cadastrar-button"]}>Cadastrar</button>
             </Link>
           </div>
           <p className={styles["not-registe-text"]}>
             Já possui cadastro?{" "}
-            <Link style={{ textDecoration: "none" }} to="/">
+            <Link style={{ textDecoration: "none" }} to="/login">
               <span>Clique aqui</span>
             </Link>
           </p>

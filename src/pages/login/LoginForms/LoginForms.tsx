@@ -1,19 +1,14 @@
 import { Link } from "react-router-dom";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler } from "react";
 import styles from "./LoginForms.module.css";
 
 const LoginForms = () => {
   const uniLogo = "logo.jpeg";
 
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-
-  const fullNameError = false;
-
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
-    let { login, password } = document.forms[0];
+    const { login, password } = document.forms[0];
     console.log(login, password);
   };
 
