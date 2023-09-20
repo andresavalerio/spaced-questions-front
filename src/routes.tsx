@@ -1,10 +1,10 @@
 import { Navigate, RouteObject } from "react-router-dom";
 import App from "./App";
-import LoginPage from "./pages/login/LoginPage";
 import LandingPage from "./pages/landing/LandingPage";
 import ForgotPassword from "./pages/forgot-password/ForgotPassword";
-import LoginForms from "./pages/login/LoginForms/LoginForms";
-import RegisterForms from "./pages/login/RegisterForms/RegisterForms";
+import DefaultTemplate from "./pages/DefaultTemplate/DefaultTemplate";
+import LoginForms from "./pages/DefaultTemplate/LoginForms/LoginForms";
+import RegisterForms from "./pages/DefaultTemplate/RegisterForms/RegisterForms";
 
 const routes: RouteObject[] = [
   {
@@ -13,7 +13,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "/",
-        element: <LoginPage />,
+        element: <DefaultTemplate />,
         children: [
           {
             path: "/",
