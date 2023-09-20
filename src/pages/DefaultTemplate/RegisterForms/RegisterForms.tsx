@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./RegisterForms.module.css";
+import { useId } from "react";
 
 const RegisterForms = () => {
   const uniLogo = "logo.jpeg";
@@ -11,27 +12,21 @@ const RegisterForms = () => {
           <div className={styles["image-container"]}>
             <img src={uniLogo} alt="University" width={`100vw`} />
           </div>
-          <div className={styles["forms-fields-container"]}>
-            <label htmlFor="Nome">Nome Completo</label>
-            <input type="text" id="Nome"></input>
-          </div>
-          <div className={styles["forms-fields-container"]}>
-            <label htmlFor="email">E-mail</label>
-            <input type="text" id="email"></input>
-          </div>
-          <div className={styles["forms-fields-container"]}>
-            <label htmlFor="password">Senha</label>
-            <input type="password" id="password"></input>
-          </div>
-          <div className={styles["forms-fields-container"]}>
-            <label htmlFor="password-confirmation">Confirmar Senha</label>
-            <input type="password" id="password-confirmation"></input>
-          </div>
+
+          <FormsInput label="Nome Completo" type="text"/>
+
+          <FormsInput label="E-mail" type="text"/>
+          
+          <FormsInput label="Senha" type="password"/>
+
+          <FormsInput label="Confirmar Senha" type="password" />
+          
           <div className={styles["cadastrar-button-container"]}>
             <Link to="/login">
               <button className={styles["cadastrar-button"]}>Cadastrar</button>
             </Link>
           </div>
+          
           <p className={styles["not-registe-text"]}>
             Já possui cadastro?{" "}
             <Link style={{ textDecoration: "none" }} to="/login">
@@ -40,6 +35,22 @@ const RegisterForms = () => {
           </p>
         </div>
       </form>
+    </div>
+  );
+};
+
+const FormsInput = (props: {label: string, type: string}) => {
+  
+  const errorMessage = `this should be`;
+  const isPatternValid = true;
+
+  const id = useId();
+  
+  return (
+    <div className={styles["forms-fields-container"]}>
+      <label htmlFor={id}>{props.label}</label>
+      <input type={props.type} id={id}></input>
+      <div>{!isPatternValid && <span>{errorMessage}</span>}</div>
     </div>
   );
 };

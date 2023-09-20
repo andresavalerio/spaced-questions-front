@@ -12,6 +12,7 @@ const LoginForms = () => {
     console.log(login, password);
   };
 
+
   return (
     <div className={styles["forms-container"]}>
       <form onSubmit={handleSubmit}>
