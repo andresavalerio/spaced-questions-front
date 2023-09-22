@@ -5,6 +5,7 @@ import TabBar from "../../components/tab-bar/TabBar";
 import Header from "../../components/header/Header";
 import Modal from '../../components/modal-new-tab/ModalNewTab'; 
 import ConfirmModal from '../../components/confirm-modal/ConfirmModal'; 
+import axios from 'axios';
 
 interface Tab {
   label: string;
@@ -131,6 +132,7 @@ const LandingPage = () => {
             setNotebooks(newTabs);
             setActiveTab(newTabs.length - 1); // Definir a primeira tab como ativa após a exclusão
             setConfirmModalOpen(false); // Feche o modal após a confirmação
+            createNotebook(notebooks[activeTab].label, "usuario") //TODO: pegar o nome do usuario
         }}
         onCancel={() => {
             setConfirmModalOpen(false); // Simplesmente feche o modal se o usuário cancelar
@@ -140,5 +142,17 @@ const LandingPage = () => {
     </div>
   );
 };
+
+async function createNotebook(name: string, owner: string) {
+  try {
+    const response = await axios.post('http://localhost:PORTA/notebooks', {
+      name,
+      owner
+    });
+    console.log('Caderno criado:', response.data);
+  } catch (error) {
+    console.error('Erro ao criar o caderno:', error);
+  }
+}
 
 export default LandingPage;
