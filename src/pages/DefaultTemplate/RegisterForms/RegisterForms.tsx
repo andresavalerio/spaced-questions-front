@@ -17,6 +17,10 @@ const RegisterForms = () => {
   const [password, setPassword] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const strongPasswordRegex = /^(?=(.*[a-z]){3,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/;
+
+  const [repetedPassword, setRepetedPassword] = useState("")
+  const [isRepetedPasswordValid, setIsRepetedPasswordValid] = useState(true);
+
   return (
     <div className={styles["forms-container"]}>
       <form action="">
@@ -36,7 +40,6 @@ const RegisterForms = () => {
                 event.target.value.trim() === ""
                   ? setIsBlankUserName(true)
                   : setIsBlankUserName(false);
-                console.log(isBlankUserName);
               }}
               className={isBlankUserName ? styles.invalid : ""}
             />
@@ -58,7 +61,6 @@ const RegisterForms = () => {
                 validEmailRegex.test(event.target.value.trim())
                   ? setIsValidEmail(true)
                   : setIsValidEmail(false);
-                console.log(isValidEmail);
               }}
               className={!isValidEmail ? styles.invalid : ""}
             />
@@ -78,7 +80,6 @@ const RegisterForms = () => {
                 strongPasswordRegex.test(event.target.value)
                 ? setIsPasswordValid(true)
                 : setIsPasswordValid(false)
-                console.log(isPasswordValid, event.target.value)
               }}
               className={!isPasswordValid ? styles.invalid : ''}
             />
@@ -88,10 +89,15 @@ const RegisterForms = () => {
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="password-confirmation">Confirmar Senha</label>
-            <input type="password" id="password-confirmation"></input>
-            <div className={styles["forms-error-message"]}>
+            <input type="password" id="password-confirmation" onChange={event => {setRepetedPassword(event.target.value)}}
+             onBlur={(event) => {
+              event.target.value !== '' && repetedPassword == password
+              ? setIsRepetedPasswordValid(true) 
+              : setIsRepetedPasswordValid(false)      
+             }}/>
+            {!isRepetedPasswordValid && <div className={styles["forms-error-message"]}>
               <p>As senhas não correspondem</p>
-            </div>
+            </div>}
           </div>
           <div className={styles["cadastrar-button-container"]}>
             <Link to="/login">
