@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
 import styles from "./RegisterForms.module.css";
+import { useState } from "react";
 
 const RegisterForms = () => {
   const uniLogo = "logo.jpeg";
+
+  const valid = true;
+
+  const [userName, setUserName] = useState("");
+  const [isBlankUserName, setIsBlankUserName] = useState(false);
 
   return (
     <div className={styles["forms-container"]}>
@@ -13,19 +19,50 @@ const RegisterForms = () => {
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="Nome">Nome Completo</label>
-            <input type="text" id="Nome"></input>
+            <input
+              type="text"
+              id="Nome"
+              onChange={(event) => {
+                setUserName(event.target.value);
+              }}
+              onBlur={(event) => {
+                (event.target.value.trim() === "") 
+                ? setIsBlankUserName(true) 
+                : setIsBlankUserName(false);
+                console.log(isBlankUserName);
+              }}
+              className={
+                isBlankUserName ? styles.invalid : ''
+              }
+             />
+            {isBlankUserName && <div className={styles["forms-error-message"]}>
+              <p>Insira seu Nome Completo</p>
+            </div>}
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="email">E-mail</label>
             <input type="text" id="email"></input>
+            <div className={styles["forms-error-message"]}>
+              <p>Insira um e-mail válido</p>
+            </div>
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="password">Senha</label>
-            <input type="password" id="password"></input>
+            <input
+              type="password"
+              id="password"
+              className={valid ? styles.invalid : ""}
+            ></input>
+            <div className={styles["forms-error-message"]}>
+              <p>Insira uma senha forte</p>
+            </div>
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="password-confirmation">Confirmar Senha</label>
             <input type="password" id="password-confirmation"></input>
+            <div className={styles["forms-error-message"]}>
+              <p>As senhas não correspondem</p>
+            </div>
           </div>
           <div className={styles["cadastrar-button-container"]}>
             <Link to="/login">

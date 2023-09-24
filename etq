@@ -1,0 +1,261 @@
+[33mcommit 4a9dbafc2837ea6759ffb2031692f2c8dcd31176[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/dev-login-fomrs-error-message[m[33m)[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Wed Sep 20 08:57:53 2023 -0300
+
+    refact: forms input personilized component
+
+[33mcommit a3afcc090e196e8e59d0d79f7e37e796e449ec3f[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Tue Sep 19 22:56:56 2023 -0300
+
+    refact: renaming of wraping template for login and register pages
+
+[33mcommit 98a729efb2fc29c547b7c8f397bd43149d828d57[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Tue Sep 19 22:39:05 2023 -0300
+
+    refact: login routes and outlet implementation
+
+[33mcommit 6b2cbbee250a574210f3434fbe46944ac02dfad8[m[33m ([m[1;32mdev[m[33m)[m
+Author: Victor Jorge Carvalho Chaves <victorchaves03@gmail.com>
+Date:   Mon Sep 18 22:19:02 2023 -0300
+
+    fix: redefined tsconfig.json and fixed types errors
+
+[33mcommit 3582139190bd78553df4fb9b58b816659bdaf842[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 22:01:43 2023 -0300
+
+    refac: image change for login forms
+
+[33mcommit d2982f7fdf362b55fcdd293b20413cab64892bcd[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 21:12:22 2023 -0300
+
+    link: temporary redirect
+
+[33mcommit 1936bb380c6cbb267869eacdefac098874b21b32[m[33m ([m[1;31morigin/dev-figma-adjustments[m[33m, [m[1;32mdev-figma-adjustments[m[33m)[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 21:08:42 2023 -0300
+
+    fix: unused lines
+
+[33mcommit 7dcd71c739ef2cd0a04168861f2795cf24e77f5c[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 20:55:38 2023 -0300
+
+    fix: login page password to senha label
+
+[33mcommit 9fe9143fb60d9ab2baf9dbc28bbfbba81a0ba1ee[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 16:27:34 2023 -0300
+
+    fix: centralization of login forms
+
+[33mcommit 7300cb492758a07d840e5664f90ed5c4b4a71881[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 16:25:45 2023 -0300
+
+    feat: register component on subpage
+
+[33mcommit 4da1be5236862a3759d4a40662f1fd7b051258a6[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 16:04:59 2023 -0300
+
+    refactor: reoganization of routes of login, register and forgot password
+
+[33mcommit 76448a3385744317f9c83b4e9300d9cf1175a4e4[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 13:46:40 2023 -0300
+
+    feat: forgot password and cleanup comments
+
+[33mcommit 6fcce4491372f70ee98552233a8a3befe401bcbd[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 13:32:41 2023 -0300
+
+    feat: mobile version
+
+[33mcommit 80e8de1aa78fac31ac2cb355185bde7dba418f50[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 13:11:58 2023 -0300
+
+    chore: finalize dddesktop login
+
+[33mcommit de0cf8d3bc0871f45f8afb5a9a45063b483200b2[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 13:00:25 2023 -0300
+
+    feat: login forms input labels
+
+[33mcommit 9df73bd7e561f3db9dbc507e938be50242c1d350[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 12:55:52 2023 -0300
+
+    feat: login button style
+
+[33mcommit 73eab6b784c3e365d9db180e94eaa9224b06bf29[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 09:01:54 2023 -0300
+
+    chore: styling login area of login page
+
+[33mcommit 6e1e317bc55282e1c6c4bc17e2de48105c2b2161[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 08:22:21 2023 -0300
+
+    feat: login template and logo
+
+[33mcommit d4a3a0f4c04a032d670373d36ab623adb1538f7e[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 08:03:44 2023 -0300
+
+    fix: adjustement of unnecessary css
+
+[33mcommit 75ed68841ebce7e009883db95cb2048bb7659cd9[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Mon Sep 18 08:03:13 2023 -0300
+
+    fix: header componentization
+
+[33mcommit cb0b932673a2587ad877fe2a7f9d38417abcd23e[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Sun Sep 17 22:25:23 2023 -0300
+
+    refact: module class to login page
+
+[33mcommit d04bf46f09350a6433d86d1ccc9483b605cede5b[m
+Author: Pedro Paulo <pedro.paulo.vianna@hotmail.com>
+Date:   Sun Sep 17 22:17:25 2023 -0300
+
+    feat: css reset
+
+[33mcommit 0c6195f125ef33f84fe9c42f96a486414686c854[m[33m ([m[1;31morigin/feat-frontend-login-service[m[33m)[m
+Author: Nathan Pereira <nathan.pereira@escoladnc.com.br>
+Date:   Sun Sep 17 21:36:44 2023 -0300
+
+    adding Jenkinsfile
+
+[33mcommit d4912d38223b8e1aee8c505d8fd12a70f4013b4d[m[33m ([m[1;32mdev-popups[m[33m)[m
+Merge: 1b1913f a1c3a75
+Author: SrJasper <lulevita1@hotmail.com>
+Date:   Wed Sep 13 22:34:09 2023 -0300
+
+    merged and fixed little things from dev
+
+[33mcommit 1b1913f8f729874342bc18ae02cb82c8b76e8a5b[m[33m ([m[1;31morigin/dev-pimpim[m[33m)[m
+Author: SrJasper <lulevita1@hotmail.com>
+Date:   Tue Sep 12 09:14:27 2023 -0300
+
+    teste
+
+[33mcommit f1eed603e0939a35954580de8ccf0f59c89e67d8[m[33m ([m[1;31morigin/Leo-pimpim[m[33m)[m
+Author: Micael de Oliveira Pimpim <micaelpimpim@gmail.com>
+Date:   Mon Sep 11 19:46:41 2023 -0300
+
+    .
+
+[33mcommit 5544c35966ded56f2f74caf202911e5d264e56bd[m
+Author: Micael de Oliveira Pimpim <micaelpimpim@gmail.com>
+Date:   Mon Sep 11 19:42:14 2023 -0300
+
+    Revert "ajuste de estilos no forgot password"
+    
+    This reverts commit 0cbe7c8f79dc3dcb20be8f9649a01cb1ab62f460.
+
+[33mcommit 0cbe7c8f79dc3dcb20be8f9649a01cb1ab62f460[m
+Author: Micael de Oliveira Pimpim <micaelpimpim@gmail.com>
+Date:   Mon Sep 11 19:34:41 2023 -0300
+
+    ajuste de estilos no forgot password
+
+[33mcommit 5baa4939ec3ec34e2b39edb5b30f298ea7b386e8[m
+Author: Micael de Oliveira Pimpim <micaelpimpim@gmail.com>
+Date:   Sun Sep 10 20:27:43 2023 -0300
+
+    Telas de register e forgot password
+
+[33mcommit b04a2832eeb755b56dc4853ecd0bd57dcb6fad49[m
+Author: Micael de Oliveira Pimpim <micaelpimpim@gmail.com>
+Date:   Sun Sep 10 19:56:06 2023 -0300
+
+    Criação da pagina de login com um estilo basico
+
+[33mcommit 006c6303f5d5c4f79e1856368c52e540d9c67272[m
+Merge: ce25c2a 64c8b31
+Author: Micael de Oliveira Pimpim <micaelpimpim@gmail.com>
+Date:   Wed Sep 6 21:26:51 2023 -0300
+
+    Merge branch 'dev-pimpim' of https://github.com/andresavalerio/software-engineering into dev-pimpim
+
+[33mcommit ce25c2a76f7593a01faa18a6c6ed2c4fb065e172[m
+Author: Micael de Oliveira Pimpim <micaelpimpim@gmail.com>
+Date:   Wed Sep 6 21:26:48 2023 -0300
+
+    Ajuste no estilo dos botoes do modal; Ajuste no foco do editor de texto; Ajuste na seleção do nome da tab quando renomear
+
+[33mcommit a1c3a759ee5e558f5559c511fa566e278d05124c[m
+Author: Victor Jorge Carvalho Chaves <victorchaves03@gmail.com>
+Date:   Tue Sep 5 22:53:17 2023 -0300
+
+    fix: added classname at NoteEditor component
+
+[33mcommit 907d1d0e97c51e9f37711a90829961f110060b79[m[33m ([m[1;31morigin/Dev[m[33m)[m
+Author: Victor Jorge Carvalho Chaves <victorchaves03@gmail.com>
+Date:   Tue Sep 5 22:50:13 2023 -0300
+
+    feat: defined examples of services and stores, and make a little refactoring
+
+[33mcommit 64c8b315a410893811f5f0971a44189e67ea912d[m
+Author: Nathan <nathan.pereira@escoladnc.com.br>
+Date:   Mon Sep 4 22:05:40 2023 -0300
+
+    adjusting for deploy
+
+[33mcommit fa5c643162287743e4b6403b0f7b1ba332a001f1[m
+Author: Micael de Oliveira Pimpim <micaelpimpim@gmail.com>
+Date:   Sun Sep 3 16:17:15 2023 -0300
+
+    Modal modelo figma, estilos movidos para os arquivos .css e ajustes gerais
+
+[33mcommit c7bc1d4030d1fc92009fcfcae851c34a92a60573[m
+Author: Micael de Oliveira Pimpim <micaelpimpim@gmail.com>
+Date:   Sat Sep 2 00:24:18 2023 -0300
+
+    Alterações para ficar igual ao figma
+
+[33mcommit abfc64439a0eb910af9732d7c4d8e108010e8a33[m
+Author: Micael de Oliveira Pimpim <micaelpimpim@gmail.com>
+Date:   Fri Sep 1 12:52:51 2023 -0300
+
+    Ajustes de estilo e correções de mudança de linguagem
+
+[33mcommit af0cbbd58b4f8687fe3260ed91d189933b747164[m
+Author: Victor Jorge Carvalho Chaves <victorchaves03@gmail.com>
+Date:   Thu Aug 31 21:37:06 2023 -0300
+
+    readme: added main content about the project
+
+[33mcommit 21814c1a1d263034459d3f0e740189dc23cf28a6[m
+Author: Victor Jorge Carvalho Chaves <victorchaves03@gmail.com>
+Date:   Thu Aug 31 20:37:34 2023 -0300
+
+    refactor: moved TabBar component to folder, and created default files
+
+[33mcommit 6aad235ed9d4c813bb3c29ba4580f090e2262b37[m
+Author: Victor Jorge Carvalho Chaves <victorchaves03@gmail.com>
+Date:   Thu Aug 31 19:15:22 2023 -0300
+
+    feat: defined struture and packages, but lacks documentation and patterns for testing services and stores and components, and was already added the prototype of a landing page. (sorry for this long commit, won't happen again)
+
+[33mcommit f8b8d3a30f85eedfe6c2fc76a92c49d997e6ec25[m
+Author: Victor Jorge Carvalho Chaves <victorchaves03@gmail.com>
+Date:   Mon Aug 28 22:14:19 2023 -0300
+
+    feat: initial vite project state
+
+[33mcommit cfc862ffe5c5393499e0f6bbacdd956808cc0077[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: andresavalerio <andresa.valerio@unifesp.br>
+Date:   Mon Aug 28 21:56:39 2023 -0300
+
+    init: add README
