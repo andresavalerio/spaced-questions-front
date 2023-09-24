@@ -14,7 +14,9 @@ const RegisterForms = () => {
   const [isValidEmail, setIsValidEmail] = useState(true);
   const validEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-  
+  const [password, setPassword] = useState("");
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const strongPasswordRegex = /^(?=(.*[a-z]){3,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/;
   return (
     <div className={styles["forms-container"]}>
       <form action="">
@@ -53,12 +55,13 @@ const RegisterForms = () => {
                 setEmail(event.target.value);
               }}
               onBlur={(event) => {
-                validEmailRegex.test(event.target.value)
+                validEmailRegex.test(event.target.value.trim())
                   ? setIsValidEmail(true)
                   : setIsValidEmail(false);
                 console.log(isValidEmail);
               }}
-            ></input>
+              className={!isValidEmail ? styles.invalid : ""}
+            />
             {!isValidEmail && (
               <div className={styles["forms-error-message"]}>
                 <p>Insira um e-mail válido</p>
@@ -70,11 +73,18 @@ const RegisterForms = () => {
             <input
               type="password"
               id="password"
-              className={valid ? styles.invalid : ""}
-            ></input>
-            <div className={styles["forms-error-message"]}>
+              onChange={(event) => {setPassword(event.target.value)}}
+              onBlur={(event) => {
+                strongPasswordRegex.test(event.target.value)
+                ? setIsPasswordValid(true)
+                : setIsPasswordValid(false)
+                console.log(isPasswordValid, event.target.value)
+              }}
+              className={!isPasswordValid ? styles.invalid : ''}
+            />
+            {!isPasswordValid && <div className={styles["forms-error-message"]}>
               <p>Insira uma senha forte</p>
-            </div>
+            </div>}
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="password-confirmation">Confirmar Senha</label>
