@@ -10,6 +10,11 @@ const RegisterForms = () => {
   const [userName, setUserName] = useState("");
   const [isBlankUserName, setIsBlankUserName] = useState(false);
 
+  const [email, setEmail] = useState("");
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const validEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+  
   return (
     <div className={styles["forms-container"]}>
       <form action="">
@@ -26,25 +31,39 @@ const RegisterForms = () => {
                 setUserName(event.target.value);
               }}
               onBlur={(event) => {
-                (event.target.value.trim() === "") 
-                ? setIsBlankUserName(true) 
-                : setIsBlankUserName(false);
+                event.target.value.trim() === ""
+                  ? setIsBlankUserName(true)
+                  : setIsBlankUserName(false);
                 console.log(isBlankUserName);
               }}
-              className={
-                isBlankUserName ? styles.invalid : ''
-              }
-             />
-            {isBlankUserName && <div className={styles["forms-error-message"]}>
-              <p>Insira seu Nome Completo</p>
-            </div>}
+              className={isBlankUserName ? styles.invalid : ""}
+            />
+            {isBlankUserName && (
+              <div className={styles["forms-error-message"]}>
+                <p>Insira seu Nome Completo</p>
+              </div>
+            )}
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="email">E-mail</label>
-            <input type="text" id="email"></input>
-            <div className={styles["forms-error-message"]}>
-              <p>Insira um e-mail válido</p>
-            </div>
+            <input
+              type="text"
+              id="email"
+              onChange={(event) => {
+                setEmail(event.target.value);
+              }}
+              onBlur={(event) => {
+                validEmailRegex.test(event.target.value)
+                  ? setIsValidEmail(true)
+                  : setIsValidEmail(false);
+                console.log(isValidEmail);
+              }}
+            ></input>
+            {!isValidEmail && (
+              <div className={styles["forms-error-message"]}>
+                <p>Insira um e-mail válido</p>
+              </div>
+            )}
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="password">Senha</label>
