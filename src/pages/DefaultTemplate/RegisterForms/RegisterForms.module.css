@@ -73,6 +73,11 @@
   cursor: pointer;
 }
 
+.deactivated-button{
+
+  background: rgba(88, 129, 87, 0.30);
+  cursor: default;
+}
 /* Forms Input*/
 
 .forms-fields-container input {
