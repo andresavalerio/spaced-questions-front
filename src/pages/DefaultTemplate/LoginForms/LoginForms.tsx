@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useState } from "react";
 import styles from "./LoginForms.module.css";
 
 const LoginForms = () => {
   const uniLogo = "logo.jpeg";
+
+  const [email, setEmail] = useState("");
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const validEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+  const [password, setPassword] = useState("");
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -21,8 +27,25 @@ const LoginForms = () => {
             <img src={uniLogo} alt="University" width={`100vw`} />
           </div>
           <div className={styles["forms-fields-container"]}>
-            <label htmlFor="login">E-mail</label>
-            <input type="text" id="login"></input>
+            <label htmlFor="email">E-mail</label>
+            <input
+              type="text"
+              id="email"
+              onChange={(event) => {
+                setEmail(event.target.value);
+              }}
+              onBlur={(event) => {
+                validEmailRegex.test(event.target.value.trim())
+                  ? setIsValidEmail(true)
+                  : setIsValidEmail(false);
+              }}
+              className={!isValidEmail ? styles.invalid : ""}
+            />
+            {!isValidEmail && (
+              <div className={styles["forms-error-message"]}>
+                <p>Insira um e-mail válido</p>
+              </div>
+            )}
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="password">Senha</label>

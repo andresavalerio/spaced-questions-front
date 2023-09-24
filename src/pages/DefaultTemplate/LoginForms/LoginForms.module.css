@@ -94,6 +94,21 @@
     font-weight: 600;
     line-height: normal;
   }
+
+  .forms-fields-container input.invalid{
+    border: 0.5px solid red;
+  }
+  
+  /* Input error message */
+  .forms-error-message{
+    color: red;
+    font-family: Montserrat, sans-serif;
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+  
   
   /* Not Register text */
   .not-registe-text {
