@@ -1,15 +1,25 @@
 import { Link } from "react-router-dom";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import styles from "./LoginForms.module.css";
 
 const LoginForms = () => {
   const uniLogo = "logo.jpeg";
 
-  const [email, setEmail] = useState("");
-  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [email, setEmail] = useState<string>("");
+  const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
+  const [emailTouched, setEmailTouched] = useState<boolean>(false);
   const validEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
   const [password, setPassword] = useState("");
+  const [passwordTouched, setPasswordTouched] = useState<boolean>(false);
+
+  const [isButtonDisable, setIsButtonDisable] = useState<boolean>(true);
+
+  useEffect(() => {
+    const areAllFieldsValid = isValidEmail;
+
+    setIsButtonDisable(!areAllFieldsValid);
+  }, [isValidEmail]);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -17,7 +27,6 @@ const LoginForms = () => {
     const { login, password } = document.forms[0];
     console.log(login, password);
   };
-
 
   return (
     <div className={styles["forms-container"]}>
@@ -33,15 +42,14 @@ const LoginForms = () => {
               id="email"
               onChange={(event) => {
                 setEmail(event.target.value);
+                setEmailTouched(true);
+                setIsValidEmail(
+                  validEmailRegex.test(event.target.value.trim())
+                );
               }}
-              onBlur={(event) => {
-                validEmailRegex.test(event.target.value.trim())
-                  ? setIsValidEmail(true)
-                  : setIsValidEmail(false);
-              }}
-              className={!isValidEmail ? styles.invalid : ""}
+              className={!isValidEmail && emailTouched ? styles.invalid : ""}
             />
-            {!isValidEmail && (
+            {!isValidEmail && emailTouched && (
               <div className={styles["forms-error-message"]}>
                 <p>Insira um e-mail válido</p>
               </div>
@@ -59,7 +67,14 @@ const LoginForms = () => {
           </p>
           <div className={styles["login-button-container"]}>
             <Link style={{ textDecoration: "none" }} to="/landingPage">
-              <button className={styles["login-button"]}>Login</button>
+              <button
+                className={`${styles["login-button"]} ${
+                  isButtonDisable ? styles["deactivated-button"] : ""
+                }`}
+                disabled={isButtonDisable}
+              >
+                Login
+              </button>
             </Link>
           </div>
           <p className={styles["not-registe-text"]}>
