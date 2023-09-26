@@ -40,8 +40,11 @@ const RegisterForms = () => {
 
   return (
     <div className={styles["forms-container"]}>
-      <div className={styles["forms-containt-container"]}>
-        <form action="">
+      <form action="">
+        <div className={styles["forms-containt-container"]}>
+          <div className={styles["image-container"]}>
+            <img src={uniLogo} alt="University" width={`100vw`} />
+          </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="Nome">Nome Completo</label>
             <input
@@ -99,7 +102,7 @@ const RegisterForms = () => {
                 );
               }}
               className={
-                !isPasswordValid && passwordTouched ? styles.invalid : "" 
+                !isPasswordValid && passwordTouched ? styles.invalid : ""
               }
             />
             {!isPasswordValid && passwordTouched && (
@@ -149,8 +152,8 @@ const RegisterForms = () => {
               <span>Clique aqui</span>
             </Link>
           </p>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 };
