@@ -45,7 +45,7 @@
 .forms-fields-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
 }
 
 /* cadastrar button container */
