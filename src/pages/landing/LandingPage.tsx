@@ -22,7 +22,7 @@ const LandingPage = () => {
   const [notebooks, setNotebooks] = useState<Tab[]>([
     {
       label: "Caderno 1",
-      content: "Campo de texto.... Lorem ipsum dolom...",
+      content: "",
       color: generateRandomColor(),
     },
   ]);

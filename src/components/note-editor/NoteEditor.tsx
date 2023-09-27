@@ -14,6 +14,7 @@ function NoteEditor({ content, onContentChange, forwardedRef, }: NoteEditorProps
       value={content}
       onChange={(e) => onContentChange(e.target.value)}
       className="textarea-editor"
+      placeholder='Campo de texto.... Lorem ipsum dolom...'
     />
   );
 }
