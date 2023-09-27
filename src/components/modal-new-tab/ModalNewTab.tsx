@@ -20,8 +20,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, purpose, current
         }
     };
 
-  const [name, setName] = useState<string>(currentName);
+  const [name, setName] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setName(""); // Resetando o nome quando o modal fecha
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -31,8 +37,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, purpose, current
   }, [isOpen]);
 
   useEffect(() => {
-    setName(currentName);
-  }, [currentName]);
+    setName(purpose === "create" ? "" : currentName);
+  }, [purpose, currentName]);
+
       
   if (!isOpen) return null;
 
