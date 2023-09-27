@@ -3,14 +3,17 @@ import { useState, useEffect, useRef } from "react";
 import NoteEditor from "../../components/note-editor/NoteEditor";
 import TabBar from "../../components/tab-bar/TabBar";
 import Header from "../../components/header/Header";
-import Modal from '../../components/modal-new-tab/ModalNewTab'; 
-import ConfirmModal from '../../components/confirm-modal/ConfirmModal'; 
+import Modal from '../../components/modal-new-tab/ModalNewTab';
+import ConfirmModal from '../../components/confirm-modal/ConfirmModal';
+import axios from 'axios';
+import Tab from "../../components/tab/Tab";
 
 interface Tab {
   label: string;
   content: string;
   color: string;
 }
+
 
 const LandingPage = () => {
   const generateRandomColor = () => "#" + ("000000" + Math.floor(Math.random() * 16777215).toString(16)).slice(-6);
@@ -40,7 +43,7 @@ const LandingPage = () => {
   };
 
   // Função para adicionar uma nova tab
-  const addNewTab = (name : string) => {
+  const addNewTab = (name: string) => {
     const newTabs = [
       ...notebooks,
       {
@@ -55,12 +58,12 @@ const LandingPage = () => {
 
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [modalPurpose, setModalPurpose] = useState<"create" | "rename">("create");
-  
+
   const openModal = (purpose: "create" | "rename") => {
     setModalPurpose(purpose);
     setModalOpen(true);
   };
-  
+
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -74,7 +77,21 @@ const LandingPage = () => {
     if (editorRef.current) {
       editorRef.current.focus();
     }
-  }, [activeTab, notebooks]);    
+  }, [activeTab, notebooks]);
+
+  //##############################################################################################################
+  useEffect(() => {
+    getNotebooksByOwner("usuarioLogado").then(fetchedNotebooks => { //TODO: Pegar o usuário do login
+      if (fetchedNotebooks.length > 0) {
+        setNotebooks(fetchedNotebooks.map((notebook: Tab) => ({
+          label: notebook.label,
+          content: "",
+          color: generateRandomColor(),
+        })));
+      }
+    });
+  }, []);
+  //##############################################################################################################
 
   return (
     <div>
@@ -96,14 +113,14 @@ const LandingPage = () => {
       />
 
       <div style={{ float: "left", margin: "0 10px 0 50px" }}>
-        <button 
-          className="LandingPage-buttonStyle" 
+        <button
+          className="LandingPage-buttonStyle"
           onClick={() => openModal("rename")}
         >
           Renomear Caderno
         </button>
 
-        <button 
+        <button
           className="LandingPage-buttonStyle"
           onClick={() => setConfirmModalOpen(true)}
         >
@@ -111,9 +128,9 @@ const LandingPage = () => {
         </button>
       </div>
 
-      <Modal 
-        isOpen={isModalOpen} 
-        onClose={closeModal} 
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
         onSave={(name: string) => {
           const newTabs = [...notebooks];
           newTabs[activeTab].label = name;
@@ -122,23 +139,54 @@ const LandingPage = () => {
         }}
         purpose={modalPurpose}
         currentName={notebooks[activeTab].label}
-      />    
+      />
 
-      <ConfirmModal 
-        isOpen={isConfirmModalOpen} 
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
         onConfirm={() => {
-            const newTabs = notebooks.filter((_, index) => index !== activeTab);
-            setNotebooks(newTabs);
-            setActiveTab(newTabs.length - 1); // Definir a primeira tab como ativa após a exclusão
-            setConfirmModalOpen(false); // Feche o modal após a confirmação
+          const newTabs = notebooks.filter((_, index) => index !== activeTab);
+          setNotebooks(newTabs);
+          setActiveTab(newTabs.length - 1); // Definir a primeira tab como ativa após a exclusão
+          setConfirmModalOpen(false); // Feche o modal após a confirmação
+          createNotebook(notebooks[activeTab].label, "usuario") //TODO: pegar o nome do usuario
         }}
         onCancel={() => {
-            setConfirmModalOpen(false); // Simplesmente feche o modal se o usuário cancelar
+          setConfirmModalOpen(false); // Simplesmente feche o modal se o usuário cancelar
         }}
         name={notebooks[activeTab].label}
       />
     </div>
   );
 };
+
+//##############################################################################################################
+
+async function createNotebook(name: string, owner: string) {
+  try {
+    const response = await axios.post('http://localhost:PORTA/notebooks', { //Substituir PORTA pela Porta de conexão
+      name,
+      owner
+    });
+    console.log('Caderno criado:', response.data);
+  } catch (error) {
+    console.error('Erro ao criar o caderno:', error);
+  }
+}
+
+async function getNotebooksByOwner(owner: string) {
+  try {
+
+    //função pra chamar os notebooks criados do bd
+
+    const response = await axios.get(`http://localhost:PORTA/notebooks/${owner}`); //Substituir PORTA pela Porta de conexão
+    return response.data;
+
+  } catch (error) {
+    console.error("Erro ao carregar os cadernos existentes");
+    return [];
+  }
+
+}
+//##############################################################################################################
 
 export default LandingPage;
