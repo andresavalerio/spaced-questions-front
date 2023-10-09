@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FormEventHandler, useState } from "react";
 import styles from "./LoginForms.module.css";
 
-const LoginForms = () => {
+const LoginForms = (props: LoginFormsProps) => {
   const uniLogo = "logo.jpeg";
 
   const [name, setName] = useState("");

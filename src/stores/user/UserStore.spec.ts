@@ -1,5 +1,5 @@
 import { describe, it } from "vitest";
 
-describe("ForgotPassword", () => {
+describe("UserStore", () => {
   it("hello world", () => {});
 });

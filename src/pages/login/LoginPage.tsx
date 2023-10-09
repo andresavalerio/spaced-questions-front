@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
-import { useLoginStore } from "../../stores/login/LoginStore";
+import { useLoginStore } from "../../stores/user/UserStore";
 import styles from "./LoginPage.module.css";
 import LoginForms from "./LoginForms/LoginForms";
 import ForgotPassword from "../forgot-password/ForgotPassword";

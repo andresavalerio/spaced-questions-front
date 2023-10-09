@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./Register.css";
 import { useState } from "react";
 import Header from "../../components/header/Header";
-import { useLoginStore } from "../../stores/login/LoginStore";
+import { useLoginStore } from "../../stores/user/UserStore";
 
 const Register = () => {
   const { setUser } = useLoginStore((state) => state);
@@ -21,19 +21,19 @@ const Register = () => {
         onChange={(e) => setName(e.target.value)}
         onBlur={(e) => setUser(e.target.value)}
       />
-      <input 
+      <input
         className="Register-input"
         type="password"
         placeholder="Digite sua senha"
         onChange={(e) => setPassword(e.target.value)}
       />
-      <input 
+      <input
         className="Register-input"
         type="password"
         placeholder="Confirme sua senha"
         onChange={(e) => setPassword(e.target.value)}
       />
-        <div className="Register-buttons">
+      <div className="Register-buttons">
         <Link to="/">
           <button className="Register-button">Confirmar</button>
         </Link>
