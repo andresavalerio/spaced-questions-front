@@ -1,19 +1,30 @@
 import { Link } from "react-router-dom";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import styles from "./LoginForms.module.css";
 
 const LoginForms = (props: LoginFormsProps) => {
   const uniLogo = "logo.jpeg";
 
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [isValidEmail, setIsValidEmail] = useState<boolean>(false);
+  const [emailTouched, setEmailTouched] = useState<boolean>(false);
+  const validEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-  const fullNameError = false;
+  const [password, setPassword] = useState("");
+  const [passwordTouched, setPasswordTouched] = useState<boolean>(false);
+
+  const [isButtonDisable, setIsButtonDisable] = useState<boolean>(true);
+
+  useEffect(() => {
+    const areAllFieldsValid = isValidEmail;
+
+    setIsButtonDisable(!areAllFieldsValid);
+  }, [isValidEmail]);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
-    let { login, password } = document.forms[0];
+    const { login, password } = document.forms[0];
     console.log(login, password);
   };
 
@@ -25,8 +36,24 @@ const LoginForms = (props: LoginFormsProps) => {
             <img src={uniLogo} alt="University" width={`100vw`} />
           </div>
           <div className={styles["forms-fields-container"]}>
-            <label htmlFor="login">E-mail</label>
-            <input type="text" id="login"></input>
+            <label htmlFor="email">E-mail</label>
+            <input
+              type="text"
+              id="email"
+              onChange={(event) => {
+                setEmail(event.target.value);
+                setEmailTouched(true);
+                setIsValidEmail(
+                  validEmailRegex.test(event.target.value.trim())
+                );
+              }}
+              className={!isValidEmail && emailTouched ? styles.invalid : ""}
+            />
+            {!isValidEmail && emailTouched && (
+              <div className={styles["forms-error-message"]}>
+                <p>Insira um e-mail válido</p>
+              </div>
+            )}
           </div>
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="password">Senha</label>
@@ -40,7 +67,14 @@ const LoginForms = (props: LoginFormsProps) => {
           </p>
           <div className={styles["login-button-container"]}>
             <Link style={{ textDecoration: "none" }} to="/landingPage">
-              <button className={styles["login-button"]}>Login</button>
+              <button
+                className={`${styles["login-button"]} ${
+                  isButtonDisable ? styles["deactivated-button"] : ""
+                }`}
+                disabled={isButtonDisable}
+              >
+                Login
+              </button>
             </Link>
           </div>
           <p className={styles["not-registe-text"]}>
