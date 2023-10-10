@@ -38,6 +38,7 @@ const LoginForms = () => {
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="email">E-mail</label>
             <input
+              data-test="name-input"
               type="text"
               id="email"
               onChange={(event) => {
