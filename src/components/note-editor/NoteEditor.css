@@ -1,0 +1,14 @@
+.textarea-editor {    
+    margin: 0 0 0 48px;
+    width: 93.7%;
+    min-height: 500px;
+    padding: 10px 15px;
+    line-height: 30px;
+    border: 1px #c7c7c7 solid;
+    font-size: 0.63em;
+    box-sizing: border-box;
+    resize: vertical;
+    border-radius: 0 0 15px 15px;
+    font-family: Montserrat;
+    font-weight: bold;
+}

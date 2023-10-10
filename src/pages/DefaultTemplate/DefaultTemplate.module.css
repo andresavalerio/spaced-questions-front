@@ -1,0 +1,47 @@
+/* Login area tamplate */
+.login-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  height: 100vh;
+}
+
+/* Logo container */
+.logo-container {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  background-color: #3a5a40;
+  color: white;
+
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  font-family: Montserrat, sans-serif;
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+@media only screen and (max-width: 1024px) {
+  /* Login area tamplate */
+  .login-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 120px 1fr;
+    height: 100vh;
+  }
+
+  /* Logo Side container */
+  .logo-container {
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+
+  /* Logo container */
+  .logo-container {
+    font-size: 48px;
+  }
+}
