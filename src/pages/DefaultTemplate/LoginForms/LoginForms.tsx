@@ -38,6 +38,7 @@ const LoginForms = (props: LoginFormsProps) => {
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="email">E-mail</label>
             <input
+              data-testid="name-input"
               type="text"
               id="email"
               onChange={(event) => {

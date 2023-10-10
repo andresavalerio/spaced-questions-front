@@ -2,6 +2,49 @@ import { Link } from "react-router-dom";
 import styles from "./RegisterForms.module.css";
 import { useState, useEffect } from "react";
 
+type InputProps = React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+>;
+
+type BaseInputProps = {
+  label: string;
+  errorLabel: string;
+  touched: boolean;
+  isException: boolean;
+  setTouched: React.Dispatch<React.SetStateAction<boolean>>;
+  handleException: React.ChangeEventHandler<HTMLInputElement>;
+};
+
+type FormFieldInput = InputProps & BaseInputProps;
+
+const FormFieldInput = (props: FormFieldInput) => {
+  return (
+    <div className={styles["forms-fields-container"]}>
+      <label htmlFor={props.id}>{props.label}</label>
+      <input
+        {...props}
+        type={props.type}
+        id={props.id}
+        onChange={(event) => {
+          if (props.onChange) props.onChange(event);
+          props.setTouched(true);
+          props.handleException(event);
+        }}
+        className={
+          (props.isException && props.touched ? styles.invalid : "") +
+          ` ${props.className}`
+        }
+      />
+      {props.isException && props.touched && (
+        <div className={styles["forms-error-message"]}>
+          <p>{props.errorLabel}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const RegisterForms = () => {
   const uniLogo = "logo.jpeg";
 
@@ -45,6 +88,24 @@ const RegisterForms = () => {
           <div className={styles["image-container"]}>
             <img src={uniLogo} alt="University" width={`100vw`} />
           </div>
+          <FormFieldInput
+            errorLabel="Insira seu Nome Completo"
+            handleException={(event) =>
+              setIsBlankUserName(
+                event.target.value.trim() === "" ? true : false
+              )
+            }
+            isException={isBlankUserName}
+            label="Nome Completo"
+            setTouched={setUserNameTouched}
+            touched={userNameTouched}
+            onChange={(event) => setUserName(event.target.value)}
+            id="Nome"
+            type="text"
+            style={{
+              backgroundColor: 'red'
+            }}
+          />
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="Nome">Nome Completo</label>
             <input
