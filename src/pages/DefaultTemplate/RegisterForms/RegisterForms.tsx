@@ -103,10 +103,32 @@ const RegisterForms = () => {
             id="Nome"
             type="text"
             style={{
-              backgroundColor: 'red'
+              backgroundColor: "red",
             }}
+            className={
+              isBlankUserName && userNameTouched ? styles.invalid : ""
+            }
           />
-          <div className={styles["forms-fields-container"]}>
+          <FormFieldInput
+            errorLabel="Insira um email valido"
+            handleException={(event) => {
+              setIsValidEmail(!validEmailRegex.test(event.target.value.trim()))
+            }}
+            isException={isValidEmail}
+            label="E-mail"
+            setTouched={setEmailTouched}
+            touched={emailTouched}
+            onChange={ event => setEmail(event.target.value)}
+            id="Email"
+            type="text"
+            style={{
+              backgroundColor: "blue"
+            }}
+            className={
+              isBlankUserName && userNameTouched ? styles.invalid : ""
+            }
+          ></FormFieldInput>
+          {/* <div className={styles["forms-fields-container"]}>
             <label htmlFor="Nome">Nome Completo</label>
             <input
               type="text"
@@ -127,9 +149,9 @@ const RegisterForms = () => {
                 <p>Insira seu Nome Completo</p>
               </div>
             )}
-          </div>
+          </div> */}
 
-          <div className={styles["forms-fields-container"]}>
+          {/* <div className={styles["forms-fields-container"]}>
             <label htmlFor="email">E-mail</label>
             <input
               type="text"
@@ -148,7 +170,7 @@ const RegisterForms = () => {
                 <p>Insira um e-mail válido</p>
               </div>
             )}
-          </div>
+          </div> */}
 
           <div className={styles["forms-fields-container"]}>
             <label htmlFor="password">Senha</label>
