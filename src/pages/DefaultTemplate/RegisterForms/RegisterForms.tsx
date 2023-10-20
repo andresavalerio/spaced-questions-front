@@ -78,6 +78,8 @@ const RegisterForms = () => {
       isPasswordValid &&
       isRepetedPasswordValid;
 
+    console.log([isBlankUserName, isValidEmail, isPasswordValid, isRepetedPasswordValid],areAllFieldsValid)
+
     setIsButtonDisable(!areAllFieldsValid);
   }, [isBlankUserName, isValidEmail, isPasswordValid, isRepetedPasswordValid]);
 
@@ -102,122 +104,47 @@ const RegisterForms = () => {
             onChange={(event) => setUserName(event.target.value)}
             id="Nome"
             type="text"
-            style={{
-              backgroundColor: "red",
-            }}
-            className={
-              isBlankUserName && userNameTouched ? styles.invalid : ""
-            }
           />
           <FormFieldInput
             errorLabel="Insira um email valido"
             handleException={(event) => {
-              setIsValidEmail(!validEmailRegex.test(event.target.value.trim()))
+              setIsValidEmail(validEmailRegex.test(event.target.value.trim()));
             }}
-            isException={isValidEmail}
+            isException={!isValidEmail}
             label="E-mail"
             setTouched={setEmailTouched}
             touched={emailTouched}
-            onChange={ event => setEmail(event.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             id="Email"
             type="text"
-            style={{
-              backgroundColor: "blue"
-            }}
-            className={
-              isBlankUserName && userNameTouched ? styles.invalid : ""
-            }
           ></FormFieldInput>
-          {/* <div className={styles["forms-fields-container"]}>
-            <label htmlFor="Nome">Nome Completo</label>
-            <input
-              type="text"
-              id="Nome"
-              onChange={(event) => {
-                setUserName(event.target.value);
-                setUserNameTouched(true);
-                setIsBlankUserName(
-                  event.target.value.trim() === "" ? true : false
-                );
-              }}
-              className={
-                isBlankUserName && userNameTouched ? styles.invalid : ""
-              }
-            />
-            {isBlankUserName && userNameTouched && (
-              <div className={styles["forms-error-message"]}>
-                <p>Insira seu Nome Completo</p>
-              </div>
-            )}
-          </div> */}
-
-          {/* <div className={styles["forms-fields-container"]}>
-            <label htmlFor="email">E-mail</label>
-            <input
-              type="text"
-              id="email"
-              onChange={(event) => {
-                setEmail(event.target.value);
-                setEmailTouched(true);
-                setIsValidEmail(
-                  validEmailRegex.test(event.target.value.trim())
-                );
-              }}
-              className={!isValidEmail && emailTouched ? styles.invalid : ""}
-            />
-            {!isValidEmail && emailTouched && (
-              <div className={styles["forms-error-message"]}>
-                <p>Insira um e-mail válido</p>
-              </div>
-            )}
-          </div> */}
-
-          <div className={styles["forms-fields-container"]}>
-            <label htmlFor="password">Senha</label>
-            <input
-              type="password"
-              id="password"
-              onChange={(event) => {
-                setPassword(event.target.value);
-                setPasswordTouched(true);
-                setIsPasswordValid(
-                  strongPasswordRegex.test(event.target.value)
-                );
-              }}
-              className={
-                !isPasswordValid && passwordTouched ? styles.invalid : ""
-              }
-            />
-            {!isPasswordValid && passwordTouched && (
-              <div className={styles["forms-error-message"]}>
-                <p>Insira uma senha forte</p>
-              </div>
-            )}
-          </div>
-
-          <div className={styles["forms-fields-container"]}>
-            <label htmlFor="password-confirmation">Confirmar Senha</label>
-            <input
-              type="password"
-              id="password-confirmation"
-              onChange={(event) => {
-                setRepetedPassword(event.target.value);
-                setRepetedPasswordTouched(true);
-                setIsRepetedPasswordValid(event.target.value === password);
-              }}
-              className={
-                !isRepetedPasswordValid && repetedPasswordTouched
-                  ? styles.invalid
-                  : ""
-              }
-            />
-            {!isRepetedPasswordValid && repetedPasswordTouched && (
-              <div className={styles["forms-error-message"]}>
-                <p>As senhas não correspondem</p>
-              </div>
-            )}
-          </div>
-
+          <FormFieldInput
+            errorLabel="Insira uma senha válida"
+            handleException={(event) => {
+              setIsPasswordValid(strongPasswordRegex.test(event.target.value));
+              setIsRepetedPasswordValid(repetedPassword === event.target.value);
+            }}
+            isException={!isPasswordValid}
+            label="Senha"
+            setTouched={setPasswordTouched}
+            touched={passwordTouched}
+            onChange={(event) => setPassword(event.target.value)}
+            id="password"
+            type="password"
+          ></FormFieldInput>
+          <FormFieldInput
+            errorLabel="As senhas não correspondem"
+            handleException={(event) => {
+              setIsRepetedPasswordValid(event.target.value === password);
+            }}
+            isException={!isRepetedPasswordValid}
+            label="Conifirmar Senha"
+            setTouched={setRepetedPasswordTouched}
+            touched={repetedPasswordTouched}
+            onChange={(event) => setRepetedPassword(event.target.value)}
+            id="repetedpassword"
+            type="password"
+          ></FormFieldInput>
           <div className={styles["cadastrar-button-container"]}>
             <button
               className={`${styles["cadastrar-button"]} ${
