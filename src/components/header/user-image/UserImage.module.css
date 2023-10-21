@@ -27,19 +27,20 @@
     justify-content: center;
     align-items: center;
     display: flex;
+    flex-direction: column;
     border: 1px #c7c7c7 solid;
     cursor: pointer;
-     top: 65px;
+    top: 79px;
+    right: 54px;
     /* left: 94.3%;   */
 }
 
 
 .Header-tooltip::after {
-    background-color: red;
-    /* content: ""; */
+    content: "";
     position: absolute;
-    /* top: -14px;  */
-    /* left: 53%;  */
+    top: -13px; 
+    left: 53%; 
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 14px solid white;
@@ -48,13 +49,13 @@
 
 /* Tri�ngulo de borda cinza */
 .Header-tooltip::before {
-    /* content: ""; */
+    content: "";
     position: absolute;
-    /* top: -15px;  */
-    /* left: 52%; */
-    border-left: 11px solid transparent;
-    border-right: 11px solid transparent;
-    border-bottom: 15px solid #c7c7c7;
+    top: -14px;
+    left: 53%;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 14px solid #c7c7c7;
     z-index: 1; 
 }
 
