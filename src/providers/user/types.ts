@@ -69,3 +69,8 @@ export type CreateUserDTO = {
   password: string;
   email: string;
 };
+
+export type LoginUserDTO = {
+  login: string;
+  password: string;
+};

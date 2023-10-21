@@ -16,10 +16,6 @@ const userStateWhenLogged: UserState = {
 
 describe("UserUtils", () => {
   describe("isUserLoggeed", () => {
-    it("should be defined", () => {
-      expect(isUserLogged).toBeDefined();
-    });
-
     it("should return true if has user data and loading is false", () => {
       const result = isUserLogged(userStateWhenLogged);
 

@@ -1,20 +1,22 @@
 import { User, UserReducerTypes, UserReducers, UserState } from "../types";
 
+const { CREATE, ERROR, LOADING, LOGIN, LOGOUT } = UserReducerTypes;
+
 export const userReducer = (state: UserState, action: UserReducers) => {
   switch (action.type) {
-    case UserReducerTypes.CREATE:
-      return createUserReducer();
+    case CREATE:
+      return resetStateReducer();
 
-    case UserReducerTypes.LOGIN:
+    case LOGIN:
       return loginUserReducer(action.payload);
 
-    case UserReducerTypes.LOGOUT:
-      return logoutUserReducer();
+    case LOGOUT:
+      return resetStateReducer();
 
-    case UserReducerTypes.ERROR:
-      return errorUserReducer(state);
+    case ERROR:
+      return resetStateReducer();
 
-    case UserReducerTypes.LOADING:
+    case LOADING:
       return loadingUserReducer(state);
 
     default:
@@ -22,23 +24,14 @@ export const userReducer = (state: UserState, action: UserReducers) => {
   }
 };
 
-const createUserReducer = (): UserState => ({ loading: false });
-
-const loginUserReducer = (payload: User): UserState => {
-  return {
-    loading: false,
-    ...payload,
-  };
+const resetStateReducer = (): UserState => {
+  return { loading: false };
 };
 
-const logoutUserReducer = (): UserState => ({ loading: false });
+const loginUserReducer = (payload: User): UserState => {
+  return { loading: false, data: payload };
+};
 
-const errorUserReducer = (state: UserState): UserState => ({
-  ...state,
-  loading: false,
-});
-
-const loadingUserReducer = (state: UserState): UserState => ({
-  ...state,
-  loading: true,
-});
+const loadingUserReducer = (state: UserState): UserState => {
+  return { ...state, loading: true };
+};

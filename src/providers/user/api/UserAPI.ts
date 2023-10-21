@@ -1,31 +1,35 @@
-import { getResponseError, httpClient } from "httpClient";
-import { CreateUserDTO, UserLoginAPIResponse } from "../types";
+import { fetchAPI } from "helpers/fetch";
+import { CreateUserDTO, LoginUserDTO, UserLoginAPIResponse } from "../types";
 import { UserAlreadyExistsError, UserNotAuthorizedError } from "../errors";
 
 export const requestUserLogin = async (login: string, password: string) => {
-  try {
-    const body = { login, password };
+  const body: LoginUserDTO = { login, password };
 
-    const response = await httpClient.post("/api/user/login", body);
+  const requestBody: RequestInit = {
+    method: "POST",
+    body: JSON.stringify(body),
+  };
 
-    return response.data as UserLoginAPIResponse;
-  } catch (error) {
-    const response = getResponseError(error);
+  const response = await fetchAPI(`/user/login`, requestBody);
 
-    if (response.status === 401) throw new UserNotAuthorizedError();
-  }
+  if (response.status === 401) throw new UserNotAuthorizedError();
+
+  if (response.status === 500) throw new Error();
+
+  return response.json() as unknown as UserLoginAPIResponse;
 };
 
 export const requestCreateUser = async (newUser: CreateUserDTO) => {
-  try {
-    const response = await httpClient.post("/api/user", newUser);
+  const requestBody: RequestInit = {
+    method: "POST",
+    body: JSON.stringify(newUser),
+  };
 
-    const notCreated = response.status !== 201;
+  const response = await fetchAPI("/user", requestBody);
 
-    if (notCreated) throw Error();
-  } catch (error) {
-    const response = getResponseError(error);
+  const notCreated = response.status !== 201;
 
-    if (response.status === 409) throw new UserAlreadyExistsError();
-  }
+  if (response.status === 409) throw new UserAlreadyExistsError();
+
+  if (notCreated) throw Error();
 };

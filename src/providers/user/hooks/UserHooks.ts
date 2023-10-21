@@ -8,7 +8,7 @@ import {
 } from "../types";
 import { requestCreateUser, requestUserLogin } from "../api/UserAPI";
 import { isUserLogged } from "../utils/UserUtils";
-import { UserAlreadyLoggedError } from "../errors";
+import { UserAlreadyLoggedError, UserWasNotLoggedError } from "../errors";
 
 const useUserContext = () => React.useContext(UserContext);
 
@@ -18,13 +18,14 @@ export const useUserProvider = () => {
   const dispatch = useUserDispatch();
   const state = useUserContext();
 
-  if (!dispatch) throw new Error("Must be Defined in a User Provider");
+  if (!dispatch)
+    throw new Error("Must be Defined in a User Provider Component");
 
   return {
     state,
     actions: {
-      loginUser: createLogoutUserAction(state, dispatch),
-      logoutUser: createLoginUserAction(dispatch),
+      loginUser: createLoginUserAction(state, dispatch),
+      logoutUser: createLogoutUserAction(state, dispatch),
       createUser: createCreateUserAction(dispatch),
     },
   };
@@ -33,13 +34,18 @@ export const useUserProvider = () => {
 const { CREATE: CREATED, ERROR, LOADING, LOGIN, LOGOUT } = UserReducerTypes;
 
 export const createLoginUserAction =
-  (dispatch: UserDispatch) =>
+  (state: UserState, dispatch: UserDispatch) =>
   async (
     login: string,
     password: string,
     errorCallback?: (error: unknown) => void
   ): Promise<void> => {
     try {
+      if (isUserLogged(state)) {
+        if (errorCallback) errorCallback(new UserAlreadyLoggedError());
+        return;
+      }
+
       dispatch({ type: LOADING });
 
       const response = await requestUserLogin(login, password);
@@ -54,6 +60,7 @@ export const createLoginUserAction =
       });
     } catch (error) {
       dispatch({ type: ERROR });
+
       if (errorCallback) errorCallback(error);
     }
   };
@@ -78,7 +85,7 @@ const createLogoutUserAction =
   (errorCallback?: (error: unknown) => void) => {
     if (!isUserLogged(state)) {
       dispatch({ type: ERROR });
-      if (errorCallback) errorCallback(new UserAlreadyLoggedError());
+      if (errorCallback) errorCallback(new UserWasNotLoggedError());
       return;
     }
 
