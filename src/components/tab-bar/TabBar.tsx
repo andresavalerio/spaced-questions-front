@@ -1,17 +1,27 @@
-import './TabBar.css';
+import "./TabBar.css";
 import React, { useState } from "react";
-import { TabData } from "../../types/TabData";
 import Tab from "../tab/Tab";
-import Modal from '../modal-new-tab/ModalNewTab';
+import Modal from "../modal-new-tab/ModalNewTab";
+
+type TabData = {
+  label: string;
+  content: string;
+  color: string;
+};
 
 interface TabBarProps {
   tabs: TabData[];
   activeTab: number;
   onTabClick: (input: number) => void;
-  onAddTab: (name : string) => void;
+  onAddTab: (name: string) => void;
 }
 
-const TabBar: React.FC<TabBarProps> = ({ tabs, activeTab, onTabClick, onAddTab }) => {
+const TabBar: React.FC<TabBarProps> = ({
+  tabs,
+  activeTab,
+  onTabClick,
+  onAddTab,
+}) => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
   const handleAddTabClick = () => {
@@ -28,7 +38,7 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, activeTab, onTabClick, onAddTab }
   };
 
   return (
-    <div className="TabBar" >
+    <div className="TabBar">
       {tabs.map((tab, index) => (
         <Tab
           key={index}
@@ -37,13 +47,16 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, activeTab, onTabClick, onAddTab }
           onClick={() => onTabClick(index)}
         />
       ))}
-      <button className={`TabBar-buttonCreateNewTab ${isModalOpen ? 'active' : ''}`} onClick={handleAddTabClick}>
-        <div className={`TabBar-plusSign ${isModalOpen ? 'active' : ''}`}>
+      <button
+        className={`TabBar-buttonCreateNewTab ${isModalOpen ? "active" : ""}`}
+        onClick={handleAddTabClick}
+      >
+        <div className={`TabBar-plusSign ${isModalOpen ? "active" : ""}`}>
           +
         </div>
       </button>
-      <Modal 
-        isOpen={isModalOpen} 
+      <Modal
+        isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSave={handleSaveNewTab}
         purpose="create"
@@ -51,6 +64,6 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, activeTab, onTabClick, onAddTab }
       />
     </div>
   );
-}
+};
 
 export default TabBar;
