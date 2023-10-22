@@ -1,0 +1,29 @@
+/* cadastrar button container */
+.cadastrar-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* cadastrar Button */
+.cadastrar-button {
+  height: 30px;
+  width: 47px;
+  padding: 15px 40px;
+  margin-top: 20px;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 0.5px solid #000;
+  border-radius: 10px;
+  background: #588157;
+  color: white;
+
+  cursor: pointer;
+}
+
+.deactivated-button {
+  background: rgba(88, 129, 87, 0.3);
+  cursor: default;
+}

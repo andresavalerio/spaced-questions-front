@@ -1,5 +1,4 @@
 import { serverBaseUrl } from "config";
-import { setupServer } from "msw/node";
 import { rest } from "msw";
 import { LoginUserDTO, UserLoginAPIResponse, CreateUserDTO } from "../types";
 
@@ -8,41 +7,42 @@ const unathourized_pattern = "error";
 const loginUserURL = `${serverBaseUrl}/user/login`;
 const createUserURL = `${serverBaseUrl}/user`;
 
-export const userServer = setupServer(
-  rest.post(loginUserURL, async (req, res, ctx) => {
-    const body = (await req.json()) as LoginUserDTO;
+const loginUserHandler = rest.post(loginUserURL, async (req, res, ctx) => {
+  const body = (await req.json()) as LoginUserDTO;
 
-    const isUnathourizedUser = body.login
-      .toLowerCase()
-      .includes(unathourized_pattern);
+  const isUnathourizedUser = body.login
+    .toLowerCase()
+    .includes(unathourized_pattern);
 
-    if (isUnathourizedUser) return res(ctx.delay(), ctx.status(401));
+  if (isUnathourizedUser) return res(ctx.delay(), ctx.status(401));
 
-    return res(
-      ctx.delay(),
-      ctx.json({
-        token: "token",
-        user: {
-          active: true,
-          createdAt: new Date(),
-          email: "email@gmail.com",
-          fullName: "Test User",
-          username: "test",
-          userRole: "Free",
-        },
-      } as UserLoginAPIResponse)
-    );
-  }),
-  rest.post(createUserURL, async (req, res, ctx) => {
-    const body = (await req.json()) as CreateUserDTO;
+  return res(
+    ctx.delay(),
+    ctx.json({
+      token: "token",
+      user: {
+        active: true,
+        createdAt: new Date(),
+        email: "email@gmail.com",
+        fullName: "Test User",
+        username: "test",
+        userRole: "Free",
+      },
+    } as UserLoginAPIResponse)
+  );
+});
 
-    const isDuplicatedEmail = body.email.includes("duplicate");
-    const isDuplicatedUsername = body.username.includes("duplicate");
+const createUserHandler = rest.post(createUserURL, async (req, res, ctx) => {
+  const body = (await req.json()) as CreateUserDTO;
 
-    const isDuplicatedUser = isDuplicatedEmail || isDuplicatedUsername;
+  const isDuplicatedEmail = body.email.includes("duplicate");
+  const isDuplicatedUsername = body.username.includes("duplicate");
 
-    if (isDuplicatedUser) return res(ctx.status(409));
+  const isDuplicatedUser = isDuplicatedEmail || isDuplicatedUsername;
 
-    return res(ctx.status(201));
-  })
-);
+  if (isDuplicatedUser) return res(ctx.status(409));
+
+  return res(ctx.status(201));
+});
+
+export const userHandlers = [loginUserHandler, createUserHandler];

@@ -1,6 +1,9 @@
-import { type SetupServer } from "msw/node";
+import { RequestHandler } from "msw";
+import { setupServer } from "msw/node";
 
-export const setupMockServer = (server: SetupServer) => {
+export const setupMockServer = (handlers: RequestHandler[]) => {
+  const server = setupServer(...handlers);
+
   beforeAll(() => {
     server.listen();
   });

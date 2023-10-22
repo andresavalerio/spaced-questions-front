@@ -1,0 +1,35 @@
+.forms-fields-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.forms-error-message {
+  color: red;
+  font-family: Montserrat, sans-serif;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.forms-fields-container label {
+  color: #000;
+  font-family: Montserrat, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.forms-fields-container input {
+  height: 27px;
+  padding: 0 3px;
+
+  border-radius: 10px;
+  border: 0.5px solid #000;
+  background: white;
+}
+
+.forms-fields-container input.invalid {
+  border: 0.5px solid red;
+}

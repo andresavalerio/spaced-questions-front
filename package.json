@@ -37,5 +37,8 @@
     "vite": "^4.5.0",
     "vite-tsconfig-paths": "^4.2.1",
     "vitest": "^0.34.6"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

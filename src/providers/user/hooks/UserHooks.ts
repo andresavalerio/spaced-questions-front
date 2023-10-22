@@ -35,15 +35,10 @@ const { CREATE: CREATED, ERROR, LOADING, LOGIN, LOGOUT } = UserReducerTypes;
 
 export const createLoginUserAction =
   (state: UserState, dispatch: UserDispatch) =>
-  async (
-    login: string,
-    password: string,
-    errorCallback?: (error: unknown) => void
-  ): Promise<void> => {
+  async (login: string, password: string): Promise<void> => {
     try {
       if (isUserLogged(state)) {
-        if (errorCallback) errorCallback(new UserAlreadyLoggedError());
-        return;
+        throw new UserAlreadyLoggedError();
       }
 
       dispatch({ type: LOADING });
@@ -60,14 +55,12 @@ export const createLoginUserAction =
       });
     } catch (error) {
       dispatch({ type: ERROR });
-
-      if (errorCallback) errorCallback(error);
+      throw error;
     }
   };
 
 export const createCreateUserAction =
-  (dispatch: UserDispatch) =>
-  async (newUser: CreateUserDTO, errorCallback?: (error: unknown) => void) => {
+  (dispatch: UserDispatch) => async (newUser: CreateUserDTO) => {
     try {
       dispatch({ type: LOADING });
 
@@ -76,17 +69,15 @@ export const createCreateUserAction =
       dispatch({ type: CREATED });
     } catch (error) {
       dispatch({ type: ERROR });
-      if (errorCallback) errorCallback(error);
+      throw error;
     }
   };
 
 const createLogoutUserAction =
-  (state: UserState, dispatch: UserDispatch) =>
-  (errorCallback?: (error: unknown) => void) => {
+  (state: UserState, dispatch: UserDispatch) => () => {
     if (!isUserLogged(state)) {
       dispatch({ type: ERROR });
-      if (errorCallback) errorCallback(new UserWasNotLoggedError());
-      return;
+      throw new UserWasNotLoggedError();
     }
 
     dispatch({ type: LOGOUT });

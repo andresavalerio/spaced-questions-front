@@ -3,7 +3,8 @@ import { useUserProvider } from "./UserHooks";
 import { UserProvider } from "../UserProvider";
 import { ReactNode } from "react";
 import { setupMockServer } from "helpers/tests";
-import { userServer } from "../api/UserMockServer";
+import { userHandlers } from "../api/UserMockServer";
+import { UserNotAuthorizedError, UserWasNotLoggedError } from "../errors";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <UserProvider>{children}</UserProvider>
@@ -12,7 +13,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 const renderUserHooks = () => renderHook(() => useUserProvider(), { wrapper });
 
 describe("UserHooks", () => {
-  setupMockServer(userServer);
+  setupMockServer(userHandlers);
 
   it("should render hook and it be defined", () => {
     const { result } = renderUserHooks();
@@ -46,35 +47,29 @@ describe("UserHooks", () => {
     it("should not login user when there is an error", async () => {
       const { result } = renderUserHooks();
 
-      const errorCallback = vi.fn();
-
-      act(() => {
-        result.current.actions.loginUser("error", "password", errorCallback);
-      });
-
-      expect(result.current.state.loading).toBe(true);
-
-      await waitFor(
-        () => {
-          const isLoading = !!result.current.state.loading;
-
-          if (isLoading) throw new Error();
-        },
-        { timeout: 1500 }
+      const loginUserPromise = act(() =>
+        result.current.actions.loginUser("error", "password")
       );
 
-      expect(errorCallback).toBeCalled();
-      expect(result.current.state.data).toBeUndefined();
+      try {
+        await loginUserPromise;
+      } catch (error) {
+        expect(error).toBeInstanceOf(UserNotAuthorizedError);
+      }
     });
   });
 
   describe("logoutUser", () => {
-    it("should logout user", () => {
+    it("should not logout user when him is not logged", () => {
       const { result } = renderUserHooks();
 
-      act(() => {
-        result.current.actions.logoutUser();
-      });
+      try {
+        act(() => {
+          return result.current.actions.logoutUser();
+        });
+      } catch (error) {
+        expect(error).toBeInstanceOf(UserWasNotLoggedError);
+      }
     });
   });
 

@@ -1,10 +1,10 @@
-import { Navigate, RouteObject } from "react-router-dom";
+import { RouteObject } from "react-router-dom";
 import App from "./App";
 import LandingPage from "./pages/landing/LandingPage";
-import ForgotPassword from "./pages/forgot-password/ForgotPassword";
-import DefaultTemplate from "./pages/DefaultTemplate/DefaultTemplate";
-import LoginForms from "./pages/DefaultTemplate/LoginForms/LoginForms";
-import RegisterForms from "./pages/DefaultTemplate/RegisterForms/RegisterForms";
+import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
+import LoginPage from "./pages/login/LoginPage";
+import RegistrationPage from "./pages/registration/RegistrationPage";
+import LoginLayout from "layouts/LoginLayout/LoginLayout";
 
 const routes: RouteObject[] = [
   {
@@ -12,29 +12,24 @@ const routes: RouteObject[] = [
     element: <App />,
     children: [
       {
-        path: "/",
-        element: <DefaultTemplate />,
+        element: <LoginLayout />,
         children: [
           {
-            path: "/",
-            element:  <Navigate to="/login" />,
-          },
-          {
             path: "login",
-            element: <LoginForms/>
+            element: <LoginPage />,
           },
           {
             path: "register",
-            element: <RegisterForms/>
+            element: <RegistrationPage />,
           },
           {
             path: "forgot-password",
-            element: <ForgotPassword/>
+            element: <ForgotPasswordPage />,
           },
         ],
       },
       {
-        path: "/landingPage",
+        path: "/",
         element: <LandingPage />,
       },
     ],

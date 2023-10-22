@@ -1,0 +1,16 @@
+.helper-text {
+  color: #000;
+  text-align: center;
+  font-family: Montserrat, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+/* Click Here Span */
+.helper-text span {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #000;
+}

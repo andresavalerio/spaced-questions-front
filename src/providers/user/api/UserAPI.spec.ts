@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { setupMockServer } from "helpers/tests";
 import { requestCreateUser, requestUserLogin } from "./UserAPI";
-import { userServer } from "./UserMockServer";
+import { userHandlers } from "./UserMockServer";
 import { UserAlreadyExistsError, UserNotAuthorizedError } from "../errors";
 
 describe("UserAPI", () => {
-  setupMockServer(userServer);
+  setupMockServer(userHandlers);
 
   describe("requestUserLogin", () => {
     it("should login user, and receive token and user data", async () => {

@@ -1,9 +1,12 @@
+import { UserProvider } from "providers/user/UserProvider";
 import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <div>
-      <Outlet />
+      <UserProvider>
+        <Outlet />
+      </UserProvider>
     </div>
   );
 }

@@ -3,23 +3,24 @@ import { useState, useEffect, useRef } from "react";
 import NoteEditor from "../../components/note-editor/NoteEditor";
 import TabBar from "../../components/tab-bar/TabBar";
 import Header from "../../components/header/Header";
-import Modal from '../../components/modal-new-tab/ModalNewTab';
-import ConfirmModal from '../../components/confirm-modal/ConfirmModal';
-import axios from 'axios';
-import Tab from "../../components/tab/Tab";
+import Modal from "../../components/modal-new-tab/ModalNewTab";
+import ConfirmModal from "../../components/confirm-modal/ConfirmModal";
+import { useUserProvider } from "providers/user/hooks/UserHooks";
+import { isUserLogged } from "providers/user/utils/UserUtils";
+import { Navigate } from "react-router-dom";
 
-interface Tab {
+interface NotebookTab {
   label: string;
   content: string;
   color: string;
 }
 
-
 const LandingPage = () => {
-  const generateRandomColor = () => "#" + ("000000" + Math.floor(Math.random() * 16777215).toString(16)).slice(-6);
+  const generateRandomColor = () =>
+    "#" +
+    ("000000" + Math.floor(Math.random() * 16777215).toString(16)).slice(-6);
 
-  // Estado para gerenciar as tabs (cadernos)
-  const [notebooks, setNotebooks] = useState<Tab[]>([
+  const [notebooks, setNotebooks] = useState<NotebookTab[]>([
     {
       label: "Caderno 1",
       content: "",
@@ -27,23 +28,19 @@ const LandingPage = () => {
     },
   ]);
 
-  // Estado para gerenciar a tab ativa
   const [activeTab, setActiveTab] = useState<number>(0);
 
-  // Manipulador para alterar a tab ativa
   const handleTabClick = (index: number) => {
     setActiveTab(index);
   };
 
-  // Manipulador para atualizar o conteúdo da tab ativa
-  const handleContentChange = (newContent: string) => {
+  const handleTabContentChange = (newContent: string) => {
     const newTabs = [...notebooks];
     newTabs[activeTab].content = newContent;
     setNotebooks(newTabs);
   };
 
-  // Função para adicionar uma nova tab
-  const addNewTab = (name: string) => {
+  const createNewTab = (name: string) => {
     const newTabs = [
       ...notebooks,
       {
@@ -57,7 +54,9 @@ const LandingPage = () => {
   };
 
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalPurpose, setModalPurpose] = useState<"create" | "rename">("create");
+  const [modalPurpose, setModalPurpose] = useState<"create" | "rename">(
+    "create"
+  );
 
   const openModal = (purpose: "create" | "rename") => {
     setModalPurpose(purpose);
@@ -72,46 +71,39 @@ const LandingPage = () => {
 
   const editorRef = useRef<HTMLTextAreaElement>(null);
 
-  // Quando a guia ativa mudar ou um novo caderno é adicionado, o foco será definido no editor
-  useEffect(() => {
+  const focusEditor = () => {
     if (editorRef.current) {
       editorRef.current.focus();
     }
+  };
+
+  useEffect(() => {
+    focusEditor();
   }, [activeTab, notebooks]);
 
-  //##############################################################################################################
-  useEffect(() => {
-    getNotebooksByOwner("usuarioLogado").then(fetchedNotebooks => { //TODO: Pegar o usuário do login
-      if (fetchedNotebooks.length > 0) {
-        setNotebooks(fetchedNotebooks.map((notebook: Tab) => ({
-          label: notebook.label,
-          content: "",
-          color: generateRandomColor(),
-        })));
-      }
-    });
-  }, []);
-  //##############################################################################################################
+  const closeConfirmModal = () => setConfirmModalOpen(false);
+
+  const { state } = useUserProvider();
+
+  if (!isUserLogged(state)) return <Navigate to={"/login"} />;
+
+  const activateFirstTab = (tabs: NotebookTab[]) =>
+    setActiveTab(tabs.length - 1);
 
   return (
     <div>
-      <Header
-        content={"Spaced Questions"}
-      />
-
+      <Header content={"Spaced Questions"} />
       <TabBar
         tabs={notebooks}
         activeTab={activeTab}
         onTabClick={handleTabClick}
-        onAddTab={addNewTab}
+        onAddTab={createNewTab}
       />
-
       <NoteEditor
         forwardedRef={editorRef}
         content={notebooks[activeTab]?.content || ""}
-        onContentChange={handleContentChange}
+        onContentChange={handleTabContentChange}
       />
-
       <div style={{ float: "left", margin: "0 10px 0 50px" }}>
         <button
           className="LandingPage-buttonStyle"
@@ -119,7 +111,6 @@ const LandingPage = () => {
         >
           Renomear Caderno
         </button>
-
         <button
           className="LandingPage-buttonStyle"
           onClick={() => setConfirmModalOpen(true)}
@@ -127,7 +118,6 @@ const LandingPage = () => {
           Excluir Caderno
         </button>
       </div>
-
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -140,53 +130,22 @@ const LandingPage = () => {
         purpose={modalPurpose}
         currentName={notebooks[activeTab].label}
       />
-
       <ConfirmModal
         isOpen={isConfirmModalOpen}
         onConfirm={() => {
           const newTabs = notebooks.filter((_, index) => index !== activeTab);
+
           setNotebooks(newTabs);
-          setActiveTab(newTabs.length - 1); // Definir a primeira tab como ativa após a exclusão
-          setConfirmModalOpen(false); // Feche o modal após a confirmação
-          createNotebook(notebooks[activeTab].label, "usuario") //TODO: pegar o nome do usuario
+          activateFirstTab(newTabs);
+          closeConfirmModal();
         }}
         onCancel={() => {
-          setConfirmModalOpen(false); // Simplesmente feche o modal se o usuário cancelar
+          closeConfirmModal();
         }}
         name={notebooks[activeTab].label}
       />
     </div>
   );
 };
-
-//##############################################################################################################
-
-async function createNotebook(name: string, owner: string) {
-  try {
-    const response = await axios.post('http://localhost:PORTA/notebooks', { //Substituir PORTA pela Porta de conexão
-      name,
-      owner
-    });
-    console.log('Caderno criado:', response.data);
-  } catch (error) {
-    console.error('Erro ao criar o caderno:', error);
-  }
-}
-
-async function getNotebooksByOwner(owner: string) {
-  try {
-
-    //função pra chamar os notebooks criados do bd
-
-    const response = await axios.get(`http://localhost:PORTA/notebooks/${owner}`); //Substituir PORTA pela Porta de conexão
-    return response.data;
-
-  } catch (error) {
-    console.error("Erro ao carregar os cadernos existentes");
-    return [];
-  }
-
-}
-//##############################################################################################################
 
 export default LandingPage;

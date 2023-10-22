@@ -1,0 +1,33 @@
+.forms-content-container {
+  position: relative;
+  display: flex;
+  gap: 20px;
+
+  top: 10vh;
+  left: 20%;
+  right: 20%;
+
+  min-height: 80vh;
+  width: 60%;
+
+  border: 1px solid black;
+  border-radius: 10px;
+
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  column-gap: 20px;
+
+  padding: 10% 5%;
+  box-sizing: border-box;
+}
+
+@media only screen and (max-width: 1024px) {
+  .forms-content-container {
+    top: 5vh;
+    left: 10%;
+    right: 10%;
+    width: 80%;
+    padding: 10vh 5vw;
+  }
+}
