@@ -1,13 +1,14 @@
-import { serverBaseUrl } from "config";
 import { rest } from "msw";
+import { buildEndpointPath } from "helpers/api";
 import { LoginUserDTO, UserLoginAPIResponse, CreateUserDTO } from "../types";
 
 const unathourized_pattern = "error";
 
-const loginUserURL = `${serverBaseUrl}/user/login`;
-const createUserURL = `${serverBaseUrl}/user`;
+const loginUserEndpoint = buildEndpointPath("/user/login");
 
-const loginUserHandler = rest.post(loginUserURL, async (req, res, ctx) => {
+const createUserEndpoint = buildEndpointPath("/user");
+
+const loginUserHandler = rest.post(loginUserEndpoint, async (req, res, ctx) => {
   const body = (await req.json()) as LoginUserDTO;
 
   const isUnathourizedUser = body.login
@@ -32,17 +33,20 @@ const loginUserHandler = rest.post(loginUserURL, async (req, res, ctx) => {
   );
 });
 
-const createUserHandler = rest.post(createUserURL, async (req, res, ctx) => {
-  const body = (await req.json()) as CreateUserDTO;
+const createUserHandler = rest.post(
+  createUserEndpoint,
+  async (req, res, ctx) => {
+    const body = (await req.json()) as CreateUserDTO;
 
-  const isDuplicatedEmail = body.email.includes("duplicate");
-  const isDuplicatedUsername = body.username.includes("duplicate");
+    const isDuplicatedEmail = body.email.includes("duplicate");
+    const isDuplicatedUsername = body.username.includes("duplicate");
 
-  const isDuplicatedUser = isDuplicatedEmail || isDuplicatedUsername;
+    const isDuplicatedUser = isDuplicatedEmail || isDuplicatedUsername;
 
-  if (isDuplicatedUser) return res(ctx.status(409));
+    if (isDuplicatedUser) return res(ctx.status(409));
 
-  return res(ctx.status(201));
-});
+    return res(ctx.status(201));
+  }
+);
 
 export const userHandlers = [loginUserHandler, createUserHandler];

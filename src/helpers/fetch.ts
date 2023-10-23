@@ -1,8 +1,8 @@
-import { serverBaseUrl } from "config";
 import crossFetch from "cross-fetch";
+import { buildEndpointPath } from "./api";
 
 export const fetchAPI = (path: string, init?: RequestInit) => {
-  const urlPath = `${serverBaseUrl}${path}`;
+  const urlPath = buildEndpointPath(path);
 
   if (!init) init = {};
 
@@ -18,3 +18,5 @@ export const fetchAPI = (path: string, init?: RequestInit) => {
 
   return crossFetch(urlPath, init);
 };
+
+export type RequestBody = RequestInit;
