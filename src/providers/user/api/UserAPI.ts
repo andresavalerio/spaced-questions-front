@@ -1,6 +1,11 @@
 import { fetchAPI } from "helpers/fetch";
 import { CreateUserDTO, LoginUserDTO, UserLoginAPIResponse } from "../types";
-import { UserAlreadyExistsError, UserNotAuthorizedError } from "../errors";
+import {
+  UserAlreadyExistsError,
+  UserDontExistError,
+  UserNotAuthorizedError,
+  UserRequestError,
+} from "../errors";
 
 export const requestUserLogin = async (login: string, password: string) => {
   const body: LoginUserDTO = { login, password };
@@ -14,7 +19,9 @@ export const requestUserLogin = async (login: string, password: string) => {
 
   if (response.status === 401) throw new UserNotAuthorizedError();
 
-  if (response.status === 500) throw new Error();
+  if (response.status === 409) throw new UserDontExistError();
+
+  if (response.status !== 200) throw new UserRequestError();
 
   return response.json() as unknown as UserLoginAPIResponse;
 };

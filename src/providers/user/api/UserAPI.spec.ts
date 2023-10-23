@@ -2,7 +2,11 @@ import { describe, it, expect } from "vitest";
 import { setupMockServer } from "helpers/tests";
 import { requestCreateUser, requestUserLogin } from "./UserAPI";
 import { userHandlers } from "./UserMockServer";
-import { UserAlreadyExistsError, UserNotAuthorizedError } from "../errors";
+import {
+  UserAlreadyExistsError,
+  UserDontExistError,
+  UserNotAuthorizedError,
+} from "../errors";
 
 describe("UserAPI", () => {
   setupMockServer(userHandlers);
@@ -16,10 +20,20 @@ describe("UserAPI", () => {
       expect(response?.token).toBeDefined();
     });
 
-    it("should not login user when him don't exists", async () => {
-      const requestPromise = requestUserLogin("error", "password");
+    it("should not login user when password is wrong", async () => {
+      try {
+        await requestUserLogin("error", "password");
+      } catch (error) {
+        expect(error).toBeInstanceOf(UserNotAuthorizedError);
+      }
+    });
 
-      expect(requestPromise).rejects.toThrow(UserNotAuthorizedError);
+    it("should not login user when them don't exists", async () => {
+      try {
+        await requestUserLogin("notfound", "password");
+      } catch (error) {
+        expect(error).toBeInstanceOf(UserDontExistError);
+      }
     });
   });
 

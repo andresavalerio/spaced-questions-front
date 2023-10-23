@@ -3,6 +3,7 @@ import { buildEndpointPath } from "helpers/api";
 import { LoginUserDTO, UserLoginAPIResponse, CreateUserDTO } from "../types";
 
 const unathourized_pattern = "error";
+const notfound_pattern = "notfound";
 
 const loginUserEndpoint = buildEndpointPath("/user/login");
 
@@ -16,6 +17,10 @@ const loginUserHandler = rest.post(loginUserEndpoint, async (req, res, ctx) => {
     .includes(unathourized_pattern);
 
   if (isUnathourizedUser) return res(ctx.delay(), ctx.status(401));
+
+  const isUserNotFound = body.login.toLowerCase().includes(notfound_pattern);
+
+  if (isUserNotFound) return res(ctx.delay(), ctx.status(409));
 
   return res(
     ctx.delay(),
