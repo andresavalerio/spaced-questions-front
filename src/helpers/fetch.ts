@@ -1,4 +1,5 @@
 import { serverBaseUrl } from "config";
+import crossFetch from "cross-fetch";
 
 export const fetchAPI = (path: string, init?: RequestInit) => {
   const urlPath = `${serverBaseUrl}${path}`;
@@ -15,5 +16,5 @@ export const fetchAPI = (path: string, init?: RequestInit) => {
     ...init.headers,
   };
 
-  return fetch(urlPath, init);
+  return crossFetch(urlPath, init);
 };
