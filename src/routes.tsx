@@ -5,6 +5,7 @@ import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
 import LoginPage from "./pages/login/LoginPage";
 import RegistrationPage from "./pages/registration/RegistrationPage";
 import LoginLayout from "layouts/LoginLayout/LoginLayout";
+import UserLayout from "layouts/UserLayout/UserLayout";
 
 const routes: RouteObject[] = [
   {
@@ -30,7 +31,13 @@ const routes: RouteObject[] = [
       },
       {
         path: "/",
-        element: <LandingPage />,
+        element: <UserLayout />,
+        children: [
+          {
+            path: "/",
+            element: <LandingPage />,
+          },
+        ],
       },
     ],
   },

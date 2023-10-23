@@ -92,7 +92,6 @@ const LandingPage = () => {
 
   return (
     <div>
-      <Header content={"Spaced Questions"} />
       <TabBar
         tabs={notebooks}
         activeTab={activeTab}
