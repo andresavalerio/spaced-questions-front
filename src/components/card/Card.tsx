@@ -1,20 +1,47 @@
 import { useState } from "react";
 import styles from "./Card.module.css";
 
-const Card = () => {
-  const [cardText, setCardText] = useState("Card");
+export class CardModel {
+  private _question = "";
+  private _answer = "";
+
+  public get question() {
+    return this._question;
+  }
+
+  public get answer() {
+    return this._answer;
+  }
+
+  constructor(question: string, answer: string) {
+    this._question = question;
+    this._answer = answer;
+  }
+}
+
+type CardProp = {
+  cardContent: CardModel;
+};
+
+const Card: React.FC<CardProp> = ({ cardContent }) => {
+  const question = cardContent.question;
+  const answer = cardContent.answer;
+
+  const [cardText, setCardText] = useState(question);
 
   const flipCard = () => {
-    console.log("flip");
-    if (cardText === "Card") setCardText("flip");
-    else setCardText("Card");
+    if (cardText === question) {
+      setCardText(answer);
+    } else {
+      setCardText(question);
+    }
   };
 
   return (
     <div
       onClick={flipCard}
       className={`${styles["card-container"]} ${
-        cardText === "Card" ? styles["card-question"] : styles["card-answer"]
+        cardText === question ? styles["card-question"] : styles["card-answer"]
       }`}
     >
       {cardText}
