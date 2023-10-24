@@ -11,6 +11,8 @@ export const notebookReducer = (
   if (action.type === NotebookReducerTypes.LOADING)
     return loadingNotebookReducer(state);
 
+  // if (action.type === NotebookReducerTypes.DELETE) return { loading: true };
+
   return state;
 };
 

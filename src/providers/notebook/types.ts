@@ -4,6 +4,7 @@ export type NotebookState = {
 
 export enum NotebookReducerTypes {
   LOADING = "LOADING",
+  // DELETE = "DELETE",
 }
 
 type NotebookLoadingReducer = {
@@ -11,4 +12,12 @@ type NotebookLoadingReducer = {
   payload?: undefined;
 };
 
-export type NotebookReducers = NotebookLoadingReducer;
+// type DeleteNotebookReducer = {
+//   type: NotebookReducerTypes.DELETE;
+//   payload?: {
+//     id: string;
+//   };
+// };
+
+export type NotebookReducers =
+  NotebookLoadingReducer /*|DeleteNotebookReducer*/;
