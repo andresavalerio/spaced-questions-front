@@ -20,5 +20,9 @@
 
 .notebook-cards{
     display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+
     padding: 0 10px 10px;
+    gap: 10px;
 }
