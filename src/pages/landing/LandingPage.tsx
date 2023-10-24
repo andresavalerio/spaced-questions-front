@@ -2,7 +2,6 @@ import "./LandingPage.css";
 import { useState, useEffect, useRef } from "react";
 import NoteEditor from "../../components/note-editor/NoteEditor";
 import TabBar from "../../components/tab-bar/TabBar";
-import Header from "../../components/header/Header";
 import Modal from "../../components/modal-new-tab/ModalNewTab";
 import ConfirmModal from "../../components/confirm-modal/ConfirmModal";
 import { useUserProvider } from "providers/user/hooks/UserHooks";
