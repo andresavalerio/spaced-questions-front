@@ -1,23 +1,7 @@
 import { useState } from "react";
 import styles from "./Card.module.css";
+import { CardModel } from "providers/cards/types";
 
-export class CardModel {
-  private _question = "";
-  private _answer = "";
-
-  public get question() {
-    return this._question;
-  }
-
-  public get answer() {
-    return this._answer;
-  }
-
-  constructor(question: string, answer: string) {
-    this._question = question;
-    this._answer = answer;
-  }
-}
 
 type CardProp = {
   cardContent: CardModel;
