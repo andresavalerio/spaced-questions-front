@@ -22,5 +22,14 @@ describe(`card API`, () => {
         expect(userCards).toHaveLength(10);
     })
     
+    it(`Card API request cards of inexistent student`, async () => {
+        const login = "joe doe";
+        const notebook = "thinking"
+    
+        expect( 
+           requestCardFromUserNotebook(login, notebook)
+        ).rejects.toThrow(`The user ${login} dosn't exist`)
+    })
+    
   });
 })
