@@ -1,6 +1,6 @@
 import { fetchAPI } from "helpers/fetch";
 import { GetCardsAPIResponse } from "../types";
-import { UserDontExistError } from "../erros";
+import { CardsBedRequest, UserDontExistError } from "../erros";
 
 export const requestCardFromUserNotebook = async (login: string, notebook: string) => {
 
@@ -9,6 +9,10 @@ export const requestCardFromUserNotebook = async (login: string, notebook: strin
     if (response.status === 401) throw new UserDontExistError(
         `The user ${login} dosn't exist`
     );
+
+    if (response.status === 400) throw new CardsBedRequest(
+        `Bad Request`
+    )
 
     return response.json() as unknown as GetCardsAPIResponse;
 

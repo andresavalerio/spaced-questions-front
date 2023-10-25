@@ -8,15 +8,15 @@ const getCardsHandler = rest.get(getCardsEndpoint, async (req, res, ctx) => {
   const user = req.params["owner"];
   const notebook = req.params["notebook"];
 
-  if (user.includes('joe doe'))
-    return res(ctx.delay(), ctx.status(401));  
-  
-    const responseCards = (() => {
-      const cards: CardModel[] = [];
-      for (let i = 0; i < 10; i++)
-        cards.push(new CardModel(i.toString(), (i + 1).toString()));
-      return cards;
-    })();
+  if (user.includes("joe doe")) return res(ctx.delay(), ctx.status(401));
+
+  if (notebook.includes("none")) return res(ctx.delay(), ctx.status(400));
+  const responseCards = (() => {
+    const cards: CardModel[] = [];
+    for (let i = 0; i < 10; i++)
+      cards.push(new CardModel(i.toString(), (i + 1).toString()));
+    return cards;
+  })();
 
   return res(
     ctx.delay(),

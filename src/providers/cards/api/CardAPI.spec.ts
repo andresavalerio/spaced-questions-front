@@ -31,5 +31,14 @@ describe(`card API`, () => {
         ).rejects.toThrow(`The user ${login} dosn't exist`)
     })
     
+    it(`Card API request of an inexistent user notebook`, async () => {
+        const login = "pedro";
+        const notebook = "none"
+    
+        expect( 
+           requestCardFromUserNotebook(login, notebook)
+        ).rejects.toThrow(`Bad Request`)
+    })
+    
   });
 })
