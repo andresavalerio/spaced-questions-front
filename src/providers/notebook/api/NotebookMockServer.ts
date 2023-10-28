@@ -1,5 +1,6 @@
 import { buildEndpointPath } from "helpers/api";
 import { RequestHandler, rest } from "msw";
+import { NotebooksAPIResponse } from "../types";
 
 const createNotebookEndpoint = buildEndpointPath("/notebooks");
 
@@ -21,15 +22,19 @@ const createResponseNotebooks = (owner: string) => [
 
 const getNotebookByOwnerHandler = rest.get(
   getNotebooksByOwnerHandler,
-  (req, res, ctx) => {
+  async (req, res, ctx) => {
     const owner = req.params["owner"];
 
     if (!owner || typeof owner !== "string")
-      return res(ctx.status(200), ctx.json([]));
+      return res(ctx.delay(), ctx.status(200), ctx.json([]));
 
     const notebooks = createResponseNotebooks(owner);
 
-    return res(ctx.status(200), ctx.json(notebooks));
+    return res(ctx.status(200), ctx.json({
+
+      notebooks: createResponseNotebooks("LoginDeTeste")
+
+    } as NotebooksAPIResponse));
   }
 );
 
