@@ -12,12 +12,27 @@ type NotebookLoadingReducer = {
   payload?: undefined;
 };
 
-// type DeleteNotebookReducer = {
-//   type: NotebookReducerTypes.DELETE;
-//   payload?: {
-//     id: string;
-//   };
-// };
+///////////////////////////
+export type NotebooksType = {
+  owner: string;
+};
 
-export type NotebookReducers =
-  NotebookLoadingReducer /*|DeleteNotebookReducer*/;
+export type NotebookListType = {
+  owner: string;
+  id: number;
+}
+
+export type NotebooksAPIResponse = {
+  notebooks: {
+    id: number;
+    name: string;
+    owner: string;
+  }[]
+  //Não sei exatamente o que esperar mas deve ser um código? 404?
+};
+
+export type CreateNotebookDTO = {
+  id: number;
+  name: string;
+  owner: string;
+}

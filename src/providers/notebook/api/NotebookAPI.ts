@@ -1,6 +1,6 @@
 import { RequestBody, fetchAPI } from "helpers/fetch";
 import { NotebookBadRequest, NotebookRequestError } from "../errors";
-import { NotebooksType, NotebooksAPIResponse, NotebookListType } from "../types";
+import { NotebooksType, NotebooksAPIResponse, CreateNotebookDTO } from "../types";
 
 export async function createNotebook(name: string, owner: string) {
   const requestBody: RequestBody = {
@@ -28,15 +28,13 @@ export const requestUserNotebook = async (owner: string) => {
   return response.json() as unknown as NotebooksAPIResponse;
 };
 
-export const requestCreateNotebook = async (owner: string, id: number) => {
-  const body: NotebooksType = { owner };
-  
-  const response = await fetchAPI(`/notebooks/${owner}`);
-
-  
-
+export const requestCreateNotebook = async (newNotebook: CreateNotebookDTO) => {
+  const requestBody: RequestInit = {
+    method: "POST",
+    body: JSON.stringify(newNotebook),
+  };
+  const response = await fetchAPI(`/notebooks`, requestBody);
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export async function getNotebooksByOwner(owner: string) {

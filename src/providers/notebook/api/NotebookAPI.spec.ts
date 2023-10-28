@@ -1,6 +1,6 @@
 import { setupMockServer } from "helpers/tests";
 import { notebookHandlers } from "./NotebookMockServer";
-import { requestUserNotebook } from "./NotebookAPI";
+import { requestUserNotebook, requestCreateNotebook } from "./NotebookAPI";
 
 describe("NotebookAPI", () => {
   setupMockServer(notebookHandlers);
@@ -23,9 +23,14 @@ describe("NotebookAPI", () => {
   })
 
   describe("CreateNotebook", () =>{
-    const response = await create
+    it("should create a new notebook", () => {
+      const requestPromise = requestCreateNotebook({
+        id: 1,
+        name: "NameToTest",
+        owner: "OwnerToTest",
+      });
 
-
-
-  })
+      expect(requestPromise).resolves.toBe(undefined);
+    });
+  });
 });
