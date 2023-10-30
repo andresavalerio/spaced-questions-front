@@ -13,7 +13,7 @@ type NotebookLoadingReducer = {
 };
 
 ///////////////////////////
-export type NotebooksType = {
+export type NotebooksOwner = {
   owner: string;
 };
 
@@ -35,4 +35,8 @@ export type CreateNotebookDTO = {
   id: number;
   name: string;
   owner: string;
+}
+
+export type SpecificNotebook = {
+  id: number;
 }

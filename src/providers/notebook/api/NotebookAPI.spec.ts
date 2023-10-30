@@ -1,6 +1,6 @@
 import { setupMockServer } from "helpers/tests";
 import { notebookHandlers } from "./NotebookMockServer";
-import { requestUserNotebook, requestCreateNotebook } from "./NotebookAPI";
+import { requestUserNotebook, requestCreateNotebook, requestDeleteNotebook } from "./NotebookAPI";
 
 describe("NotebookAPI", () => {
   setupMockServer(notebookHandlers);
@@ -22,7 +22,7 @@ describe("NotebookAPI", () => {
     })
   })
 
-  describe("CreateNotebook", () =>{
+  describe("CreateNotebook", () => {
     it("should create a new notebook", () => {
       const requestPromise = requestCreateNotebook({
         id: 1,
@@ -33,4 +33,14 @@ describe("NotebookAPI", () => {
       expect(requestPromise).resolves.toBe(undefined);
     });
   });
+
+  describe("DeleteNotebook", () => {
+    it("should delete a notebook", async () => {
+      const response = await requestDeleteNotebook("LoginDeTeste");
+
+      expect(response.notebooks[1]).toBeDefined();
+
+    });
+  });
 });
+

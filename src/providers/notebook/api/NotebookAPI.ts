@@ -1,6 +1,7 @@
 import { RequestBody, fetchAPI } from "helpers/fetch";
 import { NotebookBadRequest, NotebookRequestError } from "../errors";
-import { NotebooksType, NotebooksAPIResponse, CreateNotebookDTO } from "../types";
+import { NotebooksOwner, NotebooksAPIResponse, CreateNotebookDTO, SpecificNotebook } from "../types";
+import { json } from "react-router-dom";
 
 export async function createNotebook(name: string, owner: string) {
   const requestBody: RequestBody = {
@@ -19,7 +20,7 @@ export async function createNotebook(name: string, owner: string) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const requestUserNotebook = async (owner: string) => {
-  const body: NotebooksType = { owner };
+  const body: NotebooksOwner = { owner };
 
   const response = await fetchAPI(`/notebooks/${owner}`);
 
@@ -35,6 +36,16 @@ export const requestCreateNotebook = async (newNotebook: CreateNotebookDTO) => {
   };
   const response = await fetchAPI(`/notebooks`, requestBody);
 }
+
+export const requestDeleteNotebook = async (owner: string) => {
+  const body: NotebooksOwner = { owner };
+  
+  const response = await fetchAPI(`/notebooks/${owner}`, {
+    method: "DELETE",
+  });
+
+  return response.json() as unknown as NotebooksAPIResponse;
+};
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export async function getNotebooksByOwner(owner: string) {
