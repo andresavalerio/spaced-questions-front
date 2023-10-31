@@ -3,7 +3,7 @@ import { useCardProvider } from "./CardHooks";
 import { CardProvider } from "../CardProvider";
 import { ReactNode } from "react";
 import { setupMockServer } from "helpers/tests";
-import { cardHandler } from "../api/CardMockServer";
+import { cardHandlers } from "../api/CardMockServer";
 import { act } from "react-dom/test-utils";
 
 describe(`CardHooks`, () => {
@@ -17,7 +17,7 @@ describe(`CardHooks`, () => {
     });
 
   describe("", () => {
-    setupMockServer(cardHandler);
+    setupMockServer(cardHandlers);
 
     it("renderHooks should render hooks and be defined", () => {
       const { result } = renderCardHooks();
@@ -48,9 +48,10 @@ describe(`CardHooks`, () => {
       expect(result).toHaveProperty('current.state.data')
       expect(result.current.state.data).toHaveLength(10)
     });
-
-    it("", () => {
-
-    })
   });
+
+  it("" , () => {
+
+  })
+
 });

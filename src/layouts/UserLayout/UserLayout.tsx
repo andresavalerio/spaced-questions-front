@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import styles from "./UserLayout.module.css";
 import Header from "components/header/Header";
+import { CardProvider } from "providers/cards/CardProvider";
 
 const UserLayout = () => {
   return (
@@ -9,8 +10,10 @@ const UserLayout = () => {
         <Header content={"Spaced Questions"} />
       </div>
       <div className={styles["application-container"]}>
-        <Outlet />
-      </div>
+        <CardProvider>
+          <Outlet />
+        </CardProvider>
+        </div>
     </div>
   );
 };

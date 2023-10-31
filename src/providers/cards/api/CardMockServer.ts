@@ -28,4 +28,4 @@ const getCardsHandler = rest.get(getCardsEndpoint, async (req, res, ctx) => {
   );
 });
 
-export const cardHandler = [getCardsHandler];
+export const cardHandlers = [getCardsHandler];

@@ -1,10 +1,10 @@
 import { setupMockServer } from "helpers/tests";
 import { requestCardFromUserNotebook } from "./CardAPI";
-import { cardHandler } from "./CardMockServer";
+import { cardHandlers } from "./CardMockServer";
 
 describe(`card API`, () => {
     
-  setupMockServer(cardHandler)
+  setupMockServer(cardHandlers)
 
   describe(`Card API get notebooks cards`, () => {
     

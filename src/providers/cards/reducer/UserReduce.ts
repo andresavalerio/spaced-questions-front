@@ -12,7 +12,7 @@ export const cardsReducer = (state: CardState, action: CardsReducer) => {
     case CREATE:
       return resetStateReducer();
     case LOADING:
-      return loadinCardsReducer(state);
+      return loadingCardsReducer(state);
     case LOADED:
       return userCardsReducer(action.payload);
     case ERROR:
@@ -27,9 +27,12 @@ const resetStateReducer = (): CardState => {
 };
 
 const userCardsReducer = (payload: CardModel[]): CardState => {
+  console.log(payload);
+  
+  
   return { loading: false, data: payload };
 };
 
-const loadinCardsReducer = (state: CardState): CardState => {
+const loadingCardsReducer = (state: CardState): CardState => {
   return { ...state, loading: true };
 };

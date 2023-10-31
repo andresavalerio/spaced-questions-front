@@ -1,19 +1,34 @@
 import { useState } from "react";
 import styles from "./cardsPage.module.css";
 import Card from "components/card/Card";
-import { CardModel } from "providers/cards/types";
+import { useCardProvider } from "providers/cards/hooks/CardHooks";
 
 const CardsPage = () => {
+  const {
+    state: { data, loading },
+    actions: { getCards },
+  } = useCardProvider();
 
   const [notebook] = useState("Caderno");
-
-  const userCards: CardModel[] = [];
 
   return (
     <div className={styles["cards-page-container"]}>
       <div className={styles["notebook-name"]}>{notebook}</div>
       <div className={styles["notebook-cards"]}>
-        {userCards.map((card) => <Card cardContent={card}/>)}
+        <button
+          onClick={() => {
+            getCards("pedro", "testes");
+            // console.log(data);
+            // console.log(loading)
+          }}
+        ></button>
+        <button
+          onClick={() => {
+            console.log(data);
+            console.log(loading)
+          }}
+        ></button>
+        {!!data && data.map((card) => <Card cardContent={card} />)}
       </div>
     </div>
   );
