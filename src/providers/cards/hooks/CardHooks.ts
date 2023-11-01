@@ -11,9 +11,6 @@ export const useCardProvider = () => {
   const dispatch = useCardDispatch();
   const state = useCardContext();
 
-  console.log(`state`, state);
-  
-
   if (!dispatch)
     throw new Error("Must be Defined in a Cards Provider Component");
 
@@ -27,7 +24,7 @@ export const useCardProvider = () => {
 
 const { CREATE, LOADED, LOADING, ERROR } = CardsReducerTypes;
 
- const createGetCardsAction =
+const createGetCardsAction =
   (state: CardState, dispatch: CardDispatch) =>
   async (user: string, notebook: string): Promise<void> => {
     try {
@@ -35,14 +32,10 @@ const { CREATE, LOADED, LOADING, ERROR } = CardsReducerTypes;
 
       const response = await requestCardFromUserNotebook(user, notebook);
 
-      console.log(`response`,response);
-      
       dispatch({
         type: LOADED,
         payload: response.cards,
       });
-
-      console.log(response.cards)
     } catch (error) {
       dispatch({ type: ERROR });
       throw error;
