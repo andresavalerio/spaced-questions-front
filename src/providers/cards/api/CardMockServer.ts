@@ -1,6 +1,6 @@
 import { rest } from "msw";
 import { buildEndpointPath } from "helpers/api";
-import { CardModel, GetCardsAPIResponse } from "../types";
+import { Card, GetCardsAPIResponse } from "../types";
 
 const getCardsEndpoint = buildEndpointPath("/user/cards/:owner/:notebook");
 
@@ -12,9 +12,12 @@ const getCardsHandler = rest.get(getCardsEndpoint, async (req, res, ctx) => {
 
   if (notebook.includes("none")) return res(ctx.delay(), ctx.status(400));
   const responseCards = (() => {
-    const cards: CardModel[] = [];
+    const cards: Card[] = [];
     for (let i = 0; i < 10; i++)
-      cards.push(new CardModel(i.toString(), (i + 1).toString()));
+      cards.push({
+        question: i.toString(),
+        answer: (i + 1).toString(),
+      } as Card);
     return cards;
   })();
 
