@@ -1,5 +1,5 @@
 import {
-  CardModel,
+  Card,
   CardState,
   CardsReducer,
   CardsReducerTypes,
@@ -26,10 +26,7 @@ const resetStateReducer = (): CardState => {
   return { loading: false };
 };
 
-const userCardsReducer = (payload: CardModel[]): CardState => {
-  console.log(payload);
-  
-  
+const userCardsReducer = (payload: Card[]): CardState => {
   return { loading: false, data: payload };
 };
 
