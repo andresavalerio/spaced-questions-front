@@ -24,8 +24,6 @@ const LoginPage = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
-    console.log(email, password);
-
     loginUser(email, password).catch(() => {
       alert("Não deu para Logar");
     });
