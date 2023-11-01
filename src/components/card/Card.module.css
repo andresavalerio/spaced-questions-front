@@ -1,0 +1,19 @@
+.card-container{
+    display: flex;
+    height: 500px;
+    width: 300px;
+    background-color: red;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-question{
+    color: black;
+    background-color: #D3D3D3;
+}
+
+.card-answer{
+    color: white;
+    background-color: #545454;
+}
