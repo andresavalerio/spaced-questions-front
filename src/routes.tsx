@@ -7,6 +7,7 @@ import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
 import LoginPage from "./pages/login/LoginPage";
 import RegistrationPage from "./pages/registration/RegistrationPage";
 import CardsPage from "pages/cards/cardsPage";
+import { cardLoader } from "providers/cards/loader/card-loader";
 
 const routes: RouteObject[] = [
   {
@@ -40,7 +41,8 @@ const routes: RouteObject[] = [
           },
           {
             path: "cards",
-            element: <CardsPage/>,
+            loader: cardLoader,
+            element: <CardsPage />,
           },
         ],
       },
