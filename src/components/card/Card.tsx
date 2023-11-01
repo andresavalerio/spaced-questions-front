@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./Card.module.css";
-import { CardModel } from "providers/cards/types";
+import { Card as CardModel } from "providers/cards/types";
 
 
 type CardProp = {

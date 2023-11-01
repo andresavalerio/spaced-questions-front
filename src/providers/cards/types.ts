@@ -1,24 +1,11 @@
-export class CardModel {
-  private _question = "";
-  private _answer = "";
-
-  public get question() {
-    return this._question;
-  }
-
-  public get answer() {
-    return this._answer;
-  }
-
-  constructor(question: string, answer: string) {
-    this._question = question;
-    this._answer = answer;
-  }
-}
+export type Card = {
+  question: string;
+  answer: string;
+};
 
 export type GetCardsAPIResponse = {
   notebook: string;
-  cards: CardModel[];
+  cards: Card[];
 };
 
 export type UserCardDTO = {
@@ -27,9 +14,9 @@ export type UserCardDTO = {
 };
 
 export type CardState = {
-  data?: CardModel[],
+  data?: Card[];
   loading: boolean;
-}
+};
 
 export enum CardsReducerTypes {
   CREATE,
@@ -39,29 +26,29 @@ export enum CardsReducerTypes {
 }
 
 type CardCreateReducer = {
-  type: CardsReducerTypes.CREATE,
-  payload?: undefined
-}
+  type: CardsReducerTypes.CREATE;
+  payload?: undefined;
+};
 
 type CardLoadingReducer = {
-  type: CardsReducerTypes.LOADING,
-  payload?: undefined
-}
+  type: CardsReducerTypes.LOADING;
+  payload?: undefined;
+};
 
 type CardLoadedReducer = {
-  type: CardsReducerTypes.LOADED,
-  payload: CardModel[] 
-}
+  type: CardsReducerTypes.LOADED;
+  payload: Card[];
+};
 
 type CardErrorReducer = {
-  type: CardsReducerTypes.ERROR,
-  payload?: undefined
-}
+  type: CardsReducerTypes.ERROR;
+  payload?: undefined;
+};
 
-export type CardsReducer = 
+export type CardsReducer =
   | CardCreateReducer
   | CardLoadingReducer
   | CardLoadedReducer
-  | CardErrorReducer
+  | CardErrorReducer;
 
 export type CardDispatch = React.Dispatch<CardsReducer>;
