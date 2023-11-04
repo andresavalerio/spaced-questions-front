@@ -37,6 +37,7 @@ export type CreateNotebookDTO = {
   owner: string;
 }
 
-export type SpecificNotebook = {
-  id: number;
+export type RequestNotebookDeletion = {
+  owner: string;
+  name: string;
 }

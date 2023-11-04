@@ -1,15 +1,13 @@
 import { setupMockServer } from "helpers/tests";
 import { notebookHandlers } from "./NotebookMockServer";
-import { requestUserNotebook, requestCreateNotebook, requestDeleteNotebook } from "./NotebookAPI";
+import { requestUserNotebooks, requestCreateNotebook, requestDeleteNotebook } from "./NotebookAPI";
 
 describe("NotebookAPI", () => {
   setupMockServer(notebookHandlers);
 
   describe("RequestNotebook", () => {
-
-
     it("Should return valid notebook", async () => {
-      const response = await requestUserNotebook("LoginDeTeste");
+      const response = await requestUserNotebooks("LoginDeTeste");
 
       expect(response).toBeDefined();
 
@@ -23,7 +21,7 @@ describe("NotebookAPI", () => {
   })
 
   describe("CreateNotebook", () => {
-    it("should create a new notebook", () => {
+    it("should create a new notebook", async () => {
       const requestPromise = requestCreateNotebook({
         id: 1,
         name: "NameToTest",
@@ -31,16 +29,24 @@ describe("NotebookAPI", () => {
       });
 
       expect(requestPromise).resolves.toBe(undefined);
+
+      const response = await requestUserNotebooks("LoginDeTeste");
+
+      expect(response.notebooks).toHaveLength(5);
     });
+
   });
 
   describe("DeleteNotebook", () => {
-    it("should delete a notebook", async () => {
-      const response = await requestDeleteNotebook("LoginDeTeste");
+    it("should delete the notebook", async () => {
+      const response = await requestDeleteNotebook("LoginDeTeste", "Caderno de Física");
 
-      expect(response.notebooks[1]).toBeDefined();
+      expect(response).toBe(200);
+    
+      const responseDeletion = await requestUserNotebooks("LoginDeTeste");
 
-    });
+      expect(responseDeletion.notebooks).toHaveLength(3);
+    })
   });
 });
 

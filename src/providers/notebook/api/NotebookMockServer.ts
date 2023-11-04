@@ -4,7 +4,9 @@ import { NotebooksAPIResponse } from "../types";
 
 const createNotebookEndpoint = buildEndpointPath("/notebooks");
 
-const getNotebooksByOwnerHandler = buildEndpointPath("/notebooks/:owner");
+const getNotebooksByOwnerEndpoint = buildEndpointPath("/notebooks/:owner");
+
+const removeNotebookByOwnerEndpoint = buildEndpointPath("/notebooks/:owner/:name");
 
 const createNotebookHandler = rest.post(
   createNotebookEndpoint,
@@ -21,7 +23,7 @@ const createResponseNotebooks = (owner: string) => [
 ];
 
 const getNotebookByOwnerHandler = rest.get(
-  getNotebooksByOwnerHandler,
+  getNotebooksByOwnerEndpoint,
   async (req, res, ctx) => {
     const owner = req.params["owner"];
 
@@ -38,7 +40,24 @@ const getNotebookByOwnerHandler = rest.get(
   }
 );
 
+const removeNotebookByOwnerHandler = rest.delete(
+  removeNotebookByOwnerEndpoint,
+  async (req, res, ctx) => {
+    const owner = req.params["owner"];
+    const name = req.params["name"];
+
+    const notebookExists = createResponseNotebooks(owner as string).find((notebook) => notebook.name === name)
+
+    if (!!notebookExists) {
+      return res(ctx.delay(), ctx.status(200));
+    } else {
+      return res(ctx.delay(), ctx.status(400));
+    }
+  }
+)
+
 export const notebookHandlers: RequestHandler[] = [
   createNotebookHandler,
   getNotebookByOwnerHandler,
+  removeNotebookByOwnerHandler,
 ];
