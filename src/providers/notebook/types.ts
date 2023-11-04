@@ -2,11 +2,6 @@ export type NotebookState = {
   loading: boolean;
 };
 
-type NotebookLoadingReducer = {
-  type: NotebookReducerTypes.LOADING;
-  payload?: undefined;
-};
-
 ///////////////////////////
 export type NotebooksOwner = {
   owner: string;
