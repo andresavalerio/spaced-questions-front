@@ -30,13 +30,12 @@ describe("NotebookReducer", () => {
   });
 
   it("reducer should have got the data", () => {
-
     const notebook = {
-        id: 12,
-        name: "ATDD",
-        content: "book about aceptance tests"
-    } as Notebook
-    
+      id: 12,
+      name: "ATDD",
+      content: "book about aceptance tests",
+    } as Notebook;
+
     const action: NotebookReducer = {
       type: NotebookReducerTypes.LOADED,
       payload: notebook,
