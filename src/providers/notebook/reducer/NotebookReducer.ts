@@ -8,6 +8,8 @@ export const notebookReducer = (
   switch(action.type){
     case NotebookReducerTypes.LOADING:
       return loadingNotebookReducer(state);
+    case NotebookReducerTypes.LOADED:
+      return loadedNotebookReducer(action);
     default:
       return state
   }
@@ -19,3 +21,7 @@ export const notebookReducer = (
 const loadingNotebookReducer = (state: NotebookState): NotebookState => {
   return { ...state, loading: true };
 };
+
+const loadedNotebookReducer = (state: NotebookReducer): NotebookState => {
+  return { loading: false, data: state.payload }
+}

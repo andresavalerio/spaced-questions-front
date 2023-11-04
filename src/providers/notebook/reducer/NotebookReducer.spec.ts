@@ -1,3 +1,4 @@
+import { Notebook } from "../types";
 import { notebookReducer } from "./NotebookReducer";
 import {
   NotebookReducer,
@@ -16,7 +17,7 @@ describe("NotebookReducer", () => {
     expect(initialState).not.toHaveProperty("data");
   });
 
-  it("reducer should be gettin data", () => {
+  it("reducer should be getting data", () => {
     const action: NotebookReducer = {
       type: NotebookReducerTypes.LOADING,
       payload: undefined,
@@ -24,7 +25,27 @@ describe("NotebookReducer", () => {
 
     const newState = notebookReducer(initialState, action);
 
-    expect(newState).not.toHaveProperty("payload");
-    expect(newState).not.toHaveProperty("type", NotebookReducerTypes.LOADING);
+    expect(newState).not.toHaveProperty("data");
+    expect(newState).toHaveProperty("loading", true);
+  });
+
+  it("reducer should have got the data", () => {
+
+    const notebook = {
+        id: 12,
+        name: "ATDD",
+        content: "book about aceptance tests"
+    } as Notebook
+    
+    const action: NotebookReducer = {
+      type: NotebookReducerTypes.LOADED,
+      payload: notebook,
+    };
+
+    const newState = notebookReducer(initialState, action);
+
+    expect(newState).toHaveProperty("data");
+    expect(newState).toHaveProperty("data", notebook);
+    expect(newState).toHaveProperty("loading", false);
   });
 });

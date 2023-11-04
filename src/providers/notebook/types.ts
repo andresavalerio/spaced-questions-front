@@ -1,3 +1,10 @@
+export type Notebook = {
+  id: number,
+  name: string,
+  content: string
+}
+
+
 export type NotebookState = {
   loading: boolean;
 };

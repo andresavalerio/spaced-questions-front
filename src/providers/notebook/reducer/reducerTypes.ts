@@ -1,14 +1,23 @@
+import { Notebook } from "../types";
+
 export type NotebookState = {
-    loading: boolean
-}
+  loading: boolean;
+  data? : Notebook 
+};
 
 export enum NotebookReducerTypes {
-    LOADING = "LOADING"
+  LOADING = "LOADING",
+  LOADED = "LOADED",
 }
 
-export type NotebookReducer = NotebookRequestinNotebook
+export type NotebookReducer = NotebookRequestingNotebook | NotebookLoaded;
 
-type NotebookRequestinNotebook ={
-    type: NotebookReducerTypes.LOADING
-    payload?: undefined
-}
+type NotebookRequestingNotebook = {
+  type: NotebookReducerTypes.LOADING;
+  payload?: undefined;
+};
+
+type NotebookLoaded = {
+  type: NotebookReducerTypes.LOADED;
+  payload: Notebook;
+};
