@@ -15,6 +15,8 @@ export const notebookReducer = (
       return loadedNotebookReducer(action);
     case NotebookReducerTypes.ERROR:
       return errorNotebookReducer();
+    case NotebookReducerTypes.DELETE:
+      return deleteNotebookReducer();
     default:
       return state;
   }
@@ -30,5 +32,9 @@ const loadedNotebookReducer = (state: NotebookReducer): NotebookState => {
 };
 
 const errorNotebookReducer = (): NotebookState => {
+  return { loading: false, data: undefined };
+};
+
+const deleteNotebookReducer = (): NotebookState => {
   return { loading: false, data: undefined };
 };

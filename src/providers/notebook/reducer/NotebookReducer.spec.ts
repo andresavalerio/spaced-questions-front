@@ -64,4 +64,21 @@ describe("NotebookReducer", () => {
     expect(newState).toHaveProperty("data", undefined);
     expect(newState).toHaveProperty("loading", false);
   });
+
+  it("reducer should be on deleted state", () => {
+    const loadedState = {
+      loading: false,
+      data: {} as Notebook,
+    } as NotebookState;
+
+    const action: NotebookReducer = {
+      type: NotebookReducerTypes.DELETE,
+      payload: undefined,
+    };
+
+    const newState = notebookReducer(loadedState, action);
+
+    expect(newState).toHaveProperty("data", undefined);
+    expect(newState).toHaveProperty("loading", false);
+  });
 });

@@ -8,13 +8,15 @@ export type NotebookState = {
 export enum NotebookReducerTypes {
   LOADING = "LOADING",
   LOADED = "LOADED",
+  DELETE = "DELETED",
   ERROR = "ERROR",
 }
 
 export type NotebookReducer =
   | NotebookRequestingNotebook
   | NotebookLoaded
-  | NotebookError;
+  | NotebookError
+  | NotebookDelete;
 
 type NotebookRequestingNotebook = {
   type: NotebookReducerTypes.LOADING;
@@ -30,3 +32,8 @@ type NotebookError = {
   type: NotebookReducerTypes.ERROR;
   payload?: undefined;
 };
+
+type NotebookDelete = {
+  type: NotebookReducerTypes.DELETE,
+  payload?: undefined
+}
