@@ -47,4 +47,21 @@ describe("NotebookReducer", () => {
     expect(newState).toHaveProperty("data", notebook);
     expect(newState).toHaveProperty("loading", false);
   });
+
+  it("reducer should get to an error state", () => {
+    const loadedState = {
+      loading: false,
+      data: {} as Notebook,
+    } as NotebookState;
+
+    const action: NotebookReducer = {
+      type: NotebookReducerTypes.ERROR,
+      payload: undefined,
+    };
+
+    const newState = notebookReducer(loadedState, action);
+
+    expect(newState).toHaveProperty("data", undefined);
+    expect(newState).toHaveProperty("loading", false);
+  });
 });

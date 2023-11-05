@@ -1,21 +1,24 @@
-import { NotebookReducer, NotebookReducerTypes, NotebookState } from "./reducerTypes";
+import {
+  NotebookReducer,
+  NotebookReducerTypes,
+  NotebookState,
+} from "./reducerTypes";
 
 export const notebookReducer = (
   state: NotebookState,
   action: NotebookReducer
 ) => {
-
-  switch(action.type){
+  switch (action.type) {
     case NotebookReducerTypes.LOADING:
       return loadingNotebookReducer(state);
     case NotebookReducerTypes.LOADED:
       return loadedNotebookReducer(action);
+    case NotebookReducerTypes.ERROR:
+      return errorNotebookReducer();
     default:
-      return state
+      return state;
   }
   // if (action.type === NotebookReducerTypes.DELETE) return { loading: true };
-
-  return state;
 };
 
 const loadingNotebookReducer = (state: NotebookState): NotebookState => {
@@ -23,5 +26,9 @@ const loadingNotebookReducer = (state: NotebookState): NotebookState => {
 };
 
 const loadedNotebookReducer = (state: NotebookReducer): NotebookState => {
-  return { loading: false, data: state.payload }
-}
+  return { loading: false, data: state.payload };
+};
+
+const errorNotebookReducer = (): NotebookState => {
+  return { loading: false, data: undefined };
+};
