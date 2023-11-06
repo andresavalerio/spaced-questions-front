@@ -12,12 +12,6 @@ export enum NotebookReducerTypes {
   ERROR = "ERROR",
 }
 
-export type NotebookReducer =
-  | NotebookRequestingNotebook
-  | NotebookLoaded
-  | NotebookError
-  | NotebookDelete;
-
 type NotebookRequestingNotebook = {
   type: NotebookReducerTypes.LOADING;
   payload?: undefined;
@@ -37,3 +31,12 @@ type NotebookDelete = {
   type: NotebookReducerTypes.DELETE,
   payload?: undefined
 }
+
+export type NotebookReducers =
+  | NotebookRequestingNotebook
+  | NotebookLoaded
+  | NotebookError
+  | NotebookDelete;
+
+  export type NotebookDispatch = React.Dispatch<NotebookReducers>;
+

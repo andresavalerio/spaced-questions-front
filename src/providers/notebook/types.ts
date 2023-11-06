@@ -1,13 +1,11 @@
+import { NotebookRequestError } from "./errors";
+import { NotebookReducerTypes } from "./reducer/reducerTypes";
+
 export type Notebook = {
   id: number,
   name: string,
   content: string
 }
-
-
-export type NotebookState = {
-  loading: boolean;
-};
 
 ///////////////////////////
 export type NotebooksOwner = {

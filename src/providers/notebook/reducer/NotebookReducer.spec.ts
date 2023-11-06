@@ -1,7 +1,7 @@
 import { Notebook } from "../types";
 import { notebookReducer } from "./NotebookReducer";
 import {
-  NotebookReducer,
+  NotebookReducers,
   NotebookReducerTypes,
   NotebookState,
 } from "./reducerTypes";
@@ -18,7 +18,7 @@ describe("NotebookReducer", () => {
   });
 
   it("reducer should be getting data", () => {
-    const action: NotebookReducer = {
+    const action: NotebookReducers = {
       type: NotebookReducerTypes.LOADING,
       payload: undefined,
     };
@@ -36,7 +36,7 @@ describe("NotebookReducer", () => {
       content: "book about aceptance tests",
     } as Notebook;
 
-    const action: NotebookReducer = {
+    const action: NotebookReducers = {
       type: NotebookReducerTypes.LOADED,
       payload: notebook,
     };
@@ -54,7 +54,7 @@ describe("NotebookReducer", () => {
       data: {} as Notebook,
     } as NotebookState;
 
-    const action: NotebookReducer = {
+    const action: NotebookReducers = {
       type: NotebookReducerTypes.ERROR,
       payload: undefined,
     };
@@ -71,7 +71,7 @@ describe("NotebookReducer", () => {
       data: {} as Notebook,
     } as NotebookState;
 
-    const action: NotebookReducer = {
+    const action: NotebookReducers = {
       type: NotebookReducerTypes.DELETE,
       payload: undefined,
     };
