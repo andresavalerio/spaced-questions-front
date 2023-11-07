@@ -1,10 +1,9 @@
 export type Notebook = {
-  id: number,
-  name: string,
-  owner?: string,
-  content: string
-}
-
+  id: number;
+  name: string;
+  owner?: string;
+  content: string;
+};
 
 export type NotebookState = {
   loading: boolean;
@@ -20,9 +19,5 @@ export type NotebookListType = {
 };
 
 export type NotebooksAPIResponse = {
-  notebooks: {
-    id: number;
-    name: string;
-    owner: string;
-  }[];
+  notebooks: Notebook[];
 };

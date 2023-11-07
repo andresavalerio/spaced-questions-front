@@ -2,7 +2,7 @@ import { Notebook } from "../types";
 
 export type NotebookState = {
   loading: boolean;
-  data?: Notebook;
+  data?: Notebook[];
 };
 
 export enum NotebookReducerTypes {
@@ -19,7 +19,7 @@ type NotebookRequestingNotebook = {
 
 type NotebookLoaded = {
   type: NotebookReducerTypes.LOADED;
-  payload: Notebook;
+  payload: Notebook[];
 };
 
 type NotebookError = {
