@@ -1,9 +1,8 @@
 import { RequestBody, fetchAPI } from "helpers/fetch";
 import { NotebookBadRequest, NotebookRequestError } from "../errors";
 import {
-  NotebooksAPIResponse,
-  CreateNotebookDTO,
-  NotebookAPIResponse,
+  Notebook,
+  NotebooksAPIResponse
 } from "../types";
 
 export async function createNotebook(name: string, owner: string) {
@@ -21,7 +20,6 @@ export async function createNotebook(name: string, owner: string) {
   return response.json();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const requestUserNotebooks = async (owner: string) => {
   const response = await fetchAPI(`/notebooks/${owner}`);
 
@@ -30,14 +28,14 @@ export const requestUserNotebooks = async (owner: string) => {
   return response.json() as unknown as NotebooksAPIResponse;
 };
 
-export const requestCreateNotebook = async (newNotebook: CreateNotebookDTO) => {
+export const requestCreateNotebook = async (newNotebook: Notebook) => {
   const requestBody: RequestBody = {
     method: "POST",
     body: JSON.stringify(newNotebook),
   };
   const response = await fetchAPI(`/notebooks`, requestBody);
 
-  return response.json() as unknown as NotebookAPIResponse;
+  return response.json() as unknown as NotebooksAPIResponse;
 };
 
 export const requestDeleteNotebook = async (owner: string, name: string) => {
@@ -47,9 +45,6 @@ export const requestDeleteNotebook = async (owner: string, name: string) => {
 
   return response.status;
 };
-
-//export const requestNotebookUpdate = async ()
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export async function getNotebooksByOwner(owner: string) {
   const response = await fetchAPI(`/notebooks/${owner}`);
@@ -62,5 +57,5 @@ export async function getNotebooksByOwner(owner: string) {
 export async function requestNotebookByName(owner: string, notebook: string) {
   const response = await fetchAPI(`/notebook/${owner}/${notebook}`);
 
-  return response.json() as unknown as NotebookAPIResponse;
+  return response.json() as unknown as NotebooksAPIResponse;
 }

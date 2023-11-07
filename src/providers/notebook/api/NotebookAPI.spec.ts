@@ -7,43 +7,46 @@ import {
 } from "./NotebookAPI";
 import * as fetching from "helpers/fetch";
 import { notebookHandlers } from "./NotebookMockServer";
-
-const fetchingMock = vi.spyOn(fetching, "fetchAPI");
+import { Notebook } from "../types";
 
 describe("NotebookAPI", () => {
   setupMockServer(notebookHandlers);
+  const fetchingMock = vi.spyOn(fetching, "fetchAPI");
 
   beforeEach(() => {
     fetchingMock.mockClear();
   });
 
-  describe("RequestNotebook", () => {
-    it("Should return one valid notebook using owner's name and notebook's name", async () => {
-      const owner = "pedro";
-      const notebookName = "Caderno de Português";
+  describe("Contra defitions(requests spied) with backend", () => {
+    describe("RequestNotebook", () => {
+      it("Should calss one valid notebook using owner's name and notebook's name", async () => {
+        const owner = "pedro";
+        const notebookName = "Caderno de Português";
 
-      await requestNotebookByName("pedro", "Caderno de Português");
+        await requestNotebookByName("pedro", "Caderno de Português");
 
-      expect(fetchingMock).toHaveBeenCalledOnce();
-      expect(fetchingMock).toBeCalledWith(`/notebook/${owner}/${notebookName}`);
+        expect(fetchingMock).toHaveBeenCalledOnce();
+        expect(fetchingMock).toBeCalledWith(
+          `/notebook/${owner}/${notebookName}`
+        );
+      });
+
+      it("Should request all notebooks of one owner", async () => {
+        const owner = "pedro";
+
+        await requestUserNotebooks(owner);
+
+        expect(fetchingMock).toHaveBeenCalledOnce();
+        expect(fetchingMock).toHaveBeenCalledWith(`/notebooks/${owner}`);
+      });
     });
 
-    it("Should return valid notebooks", async () => {
-      const owner = "pedro";
-
-      await requestUserNotebooks(owner);
-
-      expect(fetchingMock).toHaveBeenCalledOnce();
-      expect(fetchingMock).toHaveBeenCalledWith(`/notebooks/${owner}`);
-    });
-  });
-
-  describe("CreateNotebook", () => {
-    it("should create a new notebook", async () => {
-      const newNotebook = {
+    it("Should request for notebook creating wiht valid http request", async () => {
+      const newNotebook: Notebook = {
         id: 1,
         name: "NameToTest",
         owner: "OwnerToTest",
+        content: "empty",
       };
 
       const requestBody: RequestInit = {
@@ -51,7 +54,7 @@ describe("NotebookAPI", () => {
         body: JSON.stringify(newNotebook),
       };
 
-      const response = await requestCreateNotebook(newNotebook);
+      await requestCreateNotebook(newNotebook);
 
       expect(fetchingMock).toHaveBeenCalledOnce();
 
@@ -59,13 +62,9 @@ describe("NotebookAPI", () => {
 
       expect(fetchAPIUsedParameter[0]).toBe(`/notebooks`);
       expect(fetchAPIUsedParameter[1]).toMatchObject(requestBody);
-
-      expect(response.notebook).toEqual(newNotebook)
     });
-  });
 
-  describe("DeleteNotebook", () => {
-    it("should delete the notebook", async () => {
+    it("Should request for notebook deletetion with valid http request", async () => {
       const owner = "pedro";
       const notebooksName = "Caderno de Física";
 
@@ -73,7 +72,7 @@ describe("NotebookAPI", () => {
         method: "DELETE",
       };
 
-      const response = await requestDeleteNotebook(owner, notebooksName);
+      await requestDeleteNotebook(owner, notebooksName);
 
       expect(fetchingMock).toHaveBeenCalledOnce();
 
@@ -83,10 +82,38 @@ describe("NotebookAPI", () => {
         `/notebooks/${owner}/${notebooksName}`
       );
       expect(fetchAPIUsedParameter[1]).toMatchObject(httpDeleteMethod);
+    });
+  });
 
-      expect(response).toBe(200);
-      const responseDeletion = await requestUserNotebooks(owner);
-      expect(responseDeletion.notebooks).toHaveLength(3);
+  describe("API retuns with fake server", () => {
+    describe("CreateNotebook", () => {
+      it("should create a new notebook", async () => {
+        const newNotebook: Notebook = {
+          id: 1,
+          name: "NameToTest",
+          owner: "OwnerToTest",
+          content: "empty",
+        };
+
+        const response = await requestCreateNotebook(newNotebook);
+
+        expect(response.notebooks).toEqual(newNotebook);
+      });
+    });
+
+    describe("DeleteNotebook", () => {
+      it("should delete the notebook", async () => {
+        const owner = "pedro";
+        const notebooksName = "Caderno de Física";
+
+        const response = await requestDeleteNotebook(owner, notebooksName);
+
+        expect(response).toBe(200);
+
+        const responseDeletion = await requestUserNotebooks(owner);
+        
+        expect(responseDeletion.notebooks).toHaveLength(3);
+      });
     });
   });
 });

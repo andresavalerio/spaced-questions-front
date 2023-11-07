@@ -1,6 +1,6 @@
 import { buildEndpointPath } from "helpers/api";
 import { RequestHandler, rest } from "msw";
-import { NotebookAPIResponse, NotebooksAPIResponse } from "../types";
+import { Notebook, NotebooksAPIResponse } from "../types";
 
 const createNotebookEndpoint = buildEndpointPath("/notebooks");
 
@@ -12,26 +12,26 @@ const removeNotebookByOwnerEndpoint = buildEndpointPath(
 
 const getNotebookByOwnerEndpoint = buildEndpointPath("/notebook/:owner/:name");
 
+const repo: Notebook[] = [
+  { id: 1, name: "Caderno de Matematica", owner: "pedro", content: "" },
+  { id: 2, name: "Caderno de Ciência", owner: "pedro", content: "" },
+  { id: 3, name: "Caderno de Português", owner: "pedro", content: "" },
+  { id: 4, name: "Caderno de Física", owner: "pedro", content: "" },
+];
+
 const createNotebookHandler = rest.post(
   createNotebookEndpoint,
   async (req, res, ctx) => {
     const body = await req.json();
 
-    const notebooks = repo.push(body);
+    repo.push(body);
 
     return res(
       ctx.status(201),
-      ctx.json({ notebook: body } as NotebookAPIResponse)
+      ctx.json({ notebooks: body } as NotebooksAPIResponse)
     );
   }
 );
-
-const repo = [
-  { id: 1, name: "Caderno de Matematica", owner: "pedro" },
-  { id: 2, name: "Caderno de Ciência", owner: "pedro" },
-  { id: 3, name: "Caderno de Português", owner: "pedro" },
-  { id: 4, name: "Caderno de Física", owner: "pedro" },
-];
 
 const getNotebookByOwnerHandler = rest.get(
   getNotebooksByOwnerEndpoint,
@@ -60,7 +60,7 @@ const removeNotebookByOwnerHandler = rest.delete(
 
     const removedNotebook = removeNotebookFromRepository(owner, name);
 
-    if (!!removedNotebook) {
+    if (removedNotebook) {
       return res(ctx.delay(), ctx.status(200));
     } else {
       return res(ctx.delay(), ctx.status(400));
@@ -81,7 +81,7 @@ const getNotebookByOwnerAndNameHandler = rest.get(
     return res(
       ctx.delay(),
       ctx.status(200),
-      ctx.json({ notebook } as NotebookAPIResponse)
+      ctx.json({ notebooks: [notebook] } as NotebooksAPIResponse)
     );
   }
 );
@@ -92,11 +92,13 @@ export const notebookHandlers: RequestHandler[] = [
   removeNotebookByOwnerHandler,
   getNotebookByOwnerAndNameHandler,
 ];
-function removeNotebookFromRepository(owner: string | readonly string[], name: string | readonly string[]) {
+function removeNotebookFromRepository(
+  owner: string | readonly string[],
+  name: string | readonly string[]
+) {
   const notebookIndex = repo.findIndex(
     (notebook) => notebook.owner === owner && notebook.name === name
   );
   const removedNotebook = repo.splice(notebookIndex, 1);
   return removedNotebook;
 }
-
