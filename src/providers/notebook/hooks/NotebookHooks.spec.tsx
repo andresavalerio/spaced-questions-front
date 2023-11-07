@@ -10,8 +10,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   <UserProvider>{children}</UserProvider>
 );
 
-const renderNotebookHooks = () =>
-  renderHook(() => useNotebookProvider(), { wrapper });
+const renderNotebookHooks = () =>  renderHook(() => useNotebookProvider(), { wrapper });
 
 describe("NotebookHooks", () => {
   setupMockServer(notebookHandlers);
@@ -24,6 +23,19 @@ describe("NotebookHooks", () => {
   });
 
   describe("Get notebook", () => {
+
+////////////////////////////////////////////////////    LEO - INICIO  //////////////////////////////////////////////////// 
+    it("shold load owner's notebooks", async () => {
+      const { result } = renderNotebookHooks();
+
+      await act(async () => {
+        await result.current.actions.loadNotebooks("pedro");
+      });
+
+      expect (result.current.state).toBe("DELETE");
+    });
+////////////////////////////////////////////////////    LEO - FIM  //////////////////////////////////////////////////// 
+
     it("notebook hooks should get the notebook by notebook's name and owner", async () => {
       const { result } = renderNotebookHooks();
 
@@ -42,7 +54,7 @@ describe("NotebookHooks", () => {
       const { result } = renderNotebookHooks();
 
       await act(async () => {
-        await result.current.actions.removeNotebook(
+        await result.current.actions.deleteNotebook(
           "pedro",
           "Caderno de Física"
         );

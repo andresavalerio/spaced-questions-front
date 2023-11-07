@@ -2,7 +2,7 @@ import {
   NotebookReducerTypes,
   NotebookState,
 } from "./reducerTypes";
-import{
+import {
   NotebookReducers
 } from "../reducer/reducerTypes.ts";
 
@@ -12,20 +12,20 @@ export const notebookReducer = (
   action: NotebookReducers
 ) => {
   switch (action.type) {
-    
+
     case NotebookReducerTypes.LOADING:
       return loadingNotebookReducer(state);
 
-    case NotebookReducerTypes.LOADED:
+    case NotebookReducerTypes.LOAD:
       return loadedNotebookReducer(action);
 
     case NotebookReducerTypes.ERROR:
       return errorNotebookReducer();
-    
-      case NotebookReducerTypes.DELETE:
+
+    case NotebookReducerTypes.DELETE:
       return deleteNotebookReducer();
-    
-      default:
+
+    default:
       return state;
   }
   // if (action.type === NotebookReducerTypes.DELETE) return { loading: true };
