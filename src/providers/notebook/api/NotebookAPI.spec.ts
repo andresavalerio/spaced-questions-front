@@ -17,7 +17,7 @@ describe("NotebookAPI", () => {
     fetchingMock.mockClear();
   });
 
-  describe("Contra defitions(requests spied) with backend", () => {
+  describe("Contract definitions(requests spied) with backend", () => {
     describe("RequestNotebook", () => {
       it("Should calss one valid notebook using owner's name and notebook's name", async () => {
         const owner = "pedro";

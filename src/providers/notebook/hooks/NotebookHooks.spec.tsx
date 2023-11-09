@@ -10,7 +10,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   <UserProvider>{children}</UserProvider>
 );
 
-const renderNotebookHooks = () =>  renderHook(() => useNotebookProvider(), { wrapper });
+const renderNotebookHooks = () => renderHook(() => useNotebookProvider(), { wrapper });
 
 describe("NotebookHooks", () => {
   setupMockServer(notebookHandlers);
@@ -24,17 +24,17 @@ describe("NotebookHooks", () => {
 
   describe("Get notebook", () => {
 
-////////////////////////////////////////////////////    LEO - INICIO  //////////////////////////////////////////////////// 
-    it("shold load owner's notebooks", async () => {
+    it("should load owner's notebooks", async () => {
       const { result } = renderNotebookHooks();
 
       await act(async () => {
-        await result.current.actions.loadNotebooks("pedro");
+        await result.current.actions.defaultNotebooks("pedro");
       });
 
-      expect (result.current.state).toBe("DELETE");
+      expect(result.current.state).toHaveProperty("loading", false);
+      expect(result.current.state.data).toBeDefined();
+      expect(result.current.state.data).toHaveLength(4);
     });
-////////////////////////////////////////////////////    LEO - FIM  //////////////////////////////////////////////////// 
 
     it("notebook hooks should get the notebook by notebook's name and owner", async () => {
       const { result } = renderNotebookHooks();
@@ -47,6 +47,7 @@ describe("NotebookHooks", () => {
       expect(result.current.state).toHaveProperty("data");
       expect(result.current.state.data![0]).toHaveProperty("name");
     });
+
   });
 
   describe("remove notebook", () => {

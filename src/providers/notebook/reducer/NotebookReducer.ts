@@ -16,7 +16,7 @@ export const notebookReducer = (
     case NotebookReducerTypes.LOADING:
       return loadingNotebookReducer(state);
 
-    case NotebookReducerTypes.LOAD:
+    case NotebookReducerTypes.DEFAULT:
       return loadedNotebookReducer(action);
 
     case NotebookReducerTypes.ERROR:
@@ -28,7 +28,6 @@ export const notebookReducer = (
     default:
       return state;
   }
-  // if (action.type === NotebookReducerTypes.DELETE) return { loading: true };
 };
 
 const loadingNotebookReducer = (state: NotebookState): NotebookState => {

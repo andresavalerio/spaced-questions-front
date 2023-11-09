@@ -7,7 +7,7 @@ export type NotebookState = {
 
 export enum NotebookReducerTypes {
   LOADING = "LOADING",
-  LOAD = "LOAD",
+  DEFAULT = "DEFAULT",
   DELETE = "DELETED",
   ERROR = "ERROR",
 }
@@ -17,8 +17,8 @@ type NotebookRequestingNotebook = {
   payload?: undefined;
 };
 
-type NotebookLoaded = {
-  type: NotebookReducerTypes.LOAD;
+type NotebookDefault = {
+  type: NotebookReducerTypes.DEFAULT;
   payload: Notebook[];
 };
 
@@ -29,12 +29,12 @@ type NotebookError = {
 
 type NotebookDelete = {
   type: NotebookReducerTypes.DELETE,
-  payload?: Notebook[]; 
+  payload?: Notebook[];
 }
 
 export type NotebookReducers =
   | NotebookRequestingNotebook
-  | NotebookLoaded
+  | NotebookDefault
   | NotebookError
   | NotebookDelete;
 
