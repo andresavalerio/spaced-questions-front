@@ -7,11 +7,19 @@ import ConfirmModal from "../../components/confirm-modal/ConfirmModal";
 import { useUserProvider } from "providers/user/hooks/UserHooks";
 import { isUserLogged } from "providers/user/utils/UserUtils";
 import { Navigate } from "react-router-dom";
+import { getNotebookAction, useNotebookProvider } from "providers/notebook/hooks/NotebookHooks";
+import { getNotebooksByOwner } from "providers/notebook/api/NotebookAPI";
 
 interface NotebookTab {
   label: string;
   content: string;
   color: string;
+}
+
+export const notebookManager = (owner:string) => {
+  useNotebookProvider;
+  getNotebookAction;
+  getNotebooksByOwner(owner);
 }
 
 const LandingPage = () => {
