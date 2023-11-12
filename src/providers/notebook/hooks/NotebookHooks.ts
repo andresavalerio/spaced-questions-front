@@ -13,7 +13,6 @@ import {
 import { notebookReducer } from "../reducer/NotebookReducer";
 
 const { LOADING, DEFAULT, DELETE, ERROR } = NotebookReducerTypes;
-//Talvez criar hooks para a criação e carregamento dos cards?
 
 const useNotebookContext = () => React.useContext(NotebookContext);
 

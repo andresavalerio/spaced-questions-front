@@ -9,7 +9,7 @@ export const NotebookContext = React.createContext<NotebookState>(initialState);
 export const NotebookDispatchContext =
   React.createContext<React.Dispatch<NotebookReducers> | null>(null);
 
-export function UserProvider({ children }: { children: React.ReactNode }) {
+export function NotebookProvider({ children }: { children: React.ReactNode }) {
   const [notebookState, dispatch] = React.useReducer(
     notebookReducer,
     initialState
@@ -23,3 +23,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     </NotebookContext.Provider>
   );
 }
+
+
+
+

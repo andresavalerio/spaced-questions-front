@@ -1,13 +1,13 @@
 import { renderHook } from "@testing-library/react";
 import { useNotebookProvider } from "./NotebookHooks";
-import { UserProvider } from "../NotebookProvider";
+import { NotebookProvider } from "../NotebookProvider";
 import { ReactNode } from "react";
 import { setupMockServer } from "helpers/tests";
 import { notebookHandlers } from "../api/NotebookMockServer";
 import { act } from "react-dom/test-utils";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
-  <UserProvider>{children}</UserProvider>
+  <NotebookProvider>{children}</NotebookProvider>
 );
 
 const renderNotebookHooks = () => renderHook(() => useNotebookProvider(), { wrapper });

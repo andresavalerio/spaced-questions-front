@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import styles from "./UserLayout.module.css";
 import Header from "components/header/Header";
 import { CardProvider } from "providers/cards/CardProvider";
+import { NotebookProvider } from "providers/notebook/NotebookProvider";
 
 const UserLayout = () => {
   return (
@@ -11,9 +12,11 @@ const UserLayout = () => {
       </div>
       <div className={styles["application-container"]}>
         <CardProvider>
-          <Outlet />
+          <NotebookProvider>
+            <Outlet />
+          </NotebookProvider>
         </CardProvider>
-        </div>
+      </div>
     </div>
   );
 };

@@ -10,7 +10,10 @@ export const UserDispatchContext =
   React.createContext<React.Dispatch<UserReducers> | null>(null);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [user, dispatch] = React.useReducer(userReducer, initialState);
+  const [user, dispatch] = React.useReducer(
+    userReducer, 
+    initialState
+  );
 
   return (
     <UserContext.Provider value={user}>
