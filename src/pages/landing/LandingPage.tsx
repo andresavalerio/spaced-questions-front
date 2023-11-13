@@ -1,7 +1,7 @@
 import "./LandingPage.css";
 import { useState, useEffect, useRef } from "react";
 import NoteEditor from "../../components/note-editor/NoteEditor";
-import TabBar from "../../components/tab-bar/TabBar";
+import TabBar, { TabData } from "../../components/tab-bar/TabBar";
 import Modal from "../../components/modal-new-tab/ModalNewTab";
 import ConfirmModal from "../../components/confirm-modal/ConfirmModal";
 import { useUserProvider } from "providers/user/hooks/UserHooks";
@@ -18,7 +18,9 @@ interface NotebookTab {
 
 
 const LandingPage = () => {
+
   const NotebookProvider = useNotebookProvider();
+
   const generateRandomColor = () =>
     "#" +
     ("000000" + Math.floor(Math.random() * 16777215).toString(16)).slice(-6);
@@ -93,10 +95,36 @@ const LandingPage = () => {
   const activateFirstTab = (tabs: NotebookTab[]) =>
     setActiveTab(tabs.length - 1);
 
+
+  const getNotebooks = async () => {
+    console.log("Login: ", state.data?.username)
+
+    const userNotebooks = await (
+
+      NotebookProvider
+        .actions
+        .defaultNotebooks("pedro")
+        .then(() => {
+          const notebooks = NotebookProvider.state.data;
+          console.log(notebooks)
+          setNotebooksTabs([] as TabData[]);
+          if (!!notebooks && notebooks.length > 0) {
+            setNotebooksTabs(
+              notebooks.map(notebook => {
+                return { label: notebook.name } as TabData;
+              }))
+          }
+        })
+    )
+  };
+
+  const [notebookTabs, setNotebooksTabs] = useState<TabData[]>([]);
+
   return (
     <div>
+      <button onClick={(actions) => getNotebooks()}>UPDATE</button>
       <TabBar
-        tabs={notebooks}
+        tabs={notebookTabs}
         activeTab={activeTab}
         onTabClick={handleTabClick}
         onAddTab={createNewTab}
