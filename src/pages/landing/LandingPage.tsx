@@ -40,21 +40,21 @@ const LandingPage = () => {
   };
 
   const handleTabContentChange = (newContent: string) => {
-    const newTabs = [...notebooks];
+    const newTabs = [...notebookTabs];
     newTabs[activeTab].content = newContent;
     setNotebooks(newTabs);
   };
 
   const createNewTab = (name: string) => {
     const newTabs = [
-      ...notebooks,
+      ...notebookTabs,
       {
-        label: !name ? `Caderno ${notebooks.length + 1}` : name,
+        label: !name ? `Caderno ${notebookTabs.length + 1}` : name,
         content: "",
         color: generateRandomColor(),
       },
     ];
-    setNotebooks(newTabs);
+    setNotebooksTabs(newTabs);
     setActiveTab(newTabs.length - 1);
   };
 
@@ -111,7 +111,7 @@ const LandingPage = () => {
           if (!!notebooks && notebooks.length > 0) {
             setNotebooksTabs(
               notebooks.map(notebook => {
-                return { label: notebook.name } as TabData;
+                return { label: notebook.name, content: notebook.content } as TabData;
               }))
           }
         })
@@ -131,7 +131,7 @@ const LandingPage = () => {
       />
       <NoteEditor
         forwardedRef={editorRef}
-        content={notebooks[activeTab]?.content || ""}
+        content={notebookTabs[activeTab]?.content || ""}
         onContentChange={handleTabContentChange}
       />
       <div style={{ float: "left", margin: "0 10px 0 50px" }}>
@@ -148,11 +148,11 @@ const LandingPage = () => {
           Excluir Caderno
         </button>
       </div>
-      <Modal
+      {/* <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
         onSave={(name: string) => {
-          const newTabs = [...notebooks];
+          const newTabs = [...notebookTabs];
           newTabs[activeTab].label = name;
           setNotebooks(newTabs);
           closeModal();
@@ -173,7 +173,7 @@ const LandingPage = () => {
           closeConfirmModal();
         }}
         name={notebooks[activeTab].label}
-      />
+      /> */}
     </div>
   );
 };

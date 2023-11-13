@@ -16,7 +16,7 @@ const repo: Notebook[] = [
   { id: 1, name: "Caderno de Matematica", owner: "pedro", content: "" },
   { id: 2, name: "Caderno de Ciência", owner: "pedro", content: "" },
   { id: 3, name: "Caderno de Português", owner: "pedro", content: "" },
-  { id: 4, name: "Caderno de Física", owner: "pedro", content: "" },
+  { id: 4, name: "Caderno de Física", owner: "pedro", content: "equações de Maxuel" },
 ];
 
 const createNotebookHandler = rest.post(

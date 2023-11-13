@@ -4,7 +4,7 @@ import styles from "./TabBar.module.css";
 import Tab from "../tab/Tab";
 import Modal from "../modal-new-tab/ModalNewTab";
 
-type TabData = {
+export type TabData = {
   label: string;
   content: string;
   color: string;
