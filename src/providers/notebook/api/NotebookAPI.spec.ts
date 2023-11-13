@@ -97,7 +97,7 @@ describe("NotebookAPI", () => {
 
         const response = await requestCreateNotebook(newNotebook);
 
-        expect(response.notebooks).toEqual(newNotebook);
+        expect(response.notebooks[0]).toEqual(newNotebook);
       });
     });
 

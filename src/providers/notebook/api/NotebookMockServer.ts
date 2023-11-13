@@ -24,11 +24,13 @@ const createNotebookHandler = rest.post(
   async (req, res, ctx) => {
     const body = await req.json();
 
+    const newNotebook = body as Notebook;
+
     repo.push(body);
 
     return res(
       ctx.status(201),
-      ctx.json({ notebooks: body } as NotebooksAPIResponse)
+      ctx.json({ notebooks: [body] } as NotebooksAPIResponse)
     );
   }
 );

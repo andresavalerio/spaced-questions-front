@@ -5,12 +5,20 @@ import { ReactNode } from "react";
 import { setupMockServer } from "helpers/tests";
 import { notebookHandlers } from "../api/NotebookMockServer";
 import { act } from "react-dom/test-utils";
+import {Notebook} from "../types";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <NotebookProvider>{children}</NotebookProvider>
 );
 
 const renderNotebookHooks = () => renderHook(() => useNotebookProvider(), { wrapper });
+
+const newNotebook: Notebook = {
+  id: 111,
+  name: "caderno de geo",
+  owner: "Pedro",
+  content: "Mucho texto meu amigo",
+};
 
 describe("NotebookHooks", () => {
   setupMockServer(notebookHandlers);
@@ -65,4 +73,21 @@ describe("NotebookHooks", () => {
       expect(result.current.state).toHaveProperty("data", undefined);
     });
   });
+
+  describe("create notebook", () => {
+    it("should create a notebook", async () => {
+      const { result } = renderNotebookHooks();
+      await act(async () => {
+        await result.current.actions.createNotebook(
+          newNotebook
+        );
+      });
+
+      expect(result.current.state).toHaveProperty("loading", true);
+      expect(result.current.state.data).toBeDefined();
+      expect(result.current.state.data![0]).toHaveProperty("name","caderno de geo");
+      expect(result.current.state.data![0]).toHaveProperty("owner","Pedro");
+      expect(result.current.state.data![0]).toHaveProperty("content","Mucho texto meu amigo");
+    })
+  })
 });

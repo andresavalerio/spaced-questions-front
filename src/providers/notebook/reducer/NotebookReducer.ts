@@ -25,6 +25,9 @@ export const notebookReducer = (
     case NotebookReducerTypes.DELETE:
       return deleteNotebookReducer();
 
+    case NotebookReducerTypes.CREATE:
+      return createNotebookReducer(action);
+
     default:
       return state;
   }
@@ -44,4 +47,8 @@ const errorNotebookReducer = (): NotebookState => {
 
 const deleteNotebookReducer = (): NotebookState => {
   return { loading: false, data: undefined };
+};
+
+const createNotebookReducer = (state: NotebookReducers): NotebookState => {
+  return { loading: true, data: state.payload};
 };

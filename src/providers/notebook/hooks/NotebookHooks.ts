@@ -9,10 +9,12 @@ import {
   requestDeleteNotebook,
   requestNotebookByName,
   requestUserNotebooks,
+  requestCreateNotebook,
 } from "../api/NotebookAPI";
 import { notebookReducer } from "../reducer/NotebookReducer";
+import { Notebook } from "../types";
 
-const { LOADING, DEFAULT, DELETE, ERROR } = NotebookReducerTypes;
+const { LOADING, DEFAULT, CREATE, DELETE, ERROR } = NotebookReducerTypes;
 
 const useNotebookContext = () => React.useContext(NotebookContext);
 
@@ -29,6 +31,7 @@ export const useNotebookProvider = () => {
     state,
     actions: {
       getNotebook: getNotebookAction(state, dispatch),
+      createNotebook: createCreateNotebookAction(state, dispatch),
       deleteNotebook: createDeleteNotebookAction(state, dispatch),
       defaultNotebooks: createDefaultNotebookAction(state, dispatch),
     },
@@ -38,9 +41,9 @@ export const useNotebookProvider = () => {
 export const createDefaultNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) => async (owner: string) => {
 
-    const response = await requestUserNotebooks(owner); //Request para chamar notebooks
+    const response = await requestUserNotebooks(owner);
 
-    dispatch({ type: NotebookReducerTypes.DEFAULT, payload: response.notebooks }); //já nem sei mais o que tá despachando
+    dispatch({ type: NotebookReducerTypes.DEFAULT, payload: response.notebooks });
   }
 
 export const getNotebookAction =
@@ -60,6 +63,21 @@ export const getNotebookAction =
         console.error(error);
       }
     };
+
+export const createCreateNotebookAction =
+  (state: NotebookState, dispatch: NotebookDispatch) =>
+    async (notebook: Notebook): Promise<void> =>{
+      try {
+        dispatch({type: LOADING});
+
+        const response = await requestCreateNotebook(notebook);
+
+        dispatch({type: CREATE, payload: response.notebooks });
+      } catch (error) {
+        dispatch({ type: ERROR });
+        console.error(error);
+      }
+    }
 
 export const createDeleteNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
