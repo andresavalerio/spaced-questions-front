@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 import { setupMockServer } from "helpers/tests";
 import { notebookHandlers } from "../api/NotebookMockServer";
 import { act } from "react-dom/test-utils";
-import {Notebook} from "../types";
+import { Notebook } from "../types";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <NotebookProvider>{children}</NotebookProvider>
@@ -13,7 +13,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 
 const renderNotebookHooks = () => renderHook(() => useNotebookProvider(), { wrapper });
 
-const newNotebook: Notebook = {
+const notebookTemplate: Notebook = {
   id: 111,
   name: "caderno de geo",
   owner: "Pedro",
@@ -58,6 +58,8 @@ describe("NotebookHooks", () => {
 
   });
 
+  //
+  //
   describe("remove notebook", () => {
     it("should remove one notebook", async () => {
       const { result } = renderNotebookHooks();
@@ -79,15 +81,35 @@ describe("NotebookHooks", () => {
       const { result } = renderNotebookHooks();
       await act(async () => {
         await result.current.actions.createNotebook(
-          newNotebook
+          notebookTemplate
         );
       });
 
-      expect(result.current.state).toHaveProperty("loading", true);
+      expect(result.current.state).toHaveProperty("loading", false);
       expect(result.current.state.data).toBeDefined();
-      expect(result.current.state.data![0]).toHaveProperty("name","caderno de geo");
-      expect(result.current.state.data![0]).toHaveProperty("owner","Pedro");
-      expect(result.current.state.data![0]).toHaveProperty("content","Mucho texto meu amigo");
+      expect(result.current.state.data![0]).toHaveProperty("name", "caderno de geo");
+      expect(result.current.state.data![0]).toHaveProperty("owner", "Pedro");
+      expect(result.current.state.data![0]).toHaveProperty("content", "Mucho texto meu amigo");
+    })
+  })
+
+  describe("rename notebook", () => {
+    it("should rename a notebook", async () => {
+      const { result } = renderNotebookHooks();
+      await act(async () => {
+        await result.current.actions.renameNotebook(
+          "pedro",
+          notebookTemplate,
+          "Caderno de outro assunto",
+        );
+      });
+
+      expect(result.current.state).toHaveProperty("loading", false);
+      expect(result.current.state.data).toBeDefined();
+      expect(result.current.state.data![0]).toHaveProperty("owner", "pedro");
+      expect(result.current.state.data![0]).toHaveProperty("notebook");
+      expect(result.current.state.data![0]).toHaveProperty("newName", "Caderno de outro assunto");
     })
   })
 });
+      

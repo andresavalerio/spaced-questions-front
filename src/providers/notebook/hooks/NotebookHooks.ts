@@ -10,11 +10,12 @@ import {
   requestNotebookByName,
   requestUserNotebooks,
   requestCreateNotebook,
+  requestRenameNotebook,
 } from "../api/NotebookAPI";
 import { notebookReducer } from "../reducer/NotebookReducer";
 import { Notebook } from "../types";
 
-const { LOADING, DEFAULT, CREATE, DELETE, ERROR } = NotebookReducerTypes;
+const { LOADING, DEFAULT, CREATE, DELETE, ERROR, RENAME } = NotebookReducerTypes;
 
 const useNotebookContext = () => React.useContext(NotebookContext);
 
@@ -34,6 +35,7 @@ export const useNotebookProvider = () => {
       createNotebook: createCreateNotebookAction(state, dispatch),
       deleteNotebook: createDeleteNotebookAction(state, dispatch),
       defaultNotebooks: createDefaultNotebookAction(state, dispatch),
+      renameNotebook: createRenameNotebookAction(state, dispatch),
     },
   };
 };
@@ -43,8 +45,11 @@ export const createDefaultNotebookAction =
 
     const response = await requestUserNotebooks(owner);
 
-    dispatch({ type: NotebookReducerTypes.DEFAULT, payload: response.notebooks });
-  }
+    dispatch({
+      type: DEFAULT,
+      payload: response.notebook
+    });
+  };
 
 export const getNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
@@ -56,7 +61,7 @@ export const getNotebookAction =
 
         dispatch({
           type: DEFAULT,
-          payload: response.notebooks,
+          payload: response.notebook,
         });
       } catch (error) {
         dispatch({ type: ERROR });
@@ -66,18 +71,40 @@ export const getNotebookAction =
 
 export const createCreateNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
-    async (notebook: Notebook): Promise<void> =>{
+    async (notebook: Notebook): Promise<void> => {
       try {
-        dispatch({type: LOADING});
+        dispatch({ type: LOADING });
 
         const response = await requestCreateNotebook(notebook);
 
-        dispatch({type: CREATE, payload: response.notebooks });
+        dispatch({
+          type: CREATE,
+          payload: response.notebook
+        });
       } catch (error) {
         dispatch({ type: ERROR });
         console.error(error);
       }
-    }
+    };
+
+export const createRenameNotebookAction =
+  (state: NotebookState, dispatch: NotebookDispatch) =>
+    async (owner: string, notebook: Notebook, newName: string): Promise<void> => {
+      try {
+        dispatch({ type: LOADING });
+
+        const response = await requestRenameNotebook(owner, notebook, newName);
+
+        dispatch({
+          type: RENAME,
+          payload: response.notebook
+        });
+
+      } catch (error) {
+        dispatch({ type: ERROR });
+        console.error(error);
+      }
+    };
 
 export const createDeleteNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>

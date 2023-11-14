@@ -30,7 +30,7 @@ const createNotebookHandler = rest.post(
 
     return res(
       ctx.status(201),
-      ctx.json({ notebooks: [body] } as NotebooksAPIResponse)
+      ctx.json({ notebook: [body] } as NotebooksAPIResponse)
     );
   }
 );
@@ -48,7 +48,7 @@ const getNotebookByOwnerHandler = rest.get(
     return res(
       ctx.status(200),
       ctx.json({
-        notebooks: ownersNotebooks,
+        notebook: ownersNotebooks,
       } as NotebooksAPIResponse)
     );
   }
@@ -83,7 +83,7 @@ const getNotebookByOwnerAndNameHandler = rest.get(
     return res(
       ctx.delay(),
       ctx.status(200),
-      ctx.json({ notebooks: [notebook] } as NotebooksAPIResponse)
+      ctx.json({ notebook: [notebook] } as NotebooksAPIResponse)
     );
   }
 );

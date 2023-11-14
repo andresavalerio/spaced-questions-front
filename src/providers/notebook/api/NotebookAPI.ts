@@ -2,8 +2,10 @@ import { RequestBody, fetchAPI } from "helpers/fetch";
 import { NotebookBadRequest, NotebookRequestError } from "../errors";
 import {
   Notebook,
-  NotebooksAPIResponse
+  NotebooksAPIResponse,
+  NotebooksOwner
 } from "../types";
+import { notebookReducer } from "../reducer/NotebookReducer";
 
 export async function createNotebook(name: string, owner: string) {
   const requestBody: RequestBody = {
@@ -59,3 +61,19 @@ export async function requestNotebookByName(owner: string, notebook: string) {
 
   return response.json() as unknown as NotebooksAPIResponse;
 }
+
+export async function requestRenameNotebook(owner: string, notebook: Notebook, newName: string) {
+  const requestBody: RequestBody = {
+    method: "POST",
+    body: JSON.stringify({ owner, notebook, newName }),
+  };
+
+  const response = await fetchAPI("/notebooks", requestBody);
+
+  if (response.status === 400) throw new NotebookBadRequest();
+
+  if (response.status !== 201) throw new NotebookRequestError();
+
+  return response.json();
+}
+

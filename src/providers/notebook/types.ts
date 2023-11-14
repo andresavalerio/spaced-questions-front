@@ -19,5 +19,5 @@ export type NotebookListType = {
 };
 
 export type NotebooksAPIResponse = {
-  notebooks: Notebook[];
+  notebook: Notebook[];
 };

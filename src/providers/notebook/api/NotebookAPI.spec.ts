@@ -4,10 +4,21 @@ import {
   requestCreateNotebook,
   requestDeleteNotebook,
   requestNotebookByName,
+  requestRenameNotebook,
+  getNotebooksByOwner,
 } from "./NotebookAPI";
 import * as fetching from "helpers/fetch";
 import { notebookHandlers } from "./NotebookMockServer";
 import { Notebook } from "../types";
+
+/*
+const NotebookTemplate: Notebook = {
+  id: 111,
+  name: "caderno de geo",
+  owner: "Pedro",
+  content: "Mucho texto meu amigo",
+};
+*/
 
 describe("NotebookAPI", () => {
   setupMockServer(notebookHandlers);
@@ -19,7 +30,7 @@ describe("NotebookAPI", () => {
 
   describe("Contract definitions(requests spied) with backend", () => {
     describe("RequestNotebook", () => {
-      it("Should calss one valid notebook using owner's name and notebook's name", async () => {
+      it("Should calls one valid notebook using owner's name and notebook's name", async () => {
         const owner = "pedro";
         const notebookName = "Caderno de Português";
 
@@ -97,7 +108,7 @@ describe("NotebookAPI", () => {
 
         const response = await requestCreateNotebook(newNotebook);
 
-        expect(response.notebooks[0]).toEqual(newNotebook);
+        expect(response.notebook[0]).toEqual(newNotebook);
       });
     });
 
@@ -111,8 +122,21 @@ describe("NotebookAPI", () => {
         expect(response).toBe(200);
 
         const responseDeletion = await requestUserNotebooks(owner);
+
+        expect(responseDeletion.notebook).toHaveLength(3);
+      });
+    });
+
+    describe("RenameNotebook", () => {
+      it("Should request for a notebook to be renamed", async () => {
+        const owner = "pedro";
+        const newName = "NewNameToTest";
         
-        expect(responseDeletion.notebooks).toHaveLength(3);
+        const notebookToBeRenamed = await requestNotebookByName(owner, "Caderno de Português");
+        const response = await requestRenameNotebook(owner, notebookToBeRenamed.notebook[0], newName);
+
+        expect(response.notebook[0].newName).toBe("NewNameToTest");
+        expect(response.notebook[0].owner).toBe("pedro");                
       });
     });
   });

@@ -5,6 +5,7 @@ import {
 import {
   NotebookReducers
 } from "../reducer/reducerTypes.ts";
+import { Notebook } from "../types.ts";
 
 
 export const notebookReducer = (
@@ -17,7 +18,7 @@ export const notebookReducer = (
       return loadingNotebookReducer(state);
 
     case NotebookReducerTypes.DEFAULT:
-      return loadedNotebookReducer(action);
+      return loadedNotebookReducer(action.payload);
 
     case NotebookReducerTypes.ERROR:
       return errorNotebookReducer();
@@ -28,6 +29,9 @@ export const notebookReducer = (
     case NotebookReducerTypes.CREATE:
       return createNotebookReducer(action);
 
+    case NotebookReducerTypes.RENAME:
+      return renameNotebookReducer(action);
+
     default:
       return state;
   }
@@ -37,8 +41,8 @@ const loadingNotebookReducer = (state: NotebookState): NotebookState => {
   return { ...state, loading: true };
 };
 
-const loadedNotebookReducer = (state: NotebookReducers): NotebookState => {
-  return { loading: false, data: state.payload };
+const loadedNotebookReducer = (notebooks: Notebook[]): NotebookState => {
+  return { loading: false, data: notebooks };
 };
 
 const errorNotebookReducer = (): NotebookState => {
@@ -50,5 +54,9 @@ const deleteNotebookReducer = (): NotebookState => {
 };
 
 const createNotebookReducer = (state: NotebookReducers): NotebookState => {
-  return { loading: true, data: state.payload};
+  return { loading: false, data: state.payload };
 };
+
+const renameNotebookReducer= (state:NotebookReducers): NotebookState => {
+  return {loading: false, data: state.payload};
+}
