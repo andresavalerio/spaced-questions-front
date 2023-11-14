@@ -7,8 +7,8 @@ import ConfirmModal from "../../components/confirm-modal/ConfirmModal";
 import { useUserProvider } from "providers/user/hooks/UserHooks";
 import { isUserLogged } from "providers/user/utils/UserUtils";
 import { Navigate } from "react-router-dom";
-import { getNotebookAction, useNotebookProvider } from "providers/notebook/hooks/NotebookHooks";
-import { getNotebooksByOwner } from "providers/notebook/api/NotebookAPI";
+import { useNotebookProvider } from "providers/notebook/hooks/NotebookHooks";
+import { Notebook } from "providers/notebook/types";
 
 interface NotebookTab {
   label: string;
@@ -16,22 +16,16 @@ interface NotebookTab {
   color: string;
 }
 
-
 const LandingPage = () => {
+
+  const { state } = useUserProvider();
+
+  if (!isUserLogged(state)) return <Navigate to={"/login"} />;
 
   const NotebookProvider = useNotebookProvider();
 
-  const generateRandomColor = () =>
-    "#" +
-    ("000000" + Math.floor(Math.random() * 16777215).toString(16)).slice(-6);
-
-  const [notebooks, setNotebooks] = useState<NotebookTab[]>([
-    {
-      label: "Caderno 1",
-      content: "",
-      color: generateRandomColor(),
-    },
-  ]);
+  const [newNotebooks, setNewNotebooks] = useState<Notebook[]>([]);
+  const [notebooksTabs, setNotebooksTabs] = useState<TabData[]>([]);
 
   const [activeTab, setActiveTab] = useState<number>(0);
 
@@ -40,20 +34,20 @@ const LandingPage = () => {
   };
 
   const handleTabContentChange = (newContent: string) => {
-    const newTabs = [...notebookTabs];
+    const newTabs = [...notebooksTabs];
     newTabs[activeTab].content = newContent;
-    setNotebooks(newTabs);
+    setNotebooksTabs(newTabs);
   };
 
   const createNewTab = (name: string) => {
     const newTabs = [
-      ...notebookTabs,
+      ...notebooksTabs,
       {
-        label: !name ? `Caderno ${notebookTabs.length + 1}` : name,
-        content: "",
-        color: generateRandomColor(),
-      },
+        label: !name ? `Caderno ${notebooksTabs.length + 1}` : name,
+        content: ""
+      } as TabData,
     ];
+    setNewNotebooks([...newNotebooks, { id: 12, content: "", name: name, owner: "pedro" } as Notebook])
     setNotebooksTabs(newTabs);
     setActiveTab(newTabs.length - 1);
   };
@@ -82,15 +76,7 @@ const LandingPage = () => {
     }
   };
 
-  useEffect(() => {
-    focusEditor();
-  }, [activeTab, notebooks]);
-
   const closeConfirmModal = () => setConfirmModalOpen(false);
-
-  const { state } = useUserProvider();
-
-  if (!isUserLogged(state)) return <Navigate to={"/login"} />;
 
   const activateFirstTab = (tabs: NotebookTab[]) =>
     setActiveTab(tabs.length - 1);
@@ -100,7 +86,6 @@ const LandingPage = () => {
     console.log("Login: ", state.data?.username)
 
     const userNotebooks = await (
-
       NotebookProvider
         .actions
         .defaultNotebooks("pedro")
@@ -118,20 +103,42 @@ const LandingPage = () => {
     )
   };
 
-  const [notebookTabs, setNotebooksTabs] = useState<TabData[]>([]);
+  const saveNotebooks = () => {
+
+    newNotebooks.forEach(async (notebook) => {
+      await NotebookProvider.actions.createNotebook(notebook).then(() => {
+        setNewNotebooks([]);
+      })
+    })
+  }
+
+  const confirmDeleteNotebook = async () => {
+    const currentNotebooks = notebooksTabs
+    const deletedNotebook = notebooksTabs.splice(activeTab, 1);
+
+    await NotebookProvider.actions.deleteNotebook("pedro", deletedNotebook[0].label)
+    
+
+    setConfirmModalOpen(false);
+  }
+
+  useEffect(() => {
+    focusEditor();
+  }, [activeTab, notebooksTabs]);
 
   return (
     <div>
       <button onClick={(actions) => getNotebooks()}>UPDATE</button>
+      <button onClick={(actions) => saveNotebooks()}>SAVE</button>
       <TabBar
-        tabs={notebookTabs}
+        tabs={notebooksTabs}
         activeTab={activeTab}
         onTabClick={handleTabClick}
         onAddTab={createNewTab}
       />
       <NoteEditor
         forwardedRef={editorRef}
-        content={notebookTabs[activeTab]?.content || ""}
+        content={notebooksTabs[activeTab]?.content || ""}
         onContentChange={handleTabContentChange}
       />
       <div style={{ float: "left", margin: "0 10px 0 50px" }}>
@@ -148,32 +155,8 @@ const LandingPage = () => {
           Excluir Caderno
         </button>
       </div>
-      {/* <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onSave={(name: string) => {
-          const newTabs = [...notebookTabs];
-          newTabs[activeTab].label = name;
-          setNotebooks(newTabs);
-          closeModal();
-        }}
-        purpose={modalPurpose}
-        currentName={notebooks[activeTab].label}
-      />
-      <ConfirmModal
-        isOpen={isConfirmModalOpen}
-        onConfirm={() => {
-          const newTabs = notebooks.filter((_, index) => index !== activeTab);
-
-          setNotebooks(newTabs);
-          activateFirstTab(newTabs);
-          closeConfirmModal();
-        }}
-        onCancel={() => {
-          closeConfirmModal();
-        }}
-        name={notebooks[activeTab].label}
-      /> */}
+      <Modal />
+      <ConfirmModal isOpen={isConfirmModalOpen} onCancel={closeConfirmModal} onConfirm={confirmDeleteNotebook} />
     </div>
   );
 };

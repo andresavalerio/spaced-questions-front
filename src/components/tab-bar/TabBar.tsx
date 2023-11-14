@@ -7,7 +7,6 @@ import Modal from "../modal-new-tab/ModalNewTab";
 export type TabData = {
   label: string;
   content: string;
-  color: string;
 };
 
 interface TabBarProps {
