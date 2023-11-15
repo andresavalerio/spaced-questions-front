@@ -16,21 +16,8 @@ interface NotebookTab {
   color: string;
 }
 
-interface NewAndChangedNotebooks {
-  type: "new" | "changed-content" | "changed-name" | "deleted";
-  notebook: Notebook;
-}
-
 const NotebooksPage = () => {
   const { state } = useUserProvider();
-
-  const [newAndChangedNotebooks, setNewAndChangedNotebooks] = useState<
-    NewAndChangedNotebooks[]
-  >([]);
-
-  useEffect(() => {
-    console.log(newAndChangedNotebooks)
-  }, [newAndChangedNotebooks])
 
   const NotebookProvider = useNotebookProvider();
 
