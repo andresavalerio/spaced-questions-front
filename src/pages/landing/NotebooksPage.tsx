@@ -73,38 +73,66 @@ const NotebooksPage = () => {
 
   const [newNotebooks, setNewNotebooks] = useState<Notebook[]>([]);
 
-  const [activeTab, setActiveTab] = useState<number>(0);
+  const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
+
+  const handleTabClick = (index: number) => {
+    setActiveTabIndex(index);
+  };
+
+  const handleTabContentChange = (newContent: string) => {
+    const newNotebooksStates = [...notebooksState];
+    newNotebooksStates[activeTabIndex].notebook.content = newContent;
+    newNotebooksStates[activeTabIndex].state = "content-changed";
+    setNotebooksState(newNotebooksStates);
+
+    const newTabs = [...notebooksTabs];
+    newTabs[activeTabIndex].content = newContent;
+    setNotebooksTabs(newTabs);
+  };
+
+  const createNewTabNotebook = (newNotebookName: string) => {
+    const notebookAlreadyExist = !!notebooksTabs.find(
+      (tab) => tab.label === newNotebookName
+    );
+
+    if (notebookAlreadyExist || newNotebookName.trim() === "") return;
+
+    const newNotebooksState = [
+      ...notebooksState,
+      {
+        state: "new",
+        notebook: {
+          id: 12,
+          name: newNotebookName,
+          content: "",
+          owner: "pedro"
+        }
+      }
+    ] as NotebookState[]
+    setNotebooksState(newNotebooksState);
+
+    const newTabs = [
+      ...notebooksTabs,
+      {
+        label: newNotebookName,
+        content: "",
+      } as TabData,
+    ];
+    setNotebooksTabs(newTabs);
+    setActiveTabIndex(newTabs.length - 1);
+    // *********** MARKED TO REMOVAL ***************
+    setNewNotebooks([
+      ...newNotebooks,
+      { id: 12, content: "", name: newNotebookName, owner: "pedro" } as Notebook,
+    ]);
+    // *********************************************
+    
+  };
 
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [modalPurpose, setModalPurpose] = useState<"create" | "rename">(
     "create"
   );
-
-  const handleTabClick = (index: number) => {
-    setActiveTab(index);
-  };
-
-  const handleTabContentChange = (newContent: string) => {
-    const newTabs = [...notebooksTabs];
-    newTabs[activeTab].content = newContent;
-    setNotebooksTabs(newTabs);
-  };
-
-  const createNewTab = (name: string) => {
-    const newTabs = [
-      ...notebooksTabs,
-      {
-        label: !name ? `Caderno ${notebooksTabs.length + 1}` : name,
-        content: "",
-      } as TabData,
-    ];
-    setNewNotebooks([
-      ...newNotebooks,
-      { id: 12, content: "", name: name, owner: "pedro" } as Notebook,
-    ]);
-    setNotebooksTabs(newTabs);
-    setActiveTab(newTabs.length - 1);
-  };
 
   const openRenameModal = (purpose: "create" | "rename") => {
     setModalPurpose(purpose);
@@ -136,7 +164,7 @@ const NotebooksPage = () => {
   };
 
   const confirmDeleteNotebook = async () => {
-    const deletedNotebook = notebooksTabs.splice(activeTab, 1);
+    const deletedNotebook = notebooksTabs.splice(activeTabIndex, 1);
 
     await NotebookProvider.actions.deleteNotebook(
       "pedro",
@@ -148,7 +176,7 @@ const NotebooksPage = () => {
 
   useEffect(() => {
     focusEditor();
-  }, [activeTab, notebooksTabs]);
+  }, [activeTabIndex, notebooksTabs]);
 
   if (!isUserLogged(state)) return <Navigate to={"/login"} />;
 
@@ -158,13 +186,13 @@ const NotebooksPage = () => {
       <button onClick={() => saveNotebooks()}>SAVE</button>
       <TabBar
         tabs={notebooksTabs}
-        activeTab={activeTab}
+        activeTab={activeTabIndex}
         onTabClick={handleTabClick}
-        onAddTab={createNewTab}
+        onAddTab={createNewTabNotebook}
       />
       <NoteEditor
         forwardedRef={editorRef}
-        content={notebooksTabs[activeTab]?.content || ""}
+        content={notebooksTabs[activeTabIndex]?.content || ""}
         onContentChange={handleTabContentChange}
       />
       <div style={{ float: "left", margin: "0 10px 0 50px" }}>
@@ -186,7 +214,11 @@ const NotebooksPage = () => {
         isOpen={isConfirmModalOpen}
         onCancel={closeConfirmModal}
         onConfirm={confirmDeleteNotebook}
-        name={notebooksTabs[activeTab] ? notebooksTabs[activeTab].label : ""}
+        name={
+          notebooksTabs[activeTabIndex]
+            ? notebooksTabs[activeTabIndex].label
+            : ""
+        }
       />
     </div>
   );
