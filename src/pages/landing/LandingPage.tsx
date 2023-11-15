@@ -156,7 +156,7 @@ const LandingPage = () => {
         </button>
       </div>
       <Modal />
-      <ConfirmModal isOpen={isConfirmModalOpen} onCancel={closeConfirmModal} onConfirm={confirmDeleteNotebook} />
+      <ConfirmModal isOpen={isConfirmModalOpen} onCancel={closeConfirmModal} onConfirm={confirmDeleteNotebook} name={notebooksTabs[activeTab] ? notebooksTabs[activeTab].label : ""} />
     </div>
   );
 };

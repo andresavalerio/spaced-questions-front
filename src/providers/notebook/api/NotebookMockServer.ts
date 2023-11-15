@@ -12,11 +12,18 @@ const removeNotebookByOwnerEndpoint = buildEndpointPath(
 
 const getNotebookByOwnerEndpoint = buildEndpointPath("/notebook/:owner/:name");
 
+const renameNotebookEndpoint = buildEndpointPath("/notebook/:owner/:name");
+
 const repo: Notebook[] = [
   { id: 1, name: "Caderno de Matematica", owner: "pedro", content: "" },
   { id: 2, name: "Caderno de Ciência", owner: "pedro", content: "" },
   { id: 3, name: "Caderno de Português", owner: "pedro", content: "" },
-  { id: 4, name: "Caderno de Física", owner: "pedro", content: "equações de Maxuel" },
+  {
+    id: 4,
+    name: "Caderno de Física",
+    owner: "pedro",
+    content: "equações de Maxuel",
+  },
 ];
 
 const createNotebookHandler = rest.post(
@@ -88,12 +95,37 @@ const getNotebookByOwnerAndNameHandler = rest.get(
   }
 );
 
+const renameNotebookHandler = rest.patch(
+  renameNotebookEndpoint,
+  async (req, res, ctx) => {
+    const owner = req.params["owner"];
+    const oldName = req.params["name"];
+
+    const body = (await req.json());
+
+    const notebookIndex = repo.findIndex(
+      (notebook) => notebook.name === oldName && notebook.owner === owner
+    );
+    
+    if (notebookIndex > 0) repo[notebookIndex].name = body.newName;
+    return res(
+      ctx.delay(),
+      ctx.status(200),
+      ctx.json({
+        notebook: notebookIndex > 0 ? [repo[notebookIndex]] : ([] as Notebook[]),
+      } as NotebooksAPIResponse)
+    );
+  }
+);
+
 export const notebookHandlers: RequestHandler[] = [
   createNotebookHandler,
   getNotebookByOwnerHandler,
   removeNotebookByOwnerHandler,
   getNotebookByOwnerAndNameHandler,
+  renameNotebookHandler,
 ];
+
 function removeNotebookFromRepository(
   owner: string | readonly string[],
   name: string | readonly string[]
