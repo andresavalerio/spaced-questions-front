@@ -16,8 +16,21 @@ interface NotebookTab {
   color: string;
 }
 
+interface NewAndChangedNotebooks {
+  type: "new" | "changed-content" | "changed-name" | "deleted";
+  notebook: Notebook;
+}
+
 const NotebooksPage = () => {
   const { state } = useUserProvider();
+
+  const [newAndChangedNotebooks, setNewAndChangedNotebooks] = useState<
+    NewAndChangedNotebooks[]
+  >([]);
+
+  useEffect(() => {
+    console.log(newAndChangedNotebooks)
+  }, [newAndChangedNotebooks])
 
   const NotebookProvider = useNotebookProvider();
 
@@ -25,6 +38,11 @@ const NotebooksPage = () => {
   const [notebooksTabs, setNotebooksTabs] = useState<TabData[]>([]);
 
   const [activeTab, setActiveTab] = useState<number>(0);
+
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalPurpose, setModalPurpose] = useState<"create" | "rename">(
+    "create"
+  );
 
   const handleTabClick = (index: number) => {
     setActiveTab(index);
@@ -52,12 +70,7 @@ const NotebooksPage = () => {
     setActiveTab(newTabs.length - 1);
   };
 
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalPurpose, setModalPurpose] = useState<"create" | "rename">(
-    "create"
-  );
-
-  const openModal = (purpose: "create" | "rename") => {
+  const openRenameModal = (purpose: "create" | "rename") => {
     setModalPurpose(purpose);
     setModalOpen(true);
   };
@@ -141,7 +154,7 @@ const NotebooksPage = () => {
       <div style={{ float: "left", margin: "0 10px 0 50px" }}>
         <button
           className="LandingPage-buttonStyle"
-          onClick={() => openModal("rename")}
+          onClick={() => openRenameModal("rename")}
         >
           Renomear Caderno
         </button>
