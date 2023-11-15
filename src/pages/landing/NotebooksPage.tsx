@@ -94,10 +94,10 @@ const NotebooksPage = () => {
           id: 12,
           name: newNotebookName,
           content: "",
-          owner: "pedro"
-        }
-      }
-    ] as NotebookState[]
+          owner: "pedro",
+        },
+      },
+    ] as NotebookState[];
     setNotebooksState(newNotebooksState);
 
     const newTabs = [
@@ -112,7 +112,12 @@ const NotebooksPage = () => {
     // *********** MARKED TO REMOVAL ***************
     setNewNotebooks([
       ...newNotebooks,
-      { id: 12, content: "", name: newNotebookName, owner: "pedro" } as Notebook,
+      {
+        id: 12,
+        content: "",
+        name: newNotebookName,
+        owner: "pedro",
+      } as Notebook,
     ]);
     // *********************************************
   };
@@ -128,7 +133,8 @@ const NotebooksPage = () => {
   const handleTabContentChange = (newContent: string) => {
     const newNotebooksStates = [...notebooksState];
     newNotebooksStates[activeTabIndex].notebook.content = newContent;
-    newNotebooksStates[activeTabIndex].state = "content-changed";
+    if (newNotebooksStates[activeTabIndex].state === "default")
+      newNotebooksStates[activeTabIndex].state = "content-changed";
     setNotebooksState(newNotebooksStates);
 
     const newTabs = [...notebooksTabs];
@@ -140,7 +146,21 @@ const NotebooksPage = () => {
     focusEditor();
   }, [activeTabIndex, notebooksTabs]);
 
-  
+  const saveNotebooks = () => {
+
+    console.log(notebooksState)
+
+    notebooksState.forEach((notebookState) => {
+      if (notebookState.state === "default") return;
+      if (notebookState.state === "new") {
+        NotebookProvider.actions.createNotebook(notebookState.notebook);
+      }
+      if (notebookState.state === "content-changed") {
+        //TO-DO
+      }
+    });
+  };
+
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [modalPurpose, setModalPurpose] = useState<"create" | "rename">(
     "create"
@@ -158,14 +178,6 @@ const NotebooksPage = () => {
   const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
 
   const closeConfirmModal = () => setConfirmModalOpen(false);
-
-  const saveNotebooks = () => {
-    newNotebooks.forEach(async (notebook) => {
-      await NotebookProvider.actions.createNotebook(notebook).then(() => {
-        setNewNotebooks([]);
-      });
-    });
-  };
 
   const confirmDeleteNotebook = async () => {
     const deletedNotebook = notebooksTabs.splice(activeTabIndex, 1);
