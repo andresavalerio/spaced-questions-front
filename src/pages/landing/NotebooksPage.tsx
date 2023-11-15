@@ -70,9 +70,6 @@ const NotebooksPage = () => {
     });
     console.log(notebooksState);
   }, [updateNotebooksCount]);
-  // *********** MARKED TO REMOVAL ***************
-  const [newNotebooks, setNewNotebooks] = useState<Notebook[]>([]);
-  // *********************************************
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
 
   const handleTabClick = (index: number) => {
@@ -109,17 +106,6 @@ const NotebooksPage = () => {
     ];
     setNotebooksTabs(newTabs);
     setActiveTabIndex(newTabs.length - 1);
-    // *********** MARKED TO REMOVAL ***************
-    setNewNotebooks([
-      ...newNotebooks,
-      {
-        id: 12,
-        content: "",
-        name: newNotebookName,
-        owner: "pedro",
-      } as Notebook,
-    ]);
-    // *********************************************
   };
 
   const editorRef = useRef<HTMLTextAreaElement>(null);
@@ -160,6 +146,22 @@ const NotebooksPage = () => {
       }
     });
   };
+  
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
+  
+  const closeConfirmModal = () => setConfirmModalOpen(false);
+  
+  const confirmDeleteNotebook = async () => {
+
+    const deletedNotebook = notebooksTabs.splice(activeTabIndex, 1);
+
+    await NotebookProvider.actions.deleteNotebook(
+      "pedro",
+      deletedNotebook[0].label
+    );
+
+    setConfirmModalOpen(false);
+  };
 
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [modalPurpose, setModalPurpose] = useState<"create" | "rename">(
@@ -175,27 +177,12 @@ const NotebooksPage = () => {
     setModalOpen(false);
   };
 
-  const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
-
-  const closeConfirmModal = () => setConfirmModalOpen(false);
-
-  const confirmDeleteNotebook = async () => {
-    const deletedNotebook = notebooksTabs.splice(activeTabIndex, 1);
-
-    await NotebookProvider.actions.deleteNotebook(
-      "pedro",
-      deletedNotebook[0].label
-    );
-
-    setConfirmModalOpen(false);
-  };
-
   if (!isUserLogged(state)) return <Navigate to={"/login"} />;
 
   return (
     <div>
       <button onClick={() => updateNotebooks()}>UPDATE</button>
-      <button onClick={() => saveNotebooks()}>SAVE</button>
+      <button onClick={() => saveNotebooks()}>SAVE CHANGES</button>
       <TabBar
         tabs={notebooksTabs}
         activeTab={activeTabIndex}
