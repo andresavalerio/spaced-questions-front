@@ -10,19 +10,68 @@ import TabBar, { TabData } from "components/tab-bar/TabBar";
 import Modal from "components/modal-new-tab/ModalNewTab";
 import ConfirmModal from "components/confirm-modal/ConfirmModal";
 
-interface NotebookTab {
-  label: string;
-  content: string;
-  color: string;
+interface NotebookState {
+  state:
+    | "default"
+    | "content-changed"
+    | "name-changed"
+    | "content-name-changed"
+    | "new"
+    | "delete";
+  notebook: Notebook;
 }
 
 const NotebooksPage = () => {
   const { state } = useUserProvider();
 
+  const [updateNotebooksCount, setUpdateNotebooksCount] = useState(0);
+
   const NotebookProvider = useNotebookProvider();
+  const [notebooksState, setNotebooksState] = useState<NotebookState[]>([]);
+
+  const updateNotebooks = () => {
+    setUpdateNotebooksCount(updateNotebooksCount + 1);
+  };
+
+  const updateNotebooksState = async () => {
+    await NotebookProvider.actions.defaultNotebooks("pedro").then(() => {
+      const notebooks = NotebookProvider.state.data;
+      const notebooksSate: NotebookState[] = [];
+      notebooks?.forEach((notebook) => {
+        const newNotebookTab = {
+          state: "default",
+          notebook: notebook,
+        } as NotebookState;
+        notebooksSate.push(newNotebookTab);
+      });
+
+      setNotebooksState(notebooksSate);
+    });
+  };
+
+  const [notebooksTabs, setNotebooksTabs] = useState<TabData[]>([]);
+
+  const updateNotebooksTabs = () => {
+    const notebooksTabs = notebooksState?.map((notebookState) => {
+      const newTab = {
+        label: notebookState.notebook.name,
+        content: notebookState.notebook.content,
+      } as TabData;
+
+      return newTab;
+    });
+
+    setNotebooksTabs(notebooksTabs);
+  };
+
+  useEffect(() => {
+    updateNotebooksState().then(() => {
+      updateNotebooksTabs();
+    });
+    console.log(notebooksState);
+  }, [updateNotebooksCount]);
 
   const [newNotebooks, setNewNotebooks] = useState<Notebook[]>([]);
-  const [notebooksTabs, setNotebooksTabs] = useState<TabData[]>([]);
 
   const [activeTab, setActiveTab] = useState<number>(0);
 
@@ -78,26 +127,6 @@ const NotebooksPage = () => {
 
   const closeConfirmModal = () => setConfirmModalOpen(false);
 
-  const getNotebooks = async () => {
-    console.log("Login: ", state.data?.username);
-
-    await NotebookProvider.actions.defaultNotebooks("pedro").then(() => {
-      const notebooks = NotebookProvider.state.data;
-      console.log(notebooks);
-      setNotebooksTabs([] as TabData[]);
-      if (!!notebooks && notebooks.length > 0) {
-        setNotebooksTabs(
-          notebooks.map((notebook) => {
-            return {
-              label: notebook.name,
-              content: notebook.content,
-            } as TabData;
-          })
-        );
-      }
-    });
-  };
-
   const saveNotebooks = () => {
     newNotebooks.forEach(async (notebook) => {
       await NotebookProvider.actions.createNotebook(notebook).then(() => {
@@ -125,7 +154,7 @@ const NotebooksPage = () => {
 
   return (
     <div>
-      <button onClick={() => getNotebooks()}>UPDATE</button>
+      <button onClick={() => updateNotebooks()}>UPDATE</button>
       <button onClick={() => saveNotebooks()}>SAVE</button>
       <TabBar
         tabs={notebooksTabs}
