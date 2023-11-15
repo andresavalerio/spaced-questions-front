@@ -26,6 +26,11 @@ const repo: Notebook[] = [
   },
 ];
 
+const idGenerator : { nextGeneratedId : number, generateId: () => number} = {
+  generateId : () => idGenerator.nextGeneratedId++,
+  nextGeneratedId : 5
+};
+
 const createNotebookHandler = rest.post(
   createNotebookEndpoint,
   async (req, res, ctx) => {
@@ -33,7 +38,9 @@ const createNotebookHandler = rest.post(
 
     const newNotebook = body as Notebook;
 
-    repo.push(body);
+    newNotebook.id = idGenerator.generateId();
+
+    repo.push(newNotebook);
 
     return res(
       ctx.status(201),
@@ -104,7 +111,6 @@ const renameNotebookHandler = rest.patch(
     const body = await req.json();
 
     const notebookIndex = repo.findIndex((notebook) => {
-      console.log(notebook);
       return notebook.name === oldName && notebook.owner === owner;
     });
 

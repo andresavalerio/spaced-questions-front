@@ -90,7 +90,6 @@ describe("NotebookAPI", () => {
     describe("CreateNotebook", () => {
       it("should create a new notebook", async () => {
         const newNotebook: Notebook = {
-          id: 1,
           name: "NameToTest",
           owner: "OwnerToTest",
           content: "empty",
@@ -98,7 +97,9 @@ describe("NotebookAPI", () => {
 
         const response = await requestCreateNotebook(newNotebook);
 
-        expect(response.notebook[0]).toEqual(newNotebook);
+        expect(response.notebook[0]).toHaveProperty("name", newNotebook.name);
+        expect(response.notebook[0]).toHaveProperty("owner", newNotebook.owner);
+        expect(response.notebook[0]).toHaveProperty("content", newNotebook.content);
       });
     });
 
