@@ -101,18 +101,22 @@ const renameNotebookHandler = rest.patch(
     const owner = req.params["owner"];
     const oldName = req.params["name"];
 
-    const body = (await req.json());
+    const body = await req.json();
 
-    const notebookIndex = repo.findIndex(
-      (notebook) => notebook.name === oldName && notebook.owner === owner
-    );
-    
-    if (notebookIndex > 0) repo[notebookIndex].name = body.newName;
+    const notebookIndex = repo.findIndex((notebook) => {
+      console.log(notebook);
+      return notebook.name === oldName && notebook.owner === owner;
+    });
+
+    console.log(notebookIndex);
+
+    if (notebookIndex >= 0) repo[notebookIndex].name = body.newName;
     return res(
       ctx.delay(),
       ctx.status(200),
       ctx.json({
-        notebook: notebookIndex > 0 ? [repo[notebookIndex]] : ([] as Notebook[]),
+        notebook:
+          notebookIndex > 0 ? [repo[notebookIndex]] : ([] as Notebook[]),
       } as NotebooksAPIResponse)
     );
   }

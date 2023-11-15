@@ -68,11 +68,14 @@ export async function requestRenameNotebook(
     body: JSON.stringify({ newName }),
   };
 
-  const response = await fetchAPI(`/notebook/${owner}/${notebookName}`, requestBody);
+  const response = await fetchAPI(
+    `/notebook/${owner}/${notebookName}`,
+    requestBody
+  );
 
   if (response.status === 400) throw new NotebookBadRequest();
 
   if (response.status !== 200) throw new NotebookRequestError();
 
-  return response.json();
+  return response.json() as unknown as NotebooksAPIResponse;
 }

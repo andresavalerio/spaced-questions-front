@@ -1,14 +1,14 @@
-import "./LandingPage.css";
 import { useState, useEffect, useRef } from "react";
-import NoteEditor from "../../components/note-editor/NoteEditor";
-import TabBar, { TabData } from "../../components/tab-bar/TabBar";
-import Modal from "../../components/modal-new-tab/ModalNewTab";
-import ConfirmModal from "../../components/confirm-modal/ConfirmModal";
+import { Navigate } from "react-router-dom";
+import "./NotebooksPage.css";
 import { useUserProvider } from "providers/user/hooks/UserHooks";
 import { isUserLogged } from "providers/user/utils/UserUtils";
-import { Navigate } from "react-router-dom";
 import { useNotebookProvider } from "providers/notebook/hooks/NotebookHooks";
 import { Notebook } from "providers/notebook/types";
+import NoteEditor from "components/note-editor/NoteEditor";
+import TabBar, { TabData } from "components/tab-bar/TabBar";
+import Modal from "components/modal-new-tab/ModalNewTab";
+import ConfirmModal from "components/confirm-modal/ConfirmModal";
 
 interface NotebookTab {
   label: string;
@@ -16,11 +16,8 @@ interface NotebookTab {
   color: string;
 }
 
-const LandingPage = () => {
-
+const NotebooksPage = () => {
   const { state } = useUserProvider();
-
-  if (!isUserLogged(state)) return <Navigate to={"/login"} />;
 
   const NotebookProvider = useNotebookProvider();
 
@@ -44,10 +41,13 @@ const LandingPage = () => {
       ...notebooksTabs,
       {
         label: !name ? `Caderno ${notebooksTabs.length + 1}` : name,
-        content: ""
+        content: "",
       } as TabData,
     ];
-    setNewNotebooks([...newNotebooks, { id: 12, content: "", name: name, owner: "pedro" } as Notebook])
+    setNewNotebooks([
+      ...newNotebooks,
+      { id: 12, content: "", name: name, owner: "pedro" } as Notebook,
+    ]);
     setNotebooksTabs(newTabs);
     setActiveTab(newTabs.length - 1);
   };
@@ -78,58 +78,55 @@ const LandingPage = () => {
 
   const closeConfirmModal = () => setConfirmModalOpen(false);
 
-  const activateFirstTab = (tabs: NotebookTab[]) =>
-    setActiveTab(tabs.length - 1);
-
-
   const getNotebooks = async () => {
-    console.log("Login: ", state.data?.username)
+    console.log("Login: ", state.data?.username);
 
-    const userNotebooks = await (
-      NotebookProvider
-        .actions
-        .defaultNotebooks("pedro")
-        .then(() => {
-          const notebooks = NotebookProvider.state.data;
-          console.log(notebooks)
-          setNotebooksTabs([] as TabData[]);
-          if (!!notebooks && notebooks.length > 0) {
-            setNotebooksTabs(
-              notebooks.map(notebook => {
-                return { label: notebook.name, content: notebook.content } as TabData;
-              }))
-          }
-        })
-    )
+    await NotebookProvider.actions.defaultNotebooks("pedro").then(() => {
+      const notebooks = NotebookProvider.state.data;
+      console.log(notebooks);
+      setNotebooksTabs([] as TabData[]);
+      if (!!notebooks && notebooks.length > 0) {
+        setNotebooksTabs(
+          notebooks.map((notebook) => {
+            return {
+              label: notebook.name,
+              content: notebook.content,
+            } as TabData;
+          })
+        );
+      }
+    });
   };
 
   const saveNotebooks = () => {
-
     newNotebooks.forEach(async (notebook) => {
       await NotebookProvider.actions.createNotebook(notebook).then(() => {
         setNewNotebooks([]);
-      })
-    })
-  }
+      });
+    });
+  };
 
   const confirmDeleteNotebook = async () => {
-    const currentNotebooks = notebooksTabs
     const deletedNotebook = notebooksTabs.splice(activeTab, 1);
 
-    await NotebookProvider.actions.deleteNotebook("pedro", deletedNotebook[0].label)
-    
+    await NotebookProvider.actions.deleteNotebook(
+      "pedro",
+      deletedNotebook[0].label
+    );
 
     setConfirmModalOpen(false);
-  }
+  };
 
   useEffect(() => {
     focusEditor();
   }, [activeTab, notebooksTabs]);
 
+  if (!isUserLogged(state)) return <Navigate to={"/login"} />;
+
   return (
     <div>
-      <button onClick={(actions) => getNotebooks()}>UPDATE</button>
-      <button onClick={(actions) => saveNotebooks()}>SAVE</button>
+      <button onClick={() => getNotebooks()}>UPDATE</button>
+      <button onClick={() => saveNotebooks()}>SAVE</button>
       <TabBar
         tabs={notebooksTabs}
         activeTab={activeTab}
@@ -156,9 +153,14 @@ const LandingPage = () => {
         </button>
       </div>
       <Modal />
-      <ConfirmModal isOpen={isConfirmModalOpen} onCancel={closeConfirmModal} onConfirm={confirmDeleteNotebook} name={notebooksTabs[activeTab] ? notebooksTabs[activeTab].label : ""} />
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        onCancel={closeConfirmModal}
+        onConfirm={confirmDeleteNotebook}
+        name={notebooksTabs[activeTab] ? notebooksTabs[activeTab].label : ""}
+      />
     </div>
   );
 };
 
-export default LandingPage;
+export default NotebooksPage;
