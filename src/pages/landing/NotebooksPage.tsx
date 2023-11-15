@@ -21,6 +21,11 @@ interface NotebookState {
   notebook: Notebook;
 }
 
+const generateId = {
+  _currentId: 0,
+  generateTemporaryId: () => `temp-${generateId._currentId++}`,
+};
+
 const NotebooksPage = () => {
   const { state } = useUserProvider();
 
@@ -88,7 +93,7 @@ const NotebooksPage = () => {
       {
         state: "new",
         notebook: {
-          id: 12,
+          id: generateId.generateTemporaryId(),
           name: newNotebookName,
           content: "",
           owner: "pedro",
@@ -117,10 +122,17 @@ const NotebooksPage = () => {
   };
 
   const handleTabContentChange = (newContent: string) => {
+    const notebookName = notebooksTabs[activeTabIndex].label;
+    const stateIndex = notebooksState.findIndex(
+      (notebookState) => notebookState.notebook.name === notebookName
+    );
+
+    if (stateIndex < 0) return;
+
     const newNotebooksStates = [...notebooksState];
-    newNotebooksStates[activeTabIndex].notebook.content = newContent;
-    if (newNotebooksStates[activeTabIndex].state === "default")
-      newNotebooksStates[activeTabIndex].state = "content-changed";
+    newNotebooksStates[stateIndex].notebook.content = newContent;
+    if (newNotebooksStates[stateIndex].state === "default")
+      newNotebooksStates[stateIndex].state = "content-changed";
     setNotebooksState(newNotebooksStates);
 
     const newTabs = [...notebooksTabs];
@@ -133,32 +145,46 @@ const NotebooksPage = () => {
   }, [activeTabIndex, notebooksTabs]);
 
   const saveNotebooks = () => {
-
-    console.log(notebooksState)
+    console.log(notebooksState);
 
     notebooksState.forEach((notebookState) => {
-      if (notebookState.state === "default") return;
-      if (notebookState.state === "new") {
-        NotebookProvider.actions.createNotebook(notebookState.notebook);
-      }
-      if (notebookState.state === "content-changed") {
-        //TO-DO
+      switch (notebookState.state) {
+        case "default":
+          break;
+        case "new":
+          NotebookProvider.actions.createNotebook(notebookState.notebook);
+          break;
+        case "content-changed":
+          //TO-DO
+          break;
+        case "delete":
+          NotebookProvider.actions.deleteNotebook("pedro", notebookState.notebook.name)
+          break;
+        default:
+          break;
       }
     });
   };
-  
+
   const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
-  
+
   const closeConfirmModal = () => setConfirmModalOpen(false);
-  
+
   const confirmDeleteNotebook = async () => {
-
-    const deletedNotebook = notebooksTabs.splice(activeTabIndex, 1);
-
-    await NotebookProvider.actions.deleteNotebook(
-      "pedro",
-      deletedNotebook[0].label
+    const notebookName = notebooksTabs[activeTabIndex].label;
+    const stateIndex = notebooksState.findIndex(
+      (notebookState) => notebookState.notebook.name === notebookName
     );
+
+    if (stateIndex < 0) return;
+
+    const newNotebooksStates = [...notebooksState];
+    newNotebooksStates[stateIndex].state = "delete";
+    setNotebooksState(newNotebooksStates);
+
+    const newTabs = [...notebooksTabs];
+    newTabs.splice(activeTabIndex, 1);
+    setNotebooksTabs(newTabs);
 
     setConfirmModalOpen(false);
   };
