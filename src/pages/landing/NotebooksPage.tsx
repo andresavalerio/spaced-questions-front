@@ -70,24 +70,13 @@ const NotebooksPage = () => {
     });
     console.log(notebooksState);
   }, [updateNotebooksCount]);
-
+  // *********** MARKED TO REMOVAL ***************
   const [newNotebooks, setNewNotebooks] = useState<Notebook[]>([]);
-
+  // *********************************************
   const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
 
   const handleTabClick = (index: number) => {
     setActiveTabIndex(index);
-  };
-
-  const handleTabContentChange = (newContent: string) => {
-    const newNotebooksStates = [...notebooksState];
-    newNotebooksStates[activeTabIndex].notebook.content = newContent;
-    newNotebooksStates[activeTabIndex].state = "content-changed";
-    setNotebooksState(newNotebooksStates);
-
-    const newTabs = [...notebooksTabs];
-    newTabs[activeTabIndex].content = newContent;
-    setNotebooksTabs(newTabs);
   };
 
   const createNewTabNotebook = (newNotebookName: string) => {
@@ -126,9 +115,32 @@ const NotebooksPage = () => {
       { id: 12, content: "", name: newNotebookName, owner: "pedro" } as Notebook,
     ]);
     // *********************************************
-    
   };
 
+  const editorRef = useRef<HTMLTextAreaElement>(null);
+
+  const focusEditor = () => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+    }
+  };
+
+  const handleTabContentChange = (newContent: string) => {
+    const newNotebooksStates = [...notebooksState];
+    newNotebooksStates[activeTabIndex].notebook.content = newContent;
+    newNotebooksStates[activeTabIndex].state = "content-changed";
+    setNotebooksState(newNotebooksStates);
+
+    const newTabs = [...notebooksTabs];
+    newTabs[activeTabIndex].content = newContent;
+    setNotebooksTabs(newTabs);
+  };
+
+  useEffect(() => {
+    focusEditor();
+  }, [activeTabIndex, notebooksTabs]);
+
+  
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [modalPurpose, setModalPurpose] = useState<"create" | "rename">(
     "create"
@@ -144,14 +156,6 @@ const NotebooksPage = () => {
   };
 
   const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
-
-  const editorRef = useRef<HTMLTextAreaElement>(null);
-
-  const focusEditor = () => {
-    if (editorRef.current) {
-      editorRef.current.focus();
-    }
-  };
 
   const closeConfirmModal = () => setConfirmModalOpen(false);
 
@@ -173,10 +177,6 @@ const NotebooksPage = () => {
 
     setConfirmModalOpen(false);
   };
-
-  useEffect(() => {
-    focusEditor();
-  }, [activeTabIndex, notebooksTabs]);
 
   if (!isUserLogged(state)) return <Navigate to={"/login"} />;
 
