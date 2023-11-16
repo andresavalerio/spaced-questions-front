@@ -11,11 +11,12 @@ import {
   requestUserNotebooks,
   requestCreateNotebook,
   requestRenameNotebook,
+  requestNotebookUpdate,
 } from "../api/NotebookAPI";
 import { notebookReducer } from "../reducer/NotebookReducer";
 import { Notebook } from "../types";
 
-const { LOADING, DEFAULT, CREATE, DELETE, ERROR, RENAME } =
+const { LOADING, DEFAULT, CREATE, DELETE, ERROR, RENAME, UPDATE } =
   NotebookReducerTypes;
 
 const useNotebookContext = () => React.useContext(NotebookContext);
@@ -37,6 +38,7 @@ export const useNotebookProvider = () => {
       deleteNotebook: createDeleteNotebookAction(state, dispatch),
       defaultNotebooks: createDefaultNotebookAction(state, dispatch),
       renameNotebook: createRenameNotebookAction(state, dispatch),
+      updateNotebook: createUpdateNotebookAction(state, dispatch),
     },
   };
 };
@@ -125,6 +127,22 @@ export const createDeleteNotebookAction =
       dispatch({ type: DELETE, payload: undefined });
     } catch (error) {
       dispatch({ type: ERROR });
+      console.log(error);
+    }
+  };
+
+  export const createUpdateNotebookAction = 
+  (state: NotebookState, dispatch: NotebookDispatch) =>
+  async (owner: string, notebook: string): Promise<void> => {
+    try{
+      dispatch({type: LOADING});
+
+      const response = await requestNotebookUpdate(owner, notebook);
+
+      dispatch({type: UPDATE, payload: response.notebook });
+    }
+    catch(error){
+      dispatch({type: ERROR});
       console.log(error);
     }
   };

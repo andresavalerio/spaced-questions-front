@@ -12,6 +12,7 @@ export enum NotebookReducerTypes {
   DELETE = "DELETED",
   ERROR = "ERROR",
   RENAME = "RENAME",
+  UPDATE = "UPDATE",
 }
 
 type NotebookRequestingNotebook = {
@@ -44,13 +45,19 @@ type NotebookRename = {
   payload?: Notebook[];
 };
 
+type NotebookUpdate = {
+  type: NotebookReducerTypes.UPDATE;
+  payload?: Notebook[];
+}
+
 export type NotebookReducers =
   | NotebookRequestingNotebook
   | NotebookDefault
   | NotebookCreate
   | NotebookError
   | NotebookDelete
-  | NotebookRename;
+  | NotebookRename
+  | NotebookUpdate;
 
 export type NotebookDispatch = React.Dispatch<NotebookReducers>;
 

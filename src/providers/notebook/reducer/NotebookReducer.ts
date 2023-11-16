@@ -18,7 +18,7 @@ export const notebookReducer = (
       return loadingNotebookReducer(state);
 
     case NotebookReducerTypes.DEFAULT:
-      return loadedNotebookReducer(action.payload);
+      return defaultNotebookReducer(action.payload);
 
     case NotebookReducerTypes.ERROR:
       return errorNotebookReducer();
@@ -31,17 +31,24 @@ export const notebookReducer = (
 
     case NotebookReducerTypes.RENAME:
       return renameNotebookReducer(action);
+    
+    case NotebookReducerTypes.UPDATE:
+      return notebookUpdateReducer(action.payload);
 
     default:
       return state;
   }
 };
 
+const notebookUpdateReducer = (notebook: Notebook[]): NotebookState => {
+  return {loading: false, data: notebook};
+}
+
 const loadingNotebookReducer = (state: NotebookState): NotebookState => {
   return { ...state, loading: true };
 };
 
-const loadedNotebookReducer = (notebooks: Notebook[]): NotebookState => {
+const defaultNotebookReducer = (notebooks: Notebook[]): NotebookState => {
   return { loading: false, data: notebooks };
 };
 

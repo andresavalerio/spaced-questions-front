@@ -5,6 +5,7 @@ import {
   requestDeleteNotebook,
   requestNotebookByName,
   requestRenameNotebook,
+  requestNotebookUpdate,
 } from "./NotebookAPI";
 import * as fetching from "helpers/fetch";
 import { notebookHandlers } from "./NotebookMockServer";
@@ -130,6 +131,20 @@ describe("NotebookAPI", () => {
         );
 
         expect(response.notebook[0].name).toBe("NewNameToTest");
+        expect(response.notebook[0].owner).toBe("pedro");
+      });
+    });
+
+    describe("Update Notebook", () => {
+      it("Should request for a notebook to be updated", async () => {
+        const owner = "pedro";
+        const notebookName = "Caderno de Ciência";
+
+        const response = await requestNotebookUpdate(
+          owner,
+          notebookName,
+        );
+
         expect(response.notebook[0].owner).toBe("pedro");
       });
     });

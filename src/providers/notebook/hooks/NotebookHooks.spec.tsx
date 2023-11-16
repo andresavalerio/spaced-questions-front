@@ -115,4 +115,25 @@ describe("NotebookHooks", () => {
       );
     });
   });
+
+  describe("update notebook", () => {
+    it("should update a notebook", async () => {
+      const { result } = renderNotebookHooks();
+      const currentNotebookName = "Caderno de Ciência";
+      await act(async () => {
+        await result.current.actions.updateNotebook(
+          "pedro",
+          currentNotebookName,
+        );
+      });
+      expect(result.current.state.loading).toBe(false);
+      expect(result.current.state.data).toBeDefined();
+
+      expect(result.current.state.data![0]).toHaveProperty("owner", "pedro");
+      expect(result.current.state.data![0]).toHaveProperty(
+        "name",
+        "Caderno de outro assunto"
+      );
+    });
+  });
 });
