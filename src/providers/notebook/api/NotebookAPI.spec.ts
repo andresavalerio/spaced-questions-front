@@ -154,6 +154,23 @@ describe("NotebookAPI", () => {
         expect(response.notebook[0].name).toBe("Caderno de Física");
         expect(response.notebook[0].content).toBe("Newer content here my mates");
       });
+      
+      it("Should request for a notebook to content and name to be updated", async () => {
+        const updateNotebookOwner = "pedro";
+        const updateNotebookId = 2;
+
+        const updateNotebookData: UpdateNotebookDTO = {
+          newName: "Now We Extrapolate",
+          newContent:"Remaking every thing"
+        }
+
+        const response = await requestNotebookUpdate(updateNotebookOwner, updateNotebookId, updateNotebookData);
+        console.log(response.notebook)
+        expect(response.notebook).toHaveLength(1);
+        expect(response.notebook[0].owner).toBe("pedro");
+        expect(response.notebook[0].name).toBe("Now We Extrapolate");
+        expect(response.notebook[0].content).toBe("Remaking every thing");
+      });
     });
   });
 });
