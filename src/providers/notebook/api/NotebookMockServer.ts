@@ -122,7 +122,8 @@ const updateNotebookHandler = rest.patch(
 
     if (body.newName) repository[notebookIndex].name = body.newName;
 
-    if (body.newContent) repository[notebookIndex].content = body.newContent;
+    if (typeof body?.newContent === "string")
+      repository[notebookIndex].content = body.newContent;
 
     const notebooks = [repository[notebookIndex]];
 

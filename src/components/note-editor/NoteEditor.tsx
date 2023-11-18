@@ -15,14 +15,10 @@ type NoteEditorMethods = {
 export type NoteEditorReference = NoteEditorMethods;
 
 const NoteEditor = React.forwardRef<NoteEditorReference, NoteEditorProps>(
-  ({ onContentUpdate, autoSave = true }, ref) => {
-    const [activeNotebook, setActiveTab] = React.useState<
-      NotebookTab | undefined
-    >();
+  ({ onContentUpdate }, ref) => {
+    const [activeNotebook, setActiveTab] = React.useState<NotebookTab>();
 
     const [content, setContent] = React.useState<string>("");
-
-    const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
     const isSelected = !!activeNotebook;
 
@@ -46,9 +42,14 @@ const NoteEditor = React.forwardRef<NoteEditorReference, NoteEditorProps>(
 
     return (
       <textarea
-        ref={textareaRef}
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        onBlur={(e) => {
+          const hasContentChange = activeNotebook?.content != e.target.value;
+
+          if (isSelected && hasContentChange)
+            onContentUpdate(e.target.value, activeNotebook);
+        }}
         className="textarea-editor"
         placeholder="Campo de texto.... Lorem ipsum dolom..."
       />
