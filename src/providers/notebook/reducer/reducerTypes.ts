@@ -2,25 +2,24 @@ import { Notebook } from "../types";
 
 export type NotebookState = {
   loading: boolean;
-  data?: Notebook[];
+  data: Notebook[];
 };
 
 export enum NotebookReducerTypes {
   LOADING = "LOADING",
-  LOAD = "DEFAULT",
+  LOAD = "LOAD",
   CREATE = "CREATE",
   DELETE = "DELETED",
   ERROR = "ERROR",
-  RENAME = "RENAME",
   UPDATE = "UPDATE",
 }
 
-type NotebookRequestingNotebook = {
+type NotebookLoading = {
   type: NotebookReducerTypes.LOADING;
   payload?: undefined;
 };
 
-type NotebookDefault = {
+type NotebookLoad = {
   type: NotebookReducerTypes.LOAD;
   payload: Notebook[];
 };
@@ -37,12 +36,7 @@ type NotebookError = {
 
 type NotebookDelete = {
   type: NotebookReducerTypes.DELETE;
-  payload?: Notebook[];
-};
-
-type NotebookRename = {
-  type: NotebookReducerTypes.RENAME;
-  payload?: Notebook[];
+  payload: number;
 };
 
 type NotebookUpdate = {
@@ -51,12 +45,11 @@ type NotebookUpdate = {
 };
 
 export type NotebookReducers =
-  | NotebookRequestingNotebook
-  | NotebookDefault
+  | NotebookLoading
+  | NotebookLoad
   | NotebookCreate
   | NotebookError
   | NotebookDelete
-  | NotebookRename
   | NotebookUpdate;
 
 export type NotebookDispatch = React.Dispatch<NotebookReducers>;

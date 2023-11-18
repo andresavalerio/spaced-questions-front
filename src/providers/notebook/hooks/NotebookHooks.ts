@@ -10,20 +10,11 @@ import {
   requestNotebookById,
   requestNotebooksByOwner,
   requestCreateNotebook,
-  requestRenameNotebook,
   requestNotebookUpdate,
 } from "../api/NotebookAPI";
-import { Notebook } from "../types";
+import { UpdateNotebookDTO } from "../types";
 
-const {
-  LOADING,
-  LOAD: DEFAULT,
-  CREATE,
-  DELETE,
-  ERROR,
-  RENAME,
-  UPDATE,
-} = NotebookReducerTypes;
+const { LOADING, LOAD, CREATE, DELETE, ERROR, UPDATE } = NotebookReducerTypes;
 
 const useNotebookContext = () => React.useContext(NotebookContext);
 
@@ -39,111 +30,79 @@ export const useNotebookProvider = () => {
   return {
     state,
     actions: {
-      getNotebook: getNotebookAction(state, dispatch),
+      getNotebookById: createGetNotebookByIdAction(state, dispatch),
       createNotebook: createCreateNotebookAction(state, dispatch),
-      deleteNotebook: createDeleteNotebookAction(state, dispatch),
-      defaultNotebooks: createDefaultNotebookAction(state, dispatch),
-      renameNotebook: createRenameNotebookAction(state, dispatch),
+      deleteNotebookById: createDeleteNotebookAction(state, dispatch),
+      loadNotebooks: createLoadNotebookAction(state, dispatch),
       updateNotebook: createUpdateNotebookAction(state, dispatch),
     },
   };
 };
 
-export const createDefaultNotebookAction =
+export const createLoadNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
   async (owner: string) => {
+    dispatch({ type: LOADING });
+
     const response = await requestNotebooksByOwner(owner);
 
-    dispatch({
-      type: DEFAULT,
-      payload: response.notebook,
-    });
+    dispatch({ type: LOAD, payload: response.notebook });
   };
 
-export const getNotebookAction =
+export const createGetNotebookByIdAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
-  async (owner: string, notebook: string): Promise<void> => {
+  async (owner: string, id: number): Promise<void> => {
     try {
       dispatch({ type: LOADING });
 
-      const response = await requestNotebookById(owner, notebook);
+      const response = await requestNotebookById(owner, id);
 
-      dispatch({
-        type: DEFAULT,
-        payload: response.notebook,
-      });
+      dispatch({ type: LOAD, payload: response.notebook });
     } catch (error) {
-      dispatch({ type: ERROR });
       console.error(error);
+
+      dispatch({ type: ERROR });
     }
   };
 
 export const createCreateNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
-  async (notebook: Notebook): Promise<void> => {
+  async (name: string, owner: string): Promise<void> => {
     try {
       dispatch({ type: LOADING });
 
-      const response = await requestCreateNotebook(notebook);
+      const response = await requestCreateNotebook(name, owner);
 
-      dispatch({
-        type: CREATE,
-        payload: response.notebook,
-      });
+      dispatch({ type: CREATE, payload: response.notebook });
     } catch (error) {
-      dispatch({ type: ERROR });
       console.error(error);
-    }
-  };
 
-export const createRenameNotebookAction =
-  (state: NotebookState, dispatch: NotebookDispatch) =>
-  async (
-    owner: string,
-    notebookName: string,
-    newName: string
-  ): Promise<void> => {
-    try {
-      dispatch({ type: LOADING });
-
-      const response = await requestRenameNotebook(
-        owner,
-        notebookName,
-        newName
-      );
-
-      dispatch({
-        type: RENAME,
-        payload: response.notebook,
-      });
-    } catch (error) {
       dispatch({ type: ERROR });
-      console.error(error);
     }
   };
 
 export const createDeleteNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
-  async (owner: string, notebook: string): Promise<void> => {
+  async (owner: string, id: number): Promise<void> => {
     try {
       dispatch({ type: LOADING });
 
-      await requestDeleteNotebook(owner, notebook);
+      await requestDeleteNotebook(owner, id);
 
-      dispatch({ type: DELETE, payload: undefined });
+      dispatch({ type: DELETE, payload: id });
     } catch (error) {
-      dispatch({ type: ERROR });
       console.log(error);
+      dispatch({ type: ERROR });
     }
   };
 
 export const createUpdateNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
-  async (owner: string, notebook: string): Promise<void> => {
+  async (owner: string, id: number, data: UpdateNotebookDTO): Promise<void> => {
     try {
       dispatch({ type: LOADING });
 
-      const response = await requestNotebookUpdate(owner, notebook);
+      const response = await requestNotebookUpdate(owner, id, data);
 
       dispatch({ type: UPDATE, payload: response.notebook });
     } catch (error) {

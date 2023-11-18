@@ -36,7 +36,7 @@ describe("NotebookHooks", () => {
       const { result } = renderNotebookHooks();
 
       await act(async () => {
-        await result.current.actions.defaultNotebooks("pedro");
+        await result.current.actions.loadNotebooks("pedro");
       });
 
       expect(result.current.state).toHaveProperty("loading", false);
@@ -48,7 +48,10 @@ describe("NotebookHooks", () => {
       const { result } = renderNotebookHooks();
 
       await act(async () => {
-        await result.current.actions.getNotebook("pedro", "Caderno de Física");
+        await result.current.actions.getNotebookById(
+          "pedro",
+          "Caderno de Física"
+        );
       });
 
       expect(result.current.state).toHaveProperty("loading", false);
@@ -62,7 +65,7 @@ describe("NotebookHooks", () => {
       const { result } = renderNotebookHooks();
 
       await act(async () => {
-        await result.current.actions.deleteNotebook(
+        await result.current.actions.deleteNotebookById(
           "pedro",
           "Caderno de Física"
         );
@@ -123,7 +126,7 @@ describe("NotebookHooks", () => {
       await act(async () => {
         await result.current.actions.updateNotebook(
           "pedro",
-          currentNotebookName,
+          currentNotebookName
         );
       });
       expect(result.current.state.loading).toBe(false);

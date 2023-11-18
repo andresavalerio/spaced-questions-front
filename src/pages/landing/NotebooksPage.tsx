@@ -39,7 +39,7 @@ const NotebooksPage = () => {
   };
 
   const updateNotebooksState = async () => {
-    await NotebookProvider.actions.defaultNotebooks("pedro").then(() => {
+    await NotebookProvider.actions.loadNotebooks("pedro").then(() => {
       const notebooks = NotebookProvider.state.data;
       const notebooksSate: NotebookState[] = [];
       notebooks?.forEach((notebook) => {
@@ -164,7 +164,7 @@ const NotebooksPage = () => {
           //TO-DO
           break;
         case "delete":
-          NotebookProvider.actions.deleteNotebook(
+          NotebookProvider.actions.deleteNotebookById(
             "pedro",
             notebookState.notebook.name
           );

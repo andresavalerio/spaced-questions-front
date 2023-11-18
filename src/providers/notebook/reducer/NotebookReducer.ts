@@ -17,24 +17,33 @@ export const notebookReducer = (
       return errorNotebookReducer();
 
     case NotebookReducerTypes.DELETE:
-      return deleteNotebookReducer();
+      return deleteNotebookReducer(state.data, action.payload);
 
     case NotebookReducerTypes.CREATE:
-      return createNotebookReducer(action);
-
-    case NotebookReducerTypes.RENAME:
-      return renameNotebookReducer(action);
+      return createNotebookReducer(state.data, action.payload);
 
     case NotebookReducerTypes.UPDATE:
-      return notebookUpdateReducer(action.payload);
+      return updateNotebooksReducer(state.data, action.payload);
 
     default:
       return state;
   }
 };
 
-const notebookUpdateReducer = (notebook: Notebook[]): NotebookState => {
-  return { loading: false, data: notebook };
+const updateNotebooksReducer = (
+  oldNotebooks: Notebook[],
+  notebook: Notebook[]
+): NotebookState => {
+  return {
+    loading: false,
+    data: oldNotebooks.map((oldNotebook) => {
+      const notebookFound = notebook.find(({ id }) => oldNotebook.id === id);
+
+      if (!notebookFound) return oldNotebook;
+
+      return notebookFound;
+    }),
+  };
 };
 
 const loadingNotebookReducer = (state: NotebookState): NotebookState => {
@@ -46,17 +55,26 @@ const loadNotebookReducer = (notebooks: Notebook[]): NotebookState => {
 };
 
 const errorNotebookReducer = (): NotebookState => {
-  return { loading: false, data: undefined };
+  return { loading: false, data: [] };
 };
 
-const deleteNotebookReducer = (): NotebookState => {
-  return { loading: false, data: undefined };
+const deleteNotebookReducer = (
+  oldNotebooks: Notebook[],
+  id: number
+): NotebookState => {
+  return {
+    loading: false,
+    data: oldNotebooks.filter((notebook) => {
+      const sameNotebook = notebook.id === id;
+
+      return !sameNotebook;
+    }),
+  };
 };
 
-const createNotebookReducer = (state: NotebookReducers): NotebookState => {
-  return { loading: false, data: state.payload };
-};
-
-const renameNotebookReducer = (state: NotebookReducers): NotebookState => {
-  return { loading: false, data: state.payload };
+const createNotebookReducer = (
+  oldNotebooks: Notebook[],
+  newNotebook: Notebook[]
+): NotebookState => {
+  return { loading: false, data: [...oldNotebooks, ...newNotebook] };
 };
