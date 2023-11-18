@@ -9,6 +9,7 @@ import {
 import * as fetching from "helpers/fetch";
 import { notebookHandlers, resetMockServer } from "./NotebookMockServer";
 import { Notebook, UpdateNotebookDTO } from "../types";
+import { R } from "vitest/dist/reporters-5f784f42.js";
 
 describe("NotebookAPI", () => {
   setupMockServer(notebookHandlers);
@@ -16,7 +17,7 @@ describe("NotebookAPI", () => {
 
   beforeEach(() => {
     fetchingMock.mockClear();
-    resetMockServer()
+    resetMockServer();
   });
 
   describe("Contract definitions(requests spied) with backend", () => {
@@ -87,6 +88,52 @@ describe("NotebookAPI", () => {
         );
         expect(fetchAPIUsedParameter[1]).toMatchObject(httpDeleteMethod);
       });
+
+      it.each([
+        {
+          newName: "here we are",
+          newContent: undefined
+        },
+        {
+          newName: undefined,
+          newContent: "There were bugs",
+        },
+        {
+          newName: "Here we Test",
+          newContent: "caouse probles we can have",
+        },
+      ])(
+        "Should request for notebook update with new Name $newName ans new Content $newContent",
+        async ({newName, newContent}) => {
+          const notebookOwner = "pedro";
+          const notebookId = 4;
+
+          const newNameToNotebook = {
+            newName,
+            newContent
+          } as UpdateNotebookDTO;
+
+          const requestContent: RequestInit = {
+            method: "PATCH",
+            body: JSON.stringify(newNameToNotebook),
+          };
+
+          await requestNotebookUpdate(
+            notebookOwner,
+            notebookId,
+            newNameToNotebook
+          );
+
+          expect(fetchingMock).toHaveBeenCalledOnce();
+
+          const fetchAPIUsedParameter = fetchingMock.mock.calls[0];
+
+          expect(fetchAPIUsedParameter[0]).toBe(
+            `/notebook/${notebookOwner}/${notebookId}`
+          );
+          expect(fetchAPIUsedParameter[1]).toMatchObject(requestContent);
+        }
+      );
     });
   });
 
@@ -129,43 +176,57 @@ describe("NotebookAPI", () => {
         const updateNotebookId = 4;
 
         const updateNotebookData: UpdateNotebookDTO = {
-          newName: "New Name Here"
-        }
+          newName: "New Name Here",
+        };
 
-        const response = await requestNotebookUpdate(updateNotebookOwner, updateNotebookId, updateNotebookData);
-        console.log(response.notebook)
+        const response = await requestNotebookUpdate(
+          updateNotebookOwner,
+          updateNotebookId,
+          updateNotebookData
+        );
+        console.log(response.notebook);
         expect(response.notebook).toHaveLength(1);
         expect(response.notebook[0].owner).toBe("pedro");
         expect(response.notebook[0].name).toBe("New Name Here");
       });
-      
+
       it("Should request for a notebook to content to be updated", async () => {
         const updateNotebookOwner = "pedro";
         const updateNotebookId = 4;
 
         const updateNotebookData: UpdateNotebookDTO = {
-          newContent:"Newer content here my mates"
-        }
+          newContent: "Newer content here my mates",
+        };
 
-        const response = await requestNotebookUpdate(updateNotebookOwner, updateNotebookId, updateNotebookData);
-        console.log(response.notebook)
+        const response = await requestNotebookUpdate(
+          updateNotebookOwner,
+          updateNotebookId,
+          updateNotebookData
+        );
+        console.log(response.notebook);
         expect(response.notebook).toHaveLength(1);
         expect(response.notebook[0].owner).toBe("pedro");
         expect(response.notebook[0].name).toBe("Caderno de Física");
-        expect(response.notebook[0].content).toBe("Newer content here my mates");
+        expect(response.notebook[0].content).toBe(
+          "Newer content here my mates"
+        );
       });
-      
+
       it("Should request for a notebook to content and name to be updated", async () => {
         const updateNotebookOwner = "pedro";
         const updateNotebookId = 2;
 
         const updateNotebookData: UpdateNotebookDTO = {
           newName: "Now We Extrapolate",
-          newContent:"Remaking every thing"
-        }
+          newContent: "Remaking every thing",
+        };
 
-        const response = await requestNotebookUpdate(updateNotebookOwner, updateNotebookId, updateNotebookData);
-        console.log(response.notebook)
+        const response = await requestNotebookUpdate(
+          updateNotebookOwner,
+          updateNotebookId,
+          updateNotebookData
+        );
+        console.log(response.notebook);
         expect(response.notebook).toHaveLength(1);
         expect(response.notebook[0].owner).toBe("pedro");
         expect(response.notebook[0].name).toBe("Now We Extrapolate");
