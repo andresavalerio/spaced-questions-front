@@ -4,13 +4,14 @@ import styles from "./TabBar.module.css";
 import Tab from "../tab/Tab";
 import Modal from "../modal-new-tab/ModalNewTab";
 
-export type TabData = {
+export type NotebookTab = {
+  id: number;
   label: string;
   content: string;
 };
 
 interface TabBarProps {
-  tabs: TabData[];
+  tabs: NotebookTab[];
   activeTab: number;
   onTabClick: (input: number) => void;
   onAddTab: (name: string) => void;
