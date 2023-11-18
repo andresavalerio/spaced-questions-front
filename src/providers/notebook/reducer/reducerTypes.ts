@@ -2,7 +2,7 @@ import { Notebook } from "../types";
 
 export type NotebookState = {
   loading: boolean;
-  data?: Notebook[];
+  data: Notebook[];
 };
 
 export enum NotebookReducerTypes {

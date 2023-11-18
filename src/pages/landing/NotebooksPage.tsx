@@ -35,7 +35,6 @@ const NotebooksPage = () => {
       const hasNotebooks = !!notebookState.data.length;
 
       if (hasNotebooks) {
-        setActiveTabIndex(0);
         noteEditorRef.current?.setActiveNotebook(notebookTabs[0]);
       }
     });
@@ -51,6 +50,7 @@ const NotebooksPage = () => {
 
   const handleTabClick = (index: number) => {
     setActiveTabIndex(index);
+
     noteEditorRef.current?.setActiveNotebook(notebookTabs[index]);
   };
 
@@ -66,12 +66,10 @@ const NotebooksPage = () => {
     });
   };
 
-  const handleTabContentChange = (
+  const handleEditorContentChange = (
     newContent: string,
     notebook: NotebookTab
   ) => {
-    if (!activeNotebookTab) return;
-
     const hasRealChange = notebook.content !== newContent;
 
     if (!hasRealChange) return;
@@ -103,7 +101,7 @@ const NotebooksPage = () => {
       />
       <NoteEditor
         ref={noteEditorRef}
-        onContentUpdate={handleTabContentChange}
+        onContentUpdate={handleEditorContentChange}
       />
       <div style={{ float: "left", margin: "0 10px 0 50px" }}>
         <button className="landing-page-button">Renomear Caderno</button>
