@@ -184,7 +184,6 @@ describe("NotebookAPI", () => {
           updateNotebookId,
           updateNotebookData
         );
-        console.log(response.notebook);
         expect(response.notebook).toHaveLength(1);
         expect(response.notebook[0].owner).toBe("pedro");
         expect(response.notebook[0].name).toBe("New Name Here");
@@ -203,7 +202,6 @@ describe("NotebookAPI", () => {
           updateNotebookId,
           updateNotebookData
         );
-        console.log(response.notebook);
         expect(response.notebook).toHaveLength(1);
         expect(response.notebook[0].owner).toBe("pedro");
         expect(response.notebook[0].name).toBe("Caderno de Física");
@@ -226,7 +224,6 @@ describe("NotebookAPI", () => {
           updateNotebookId,
           updateNotebookData
         );
-        console.log(response.notebook);
         expect(response.notebook).toHaveLength(1);
         expect(response.notebook[0].owner).toBe("pedro");
         expect(response.notebook[0].name).toBe("Now We Extrapolate");

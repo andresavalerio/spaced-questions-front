@@ -11,13 +11,18 @@ const initialState: NotebookState = {
 };
 
 describe("NotebookReducer", () => {
+  beforeEach(() => {
+    initialState.data = undefined;
+    initialState.loading = false;
+  });
+
   it("reducer should be on initial state", () => {
     expect(initialState).toBeDefined();
     expect(initialState).toHaveProperty("loading", false);
-    expect(initialState).not.toHaveProperty("data");
+    expect(initialState.data).not.toBeDefined();
   });
 
-  it("reducer should be getting data", () => {
+  it("reducer should be waiting(LOADING) for data", () => {
     const action: NotebookReducers = {
       type: NotebookReducerTypes.LOADING,
       payload: undefined,
@@ -25,8 +30,8 @@ describe("NotebookReducer", () => {
 
     const newState = notebookReducer(initialState, action);
 
-    expect(newState).not.toHaveProperty("data");
     expect(newState).toHaveProperty("loading", true);
+    expect(newState.data).not.toBeDefined();
   });
 
   it("reducer should have got the data", () => {
@@ -38,47 +43,44 @@ describe("NotebookReducer", () => {
 
     const action: NotebookReducers = {
       type: NotebookReducerTypes.LOAD,
-      payload: notebook,
+      payload: [notebook],
     };
 
     const newState = notebookReducer(initialState, action);
 
-    expect(newState).toHaveProperty("data");
-    expect(newState).toHaveProperty("data", notebook);
+    const newStatePayload = newState.data![0];
+
+    expect(newState).toHaveProperty("loading", false);
+    expect(newStatePayload).toBe(notebook);
+  });
+
+  it("reducer should get to an error state", () => {
+    const action: NotebookReducers = {
+      type: NotebookReducerTypes.ERROR,
+      payload: undefined,
+    };
+
+    const newState = notebookReducer(initialState, action);
+
+    expect(newState.data).toHaveLength(0);
     expect(newState).toHaveProperty("loading", false);
   });
-  /*
-    it("reducer should get to an error state", () => {
-      const loadedState = {
-        loading: false,
-        data: {} as Notebook,
-      } as NotebookState;
-  
-      const action: NotebookReducers = {
-        type: NotebookReducerTypes.ERROR,
-        payload: undefined,
-      };
-  
-      const newState = notebookReducer(loadedState, action);
-  
-      expect(newState).toHaveProperty("data", undefined);
-      expect(newState).toHaveProperty("loading", false);
-    });
-  
-    it("reducer should be on deleted state", () => {
-      const loadedState = {
-        loading: false,
-        data: {} as Notebook,
-      } as NotebookState;
-  
-      const action: NotebookReducers = {
-        type: NotebookReducerTypes.DELETE,
-        payload: undefined,
-      };
-  
-      const newState = notebookReducer(loadedState, action);
-  
-      expect(newState).toHaveProperty("data", undefined);
-      expect(newState).toHaveProperty("loading", false);
-    });*/
+
+  it("reducer should be on deleted state", () => {
+    const loadedState = {
+      loading: false,
+      data: [{id: 12}, {id: 15}] as Notebook[],
+    } as NotebookState;
+
+    const action: NotebookReducers = {
+      type: NotebookReducerTypes.DELETE,
+      payload: 12,
+    };
+
+    const newState = notebookReducer(loadedState, action);
+
+    expect(newState.data).toHaveLength(1);
+    expect(newState.data![0]).toHaveProperty("id",15);
+    expect(newState).toHaveProperty("loading", false);
+  });
 });
