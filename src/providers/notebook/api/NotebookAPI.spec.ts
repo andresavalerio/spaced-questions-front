@@ -20,16 +20,23 @@ describe("NotebookAPI", () => {
 
   describe("Contract definitions(requests spied) with backend", () => {
     describe("RequestNotebook", () => {
-      it("Should calls one valid notebook using owner's name and notebook's name", async () => {
+      it("Should calls one valid notebook using owner's name and notebook's id", async () => {
         const owner = "pedro";
-        const notebookName = "Caderno de Português";
+        const notebookId = 3;
 
-        await requestNotebookById("pedro", "Caderno de Português");
+        const httpGetMethod: RequestInit = {
+          method: "GET",
+        };
+
+        await requestNotebookById("pedro", notebookId);
 
         expect(fetchingMock).toHaveBeenCalledOnce();
-        expect(fetchingMock).toBeCalledWith(
-          `/notebook/${owner}/${notebookName}`
-        );
+        expect(fetchingMock).toBeCalledWith(`/notebook/${owner}/${notebookId}`);
+
+        const fetchAPIUsedParameter = fetchingMock.mock.calls[0];
+
+        expect(fetchAPIUsedParameter[0]).toBe(`/notebooks`);
+        expect(fetchAPIUsedParameter[1]).toMatchObject(httpGetMethod);
       });
 
       it("Should request all notebooks of one owner", async () => {
@@ -42,47 +49,48 @@ describe("NotebookAPI", () => {
       });
     });
 
-    it("Should request for notebook creating wiht valid http request", async () => {
-      const newNotebook: Notebook = {
-        id: 1,
-        name: "NameToTest",
-        owner: "OwnerToTest",
-        content: "empty",
-      };
+    describe("Requesting Notebook Alteration", () => {
+      it("Should request for notebook creating wiht valid http request", async () => {
+        const newNotebookName = "NameToTest";
+        const newNotebookOwner = "OwnerToTest";
 
-      const requestBody: RequestInit = {
-        method: "POST",
-        body: JSON.stringify(newNotebook),
-      };
+        const requestBody: RequestInit = {
+          method: "POST",
+          body: JSON.stringify({
+            name: newNotebookName,
+            owner: newNotebookOwner,
+          }),
+        };
 
-      await requestCreateNotebook(newNotebook);
+        await requestCreateNotebook(newNotebookName, newNotebookOwner);
 
-      expect(fetchingMock).toHaveBeenCalledOnce();
+        expect(fetchingMock).toHaveBeenCalledOnce();
 
-      const fetchAPIUsedParameter = fetchingMock.mock.calls[0];
+        const fetchAPIUsedParameter = fetchingMock.mock.calls[0];
 
-      expect(fetchAPIUsedParameter[0]).toBe(`/notebooks`);
-      expect(fetchAPIUsedParameter[1]).toMatchObject(requestBody);
-    });
+        expect(fetchAPIUsedParameter[0]).toBe(`/notebooks`);
+        expect(fetchAPIUsedParameter[1]).toMatchObject(requestBody);
+      });
 
-    it("Should request for notebook deletetion with valid http request", async () => {
-      const owner = "pedro";
-      const notebooksName = "Caderno de Física";
+      it("Should request for notebook deletetion with valid http request", async () => {
+        const notebookOwner = "pedro";
+        const notebookId = 4;
 
-      const httpDeleteMethod = {
-        method: "DELETE",
-      };
+        const httpDeleteMethod = {
+          method: "DELETE",
+        };
 
-      await requestDeleteNotebook(owner, notebooksName);
+        await requestDeleteNotebook(notebookOwner,notebookId);
 
-      expect(fetchingMock).toHaveBeenCalledOnce();
+        expect(fetchingMock).toHaveBeenCalledOnce();
 
-      const fetchAPIUsedParameter = fetchingMock.mock.calls[0];
+        const fetchAPIUsedParameter = fetchingMock.mock.calls[0];
 
-      expect(fetchAPIUsedParameter[0]).toBe(
-        `/notebooks/${owner}/${notebooksName}`
-      );
-      expect(fetchAPIUsedParameter[1]).toMatchObject(httpDeleteMethod);
+        expect(fetchAPIUsedParameter[0]).toBe(
+          `/notebooks/${notebookOwner}/${notebookId}`
+        );
+        expect(fetchAPIUsedParameter[1]).toMatchObject(httpDeleteMethod);
+      });
     });
   });
 
