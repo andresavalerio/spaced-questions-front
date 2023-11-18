@@ -118,7 +118,14 @@ const updateNotebookHandler = rest.patch(
     );
 
     const notebookFound = notebookIndex >= 0;
-    if (notebookFound) repository[notebookIndex].name = body.newName;
+
+    const alterName = !!body.newName && body.newName != '';
+
+    const alterContent = body.newContent;
+    
+    if (notebookFound && alterName) repository[notebookIndex].name = body.newName;
+
+    if (notebookFound && alterContent) repository[notebookIndex].content = body.newContent;
 
     const notebooks = notebookFound ? [repository[notebookIndex]] : [];
 
