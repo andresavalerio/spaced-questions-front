@@ -1,56 +1,55 @@
 .LandingPage {
-    text-align: center;
+  text-align: center;
 }
-  
+
 .LandingPage-logo {
-    height: 40vmin;
-    pointer-events: none;
+  height: 40vmin;
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .LandingPage-logo {
-        animation: LandingPage-logo-spin infinite 20s linear;
-    }
+  .LandingPage-logo {
+    animation: LandingPage-logo-spin infinite 20s linear;
+  }
 }
 
 .LandingPage-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .LandingPage-link {
-    color: #61dafb;
+  color: #61dafb;
 }
 
 @keyframes LandingPage-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.LandingPage-buttonStyle {
-    padding: 10px 20px;
-    border-radius: 8px;
-    background: #3A5940;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: all 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-family: Montserrat;
-    font-weight: 600;
-    &:hover {
-        background: #588157;
-    }
+.landing-page-button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: #3a5940;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: Montserrat;
+  font-weight: 600;
+  &:hover {
+    background: #588157;
+  }
 }
-  

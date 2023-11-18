@@ -2,7 +2,7 @@ import React from "react";
 import { notebookReducer } from "./reducer/NotebookReducer";
 import { NotebookReducers, NotebookState } from "./reducer/reducerTypes";
 
-const initialState: NotebookState = { loading: false };
+const initialState: NotebookState = { loading: false, data: [] };
 
 export const NotebookContext = React.createContext<NotebookState>(initialState);
 
@@ -23,7 +23,3 @@ export function NotebookProvider({ children }: { children: React.ReactNode }) {
     </NotebookContext.Provider>
   );
 }
-
-
-
-
