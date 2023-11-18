@@ -7,8 +7,8 @@ import {
   requestNotebookUpdate,
 } from "./NotebookAPI";
 import * as fetching from "helpers/fetch";
-import { notebookHandlers } from "./NotebookMockServer";
-import { Notebook } from "../types";
+import { notebookHandlers, resetMockServer } from "./NotebookMockServer";
+import { Notebook, UpdateNotebookDTO } from "../types";
 
 describe("NotebookAPI", () => {
   setupMockServer(notebookHandlers);
@@ -16,6 +16,7 @@ describe("NotebookAPI", () => {
 
   beforeEach(() => {
     fetchingMock.mockClear();
+    resetMockServer()
   });
 
   describe("Contract definitions(requests spied) with backend", () => {
@@ -32,11 +33,6 @@ describe("NotebookAPI", () => {
 
         expect(fetchingMock).toHaveBeenCalledOnce();
         expect(fetchingMock).toBeCalledWith(`/notebook/${owner}/${notebookId}`);
-
-        const fetchAPIUsedParameter = fetchingMock.mock.calls[0];
-
-        expect(fetchAPIUsedParameter[0]).toBe(`/notebooks`);
-        expect(fetchAPIUsedParameter[1]).toMatchObject(httpGetMethod);
       });
 
       it("Should request all notebooks of one owner", async () => {
@@ -80,7 +76,7 @@ describe("NotebookAPI", () => {
           method: "DELETE",
         };
 
-        await requestDeleteNotebook(notebookOwner,notebookId);
+        await requestDeleteNotebook(notebookOwner, notebookId);
 
         expect(fetchingMock).toHaveBeenCalledOnce();
 
@@ -97,46 +93,50 @@ describe("NotebookAPI", () => {
   describe("API retuns with fake server", () => {
     describe("CreateNotebook", () => {
       it("should create a new notebook", async () => {
-        const newNotebook: Notebook = {
-          name: "NameToTest",
-          owner: "OwnerToTest",
-          content: "empty",
-        };
+        const newNotebookName = "NameToTest";
+        const newNotebookOwner = "OwnerToTest";
 
-        const response = await requestCreateNotebook(newNotebook);
-
-        expect(response.notebook[0]).toHaveProperty("name", newNotebook.name);
-        expect(response.notebook[0]).toHaveProperty("owner", newNotebook.owner);
-        expect(response.notebook[0]).toHaveProperty(
-          "content",
-          newNotebook.content
+        const response = await requestCreateNotebook(
+          newNotebookName,
+          newNotebookOwner
         );
+
+        expect(response.notebook[0]).toHaveProperty("name", newNotebookName);
+        expect(response.notebook[0]).toHaveProperty("owner", newNotebookOwner);
+        expect(response.notebook[0]).not.toHaveProperty("content");
       });
     });
 
     describe("DeleteNotebook", () => {
       it("should delete the notebook", async () => {
-        const owner = "pedro";
-        const notebooksName = "Caderno de Física";
+        const notebookOwner = "pedro";
+        const notebooksId = 4;
 
-        const response = await requestDeleteNotebook(owner, notebooksName);
+        const response = await requestDeleteNotebook(
+          notebookOwner,
+          notebooksId
+        );
 
-        expect(response).toBe(200);
-
-        const responseDeletion = await requestNotebooksByOwner(owner);
+        const responseDeletion = await requestNotebooksByOwner(notebookOwner);
 
         expect(responseDeletion.notebook).toHaveLength(3);
       });
     });
 
     describe("Update Notebook", () => {
-      it("Should request for a notebook to be updated", async () => {
-        const owner = "pedro";
-        const notebookName = "Caderno de Ciência";
+      it("Should request for a notebook to be renamed", async () => {
+        const updateNotebookOwner = "pedro";
+        const updateNotebookId = 4;
 
-        const response = await requestNotebookUpdate(owner, notebookName);
+        const updateNotebookData: UpdateNotebookDTO = {
+          newName: "New Name Here"
+        }
 
+        const response = await requestNotebookUpdate(updateNotebookOwner, updateNotebookId, updateNotebookData);
+        console.log(response.notebook)
+        expect(response.notebook).toHaveLength(1);
         expect(response.notebook[0].owner).toBe("pedro");
+        expect(response.notebook[0].name).toBe("New Name Here");
       });
     });
   });

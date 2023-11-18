@@ -7,12 +7,12 @@ const createNotebookEndpoint = buildEndpointPath("/notebooks");
 const getNotebooksByOwnerEndpoint = buildEndpointPath("/notebooks/:owner");
 
 const removeNotebookByOwnerEndpoint = buildEndpointPath(
-  "/notebooks/:owner/:name"
+  "/notebooks/:owner/:id"
 );
 
 const getNotebookByOwnerEndpoint = buildEndpointPath("/notebook/:owner/:id");
 
-const renameNotebookEndpoint = buildEndpointPath("/notebook/:owner/:id");
+const updateNotebookEndpoint = buildEndpointPath("/notebook/:owner/:id");
 
 const repository: Notebook[] = [
   { id: 1, name: "Caderno de Matematica", owner: "pedro", content: "" },
@@ -106,11 +106,10 @@ const getNotebookByOwnerAndIdHandler = rest.get(
   }
 );
 
-const renameNotebookHandler = rest.patch(
-  renameNotebookEndpoint,
+const updateNotebookHandler = rest.patch(
+  updateNotebookEndpoint,
   async (req, res, ctx) => {
-    const owner = req.params["owner"] as string;
-    const id = req.params["id"];
+    const { owner, id } = req.params as { owner: string; id: string };
 
     const body = await req.json();
 
@@ -119,8 +118,7 @@ const renameNotebookHandler = rest.patch(
     );
 
     const notebookFound = notebookIndex >= 0;
-
-    if (notebookIndex >= 0) repository[notebookIndex].name = body.newName;
+    if (notebookFound) repository[notebookIndex].name = body.newName;
 
     const notebooks = notebookFound ? [repository[notebookIndex]] : [];
 
@@ -137,7 +135,7 @@ export const notebookHandlers: RequestHandler[] = [
   getNotebookByOwnerHandler,
   removeNotebookByOwnerHandler,
   getNotebookByOwnerAndIdHandler,
-  renameNotebookHandler,
+  updateNotebookHandler,
 ];
 
 const findIndexByOwnerAndId =
@@ -155,3 +153,21 @@ function removeNotebookFromRepository(owner: string, id: number) {
 
   return removedNotebook;
 }
+
+export const resetMockServer = () => {
+  repository.splice(
+    0,
+    repository.length,
+    ...[
+      { id: 1, name: "Caderno de Matematica", owner: "pedro", content: "" },
+      { id: 2, name: "Caderno de Ciência", owner: "pedro", content: "" },
+      { id: 3, name: "Caderno de Português", owner: "pedro", content: "" },
+      {
+        id: 4,
+        name: "Caderno de Física",
+        owner: "pedro",
+        content: "equações de Maxuel",
+      },
+    ]
+  );
+};
