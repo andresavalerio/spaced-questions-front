@@ -123,6 +123,7 @@ const NotebooksPage = () => {
 
   const handleTabContentChange = (newContent: string) => {
     const notebookName = notebooksTabs[activeTabIndex].label;
+
     const stateIndex = notebooksState.findIndex(
       (notebookState) => notebookState.notebook.name === notebookName
     );
@@ -130,13 +131,18 @@ const NotebooksPage = () => {
     if (stateIndex < 0) return;
 
     const newNotebooksStates = [...notebooksState];
+
     newNotebooksStates[stateIndex].notebook.content = newContent;
+
     if (newNotebooksStates[stateIndex].state === "default")
       newNotebooksStates[stateIndex].state = "content-changed";
+
     setNotebooksState(newNotebooksStates);
 
     const newTabs = [...notebooksTabs];
+
     newTabs[activeTabIndex].content = newContent;
+
     setNotebooksTabs(newTabs);
   };
 
@@ -158,7 +164,10 @@ const NotebooksPage = () => {
           //TO-DO
           break;
         case "delete":
-          NotebookProvider.actions.deleteNotebook("pedro", notebookState.notebook.name)
+          NotebookProvider.actions.deleteNotebook(
+            "pedro",
+            notebookState.notebook.name
+          );
           break;
         default:
           break;

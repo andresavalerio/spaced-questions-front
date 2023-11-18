@@ -37,7 +37,7 @@ describe("NotebookReducer", () => {
     } as Notebook;
 
     const action: NotebookReducers = {
-      type: NotebookReducerTypes.DEFAULT,
+      type: NotebookReducerTypes.LOAD,
       payload: notebook,
     };
 

@@ -1,10 +1,9 @@
 import { setupMockServer } from "helpers/tests";
 import {
-  requestUserNotebooks,
+  requestNotebooksByOwner,
   requestCreateNotebook,
   requestDeleteNotebook,
-  requestNotebookByName,
-  requestRenameNotebook,
+  requestNotebookById,
   requestNotebookUpdate,
 } from "./NotebookAPI";
 import * as fetching from "helpers/fetch";
@@ -25,7 +24,7 @@ describe("NotebookAPI", () => {
         const owner = "pedro";
         const notebookName = "Caderno de Português";
 
-        await requestNotebookByName("pedro", "Caderno de Português");
+        await requestNotebookById("pedro", "Caderno de Português");
 
         expect(fetchingMock).toHaveBeenCalledOnce();
         expect(fetchingMock).toBeCalledWith(
@@ -36,7 +35,7 @@ describe("NotebookAPI", () => {
       it("Should request all notebooks of one owner", async () => {
         const owner = "pedro";
 
-        await requestUserNotebooks(owner);
+        await requestNotebooksByOwner(owner);
 
         expect(fetchingMock).toHaveBeenCalledOnce();
         expect(fetchingMock).toHaveBeenCalledWith(`/notebooks/${owner}`);
@@ -100,7 +99,10 @@ describe("NotebookAPI", () => {
 
         expect(response.notebook[0]).toHaveProperty("name", newNotebook.name);
         expect(response.notebook[0]).toHaveProperty("owner", newNotebook.owner);
-        expect(response.notebook[0]).toHaveProperty("content", newNotebook.content);
+        expect(response.notebook[0]).toHaveProperty(
+          "content",
+          newNotebook.content
+        );
       });
     });
 
@@ -113,25 +115,9 @@ describe("NotebookAPI", () => {
 
         expect(response).toBe(200);
 
-        const responseDeletion = await requestUserNotebooks(owner);
+        const responseDeletion = await requestNotebooksByOwner(owner);
 
         expect(responseDeletion.notebook).toHaveLength(3);
-      });
-    });
-
-    describe("RenameNotebook", () => {
-      it("Should request for a notebook to be renamed", async () => {
-        const owner = "pedro";
-        const newName = "NewNameToTest";
-
-        const response = await requestRenameNotebook(
-          owner,
-          "Caderno de Português",
-          newName
-        );
-
-        expect(response.notebook[0].name).toBe("NewNameToTest");
-        expect(response.notebook[0].owner).toBe("pedro");
       });
     });
 
@@ -140,10 +126,7 @@ describe("NotebookAPI", () => {
         const owner = "pedro";
         const notebookName = "Caderno de Ciência";
 
-        const response = await requestNotebookUpdate(
-          owner,
-          notebookName,
-        );
+        const response = await requestNotebookUpdate(owner, notebookName);
 
         expect(response.notebook[0].owner).toBe("pedro");
       });

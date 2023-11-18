@@ -21,3 +21,8 @@ export type NotebookListType = {
 export type NotebooksAPIResponse = {
   notebook: Notebook[];
 };
+
+export type UpdateNotebookDTO =
+  | { newName: string }
+  | { newContent: string }
+  | { newName: string; newContent: string };

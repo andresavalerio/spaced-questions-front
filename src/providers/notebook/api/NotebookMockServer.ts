@@ -10,11 +10,11 @@ const removeNotebookByOwnerEndpoint = buildEndpointPath(
   "/notebooks/:owner/:name"
 );
 
-const getNotebookByOwnerEndpoint = buildEndpointPath("/notebook/:owner/:name");
+const getNotebookByOwnerEndpoint = buildEndpointPath("/notebook/:owner/:id");
 
-const renameNotebookEndpoint = buildEndpointPath("/notebook/:owner/:name");
+const renameNotebookEndpoint = buildEndpointPath("/notebook/:owner/:id");
 
-const repo: Notebook[] = [
+const repository: Notebook[] = [
   { id: 1, name: "Caderno de Matematica", owner: "pedro", content: "" },
   { id: 2, name: "Caderno de Ciência", owner: "pedro", content: "" },
   { id: 3, name: "Caderno de Português", owner: "pedro", content: "" },
@@ -26,9 +26,9 @@ const repo: Notebook[] = [
   },
 ];
 
-const idGenerator : { nextGeneratedId : number, generateId: () => number} = {
-  generateId : () => idGenerator.nextGeneratedId++,
-  nextGeneratedId : 5
+const idGenerator: { nextGeneratedId: number; generateId: () => number } = {
+  generateId: () => idGenerator.nextGeneratedId++,
+  nextGeneratedId: 5,
 };
 
 const createNotebookHandler = rest.post(
@@ -40,7 +40,7 @@ const createNotebookHandler = rest.post(
 
     newNotebook.id = idGenerator.generateId();
 
-    repo.push(newNotebook);
+    repository.push(newNotebook);
 
     return res(
       ctx.status(201),
@@ -57,13 +57,13 @@ const getNotebookByOwnerHandler = rest.get(
     if (!owner || typeof owner !== "string")
       return res(ctx.delay(), ctx.status(200), ctx.json([]));
 
-    const ownersNotebooks = repo.filter((notebook) => notebook.owner === owner);
+    const ownerNotebooks = repository.filter(
+      (notebook) => notebook.owner === owner
+    );
 
     return res(
       ctx.status(200),
-      ctx.json({
-        notebook: ownersNotebooks,
-      } as NotebooksAPIResponse)
+      ctx.json({ notebook: ownerNotebooks } as NotebooksAPIResponse)
     );
   }
 );
@@ -71,10 +71,9 @@ const getNotebookByOwnerHandler = rest.get(
 const removeNotebookByOwnerHandler = rest.delete(
   removeNotebookByOwnerEndpoint,
   async (req, res, ctx) => {
-    const owner = req.params["owner"];
-    const name = req.params["name"];
+    const { owner, id } = req.params as { owner: string; id: string };
 
-    const removedNotebook = removeNotebookFromRepository(owner, name);
+    const removedNotebook = removeNotebookFromRepository(owner, Number(id));
 
     if (removedNotebook) {
       return res(ctx.delay(), ctx.status(200));
@@ -84,14 +83,19 @@ const removeNotebookByOwnerHandler = rest.delete(
   }
 );
 
-const getNotebookByOwnerAndNameHandler = rest.get(
+const findNotebookByOwnerAndId =
+  (owner: string, id: number) => (notebook: Notebook) => {
+    return notebook.owner === owner && notebook.id === Number(id);
+  };
+
+const getNotebookByOwnerAndIdHandler = rest.get(
   getNotebookByOwnerEndpoint,
   async (req, res, ctx) => {
-    const owner = req.params["owner"];
-    const name = req.params["name"];
+    const owner = req.params["owner"] as string;
+    const id = req.params["id"];
 
-    const notebook = repo.find(
-      (notebook) => notebook.owner === owner && notebook.name === name
+    const notebook = repository.find(
+      findNotebookByOwnerAndId(owner, Number(id))
     );
 
     return res(
@@ -105,25 +109,25 @@ const getNotebookByOwnerAndNameHandler = rest.get(
 const renameNotebookHandler = rest.patch(
   renameNotebookEndpoint,
   async (req, res, ctx) => {
-    const owner = req.params["owner"];
-    const oldName = req.params["name"];
+    const owner = req.params["owner"] as string;
+    const id = req.params["id"];
 
     const body = await req.json();
 
-    const notebookIndex = repo.findIndex((notebook) => {
-      return notebook.name === oldName && notebook.owner === owner;
-    });
+    const notebookIndex = repository.findIndex(
+      findNotebookByOwnerAndId(owner, Number(id))
+    );
 
-    console.log(notebookIndex);
+    const notebookFound = notebookIndex >= 0;
 
-    if (notebookIndex >= 0) repo[notebookIndex].name = body.newName;
+    if (notebookIndex >= 0) repository[notebookIndex].name = body.newName;
+
+    const notebooks = notebookFound ? [repository[notebookIndex]] : [];
+
     return res(
       ctx.delay(),
       ctx.status(200),
-      ctx.json({
-        notebook:
-          notebookIndex > 0 ? [repo[notebookIndex]] : ([] as Notebook[]),
-      } as NotebooksAPIResponse)
+      ctx.json({ notebook: notebooks } as NotebooksAPIResponse)
     );
   }
 );
@@ -132,17 +136,22 @@ export const notebookHandlers: RequestHandler[] = [
   createNotebookHandler,
   getNotebookByOwnerHandler,
   removeNotebookByOwnerHandler,
-  getNotebookByOwnerAndNameHandler,
+  getNotebookByOwnerAndIdHandler,
   renameNotebookHandler,
 ];
 
-function removeNotebookFromRepository(
-  owner: string | readonly string[],
-  name: string | readonly string[]
-) {
-  const notebookIndex = repo.findIndex(
-    (notebook) => notebook.owner === owner && notebook.name === name
-  );
-  const removedNotebook = repo.splice(notebookIndex, 1);
+const findIndexByOwnerAndId =
+  (owner: string, id: number) => (notebook: Notebook) => {
+    const sameOwner = notebook.owner === owner;
+    const sameId = notebook.id === id;
+
+    return sameOwner && sameId;
+  };
+
+function removeNotebookFromRepository(owner: string, id: number) {
+  const notebookIndex = repository.findIndex(findIndexByOwnerAndId(owner, id));
+
+  const removedNotebook = repository.splice(notebookIndex, 1);
+
   return removedNotebook;
 }

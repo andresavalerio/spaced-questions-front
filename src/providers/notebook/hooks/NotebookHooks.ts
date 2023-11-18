@@ -7,17 +7,23 @@ import {
 } from "../reducer/reducerTypes";
 import {
   requestDeleteNotebook,
-  requestNotebookByName,
-  requestUserNotebooks,
+  requestNotebookById,
+  requestNotebooksByOwner,
   requestCreateNotebook,
   requestRenameNotebook,
   requestNotebookUpdate,
 } from "../api/NotebookAPI";
-import { notebookReducer } from "../reducer/NotebookReducer";
 import { Notebook } from "../types";
 
-const { LOADING, DEFAULT, CREATE, DELETE, ERROR, RENAME, UPDATE } =
-  NotebookReducerTypes;
+const {
+  LOADING,
+  LOAD: DEFAULT,
+  CREATE,
+  DELETE,
+  ERROR,
+  RENAME,
+  UPDATE,
+} = NotebookReducerTypes;
 
 const useNotebookContext = () => React.useContext(NotebookContext);
 
@@ -46,7 +52,7 @@ export const useNotebookProvider = () => {
 export const createDefaultNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
   async (owner: string) => {
-    const response = await requestUserNotebooks(owner);
+    const response = await requestNotebooksByOwner(owner);
 
     dispatch({
       type: DEFAULT,
@@ -60,7 +66,7 @@ export const getNotebookAction =
     try {
       dispatch({ type: LOADING });
 
-      const response = await requestNotebookByName(owner, notebook);
+      const response = await requestNotebookById(owner, notebook);
 
       dispatch({
         type: DEFAULT,
@@ -131,18 +137,17 @@ export const createDeleteNotebookAction =
     }
   };
 
-  export const createUpdateNotebookAction = 
+export const createUpdateNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
   async (owner: string, notebook: string): Promise<void> => {
-    try{
-      dispatch({type: LOADING});
+    try {
+      dispatch({ type: LOADING });
 
       const response = await requestNotebookUpdate(owner, notebook);
 
-      dispatch({type: UPDATE, payload: response.notebook });
-    }
-    catch(error){
-      dispatch({type: ERROR});
+      dispatch({ type: UPDATE, payload: response.notebook });
+    } catch (error) {
+      dispatch({ type: ERROR });
       console.log(error);
     }
   };

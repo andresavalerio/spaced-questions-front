@@ -7,7 +7,7 @@ export type NotebookState = {
 
 export enum NotebookReducerTypes {
   LOADING = "LOADING",
-  DEFAULT = "DEFAULT",
+  LOAD = "DEFAULT",
   CREATE = "CREATE",
   DELETE = "DELETED",
   ERROR = "ERROR",
@@ -21,7 +21,7 @@ type NotebookRequestingNotebook = {
 };
 
 type NotebookDefault = {
-  type: NotebookReducerTypes.DEFAULT;
+  type: NotebookReducerTypes.LOAD;
   payload: Notebook[];
 };
 
@@ -36,9 +36,9 @@ type NotebookError = {
 };
 
 type NotebookDelete = {
-  type: NotebookReducerTypes.DELETE,
+  type: NotebookReducerTypes.DELETE;
   payload?: Notebook[];
-}
+};
 
 type NotebookRename = {
   type: NotebookReducerTypes.RENAME;
@@ -47,8 +47,8 @@ type NotebookRename = {
 
 type NotebookUpdate = {
   type: NotebookReducerTypes.UPDATE;
-  payload?: Notebook[];
-}
+  payload: Notebook[];
+};
 
 export type NotebookReducers =
   | NotebookRequestingNotebook
@@ -60,4 +60,3 @@ export type NotebookReducers =
   | NotebookUpdate;
 
 export type NotebookDispatch = React.Dispatch<NotebookReducers>;
-

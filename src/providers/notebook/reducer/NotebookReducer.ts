@@ -1,24 +1,17 @@
-import {
-  NotebookReducerTypes,
-  NotebookState,
-} from "./reducerTypes";
-import {
-  NotebookReducers
-} from "../reducer/reducerTypes.ts";
+import { NotebookReducerTypes, NotebookState } from "./reducerTypes";
+import { NotebookReducers } from "../reducer/reducerTypes.ts";
 import { Notebook } from "../types.ts";
-
 
 export const notebookReducer = (
   state: NotebookState,
   action: NotebookReducers
 ) => {
   switch (action.type) {
-
     case NotebookReducerTypes.LOADING:
       return loadingNotebookReducer(state);
 
-    case NotebookReducerTypes.DEFAULT:
-      return defaultNotebookReducer(action.payload);
+    case NotebookReducerTypes.LOAD:
+      return loadNotebookReducer(action.payload);
 
     case NotebookReducerTypes.ERROR:
       return errorNotebookReducer();
@@ -31,7 +24,7 @@ export const notebookReducer = (
 
     case NotebookReducerTypes.RENAME:
       return renameNotebookReducer(action);
-    
+
     case NotebookReducerTypes.UPDATE:
       return notebookUpdateReducer(action.payload);
 
@@ -41,14 +34,14 @@ export const notebookReducer = (
 };
 
 const notebookUpdateReducer = (notebook: Notebook[]): NotebookState => {
-  return {loading: false, data: notebook};
-}
+  return { loading: false, data: notebook };
+};
 
 const loadingNotebookReducer = (state: NotebookState): NotebookState => {
   return { ...state, loading: true };
 };
 
-const defaultNotebookReducer = (notebooks: Notebook[]): NotebookState => {
+const loadNotebookReducer = (notebooks: Notebook[]): NotebookState => {
   return { loading: false, data: notebooks };
 };
 
@@ -64,6 +57,6 @@ const createNotebookReducer = (state: NotebookReducers): NotebookState => {
   return { loading: false, data: state.payload };
 };
 
-const renameNotebookReducer= (state:NotebookReducers): NotebookState => {
-  return {loading: false, data: state.payload};
-}
+const renameNotebookReducer = (state: NotebookReducers): NotebookState => {
+  return { loading: false, data: state.payload };
+};
