@@ -83,4 +83,14 @@ describe("NotebookReducer", () => {
     expect(newState.data![0]).toHaveProperty("id",15);
     expect(newState).toHaveProperty("loading", false);
   });
+  
+  it("reducer should be throw errow on Delete operation for empty data from previou state", () => {
+    const action: NotebookReducers = {
+      type: NotebookReducerTypes.DELETE,
+      payload: 12,
+    };
+
+    expect(() => {notebookReducer(initialState, action);}).toThrowError("Empty List Of Notebooks")
+    
+  });
 });
