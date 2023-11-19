@@ -15,6 +15,8 @@ interface TabBarProps {
   activeTab: number;
   onTabClick: (input: number) => void;
   onAddTab: (name: string) => void;
+  onDeleteClick: () => void;
+  onRenameClick: () => void;
 }
 
 const TabBar: React.FC<TabBarProps> = ({
@@ -22,6 +24,8 @@ const TabBar: React.FC<TabBarProps> = ({
   activeTab,
   onTabClick,
   onAddTab,
+  onDeleteClick,
+  onRenameClick
 }) => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -46,6 +50,8 @@ const TabBar: React.FC<TabBarProps> = ({
           label={tab.label}
           isActive={isModalOpen ? false : index === activeTab}
           onClick={() => onTabClick(index)}
+          onDeleteClick={onDeleteClick}
+          onRenameClick={onRenameClick}
         />
       ))}
       <button

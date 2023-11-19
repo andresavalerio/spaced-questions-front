@@ -123,25 +123,13 @@ const NotebooksPage = () => {
         activeTab={activeTabIndex}
         onTabClick={handleTabClick}
         onAddTab={createNewNotebookTab}
+        onRenameClick={() => setRenameModalOpen(true)}
+        onDeleteClick={() => setConfirmModalOpen(true)}
       />
       <NoteEditor
         ref={noteEditorRef}
         onContentUpdate={handleEditorContentChange}
       />
-      <div style={{ float: "left", margin: "0 10px 0 50px" }}>
-        <button
-          className="landing-page-button"
-          onClick={() => setRenameModalOpen(true)}
-        >
-          Renomear Caderno
-        </button>
-        <button
-          className="landing-page-button"
-          onClick={() => setConfirmModalOpen(true)}
-        >
-          Excluir Caderno
-        </button>
-      </div>
       <RenameNotebookModal
         isOpen={isRenameModalOpen}
         onClose={closeRenameModal}
