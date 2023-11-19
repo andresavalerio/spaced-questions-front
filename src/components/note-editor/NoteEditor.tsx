@@ -4,19 +4,21 @@ import { NotebookTab } from "components/tab-bar/TabBar";
 
 type NoteEditorProps = {
   autoSave?: boolean;
+  disabled?: boolean;
   onContentUpdate: (input: string, notebook: NotebookTab) => void;
 };
 
 type NoteEditorMethods = {
   isUpdated: () => boolean;
   setActiveNotebook: (notebook: NotebookTab) => void;
+  cleanUp: () => void;
 };
 
 export type NoteEditorReference = NoteEditorMethods;
 
 const NoteEditor = React.forwardRef<NoteEditorReference, NoteEditorProps>(
-  ({ onContentUpdate }, ref) => {
-    const [activeNotebook, setActiveTab] = React.useState<NotebookTab>();
+  ({ onContentUpdate, disabled }, ref) => {
+    const [activeNotebook, setActiveNotebook] = React.useState<NotebookTab>();
 
     const [content, setContent] = React.useState<string>("");
 
@@ -27,6 +29,10 @@ const NoteEditor = React.forwardRef<NoteEditorReference, NoteEditorProps>(
         isUpdated: () => {
           return content === activeNotebook?.content;
         },
+        cleanUp: () => {
+          setContent("");
+          setActiveNotebook(undefined);
+        },
         setActiveNotebook: (newNotebook) => {
           const isOther = newNotebook.id !== activeNotebook?.id;
 
@@ -34,14 +40,15 @@ const NoteEditor = React.forwardRef<NoteEditorReference, NoteEditorProps>(
 
           if (!isOther) return;
 
-          setContent(newNotebook.content);
-          setActiveTab(newNotebook);
+          setContent(newNotebook.content || "");
+          setActiveNotebook(newNotebook);
         },
       };
     });
 
     return (
       <textarea
+        disabled={disabled}
         value={content}
         onChange={(e) => setContent(e.target.value)}
         onBlur={(e) => {

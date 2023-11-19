@@ -32,6 +32,8 @@ const NotebooksPage = () => {
 
   const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
 
+  const [isRenameModalOpen, setRenameModalOpen] = useState<boolean>(false);
+
   useEffect(() => {
     notebookActions.loadNotebooks(owner).then(() => {
       const hasNotebooks = !!notebookState.data.length;
@@ -63,7 +65,19 @@ const NotebooksPage = () => {
 
     if (nameAlreadyUsed || newNotebookName.trim() === "") return;
 
-    notebookActions.createNotebook(newNotebookName, owner).then(() => {
+    notebookActions.createNotebook(newNotebookName, owner).then((notebooks) => {
+      const notebooksCreated = notebooks?.length;
+
+      if (!notebooksCreated) return;
+
+      const firstNotebook = notebooks[0];
+
+      noteEditorRef.current?.setActiveNotebook({
+        id: Number(firstNotebook.id),
+        label: firstNotebook.name,
+        content: firstNotebook.content || "",
+      });
+
       setActiveTabIndex(notebookTabs.length);
     });
   };
@@ -83,21 +97,42 @@ const NotebooksPage = () => {
 
   const closeConfirmModal = () => setConfirmModalOpen(false);
 
-  const confirmDeleteNotebook = async () => {
+  const onConfirmDeleteNotebook = async () => {
     if (!activeNotebookTab) return;
 
     const notebookId = activeNotebookTab.id;
 
     notebookActions.deleteNotebookById(owner, notebookId).then(() => {
       setConfirmModalOpen(false);
+
+      const oldLength = notebookTabs.length;
+
+      if (oldLength === 1) return noteEditorRef.current?.cleanUp();
+
+      const deletedNotebookIndex = notebookTabs.findIndex(
+        (note) => note.id == notebookId
+      );
+
+      const isFirstNotebookDeleted = deletedNotebookIndex === 0;
+
+      const lastNotebookIndex = notebookTabs.length - 2;
+
+      const previousNotebookIndex = deletedNotebookIndex - 1;
+
+      const newNotebookIndex = isFirstNotebookDeleted
+        ? lastNotebookIndex
+        : previousNotebookIndex;
+
+      const newActiveNotebook = notebookTabs[newNotebookIndex];
+
+      setActiveTabIndex(newNotebookIndex);
+      noteEditorRef.current?.setActiveNotebook(newActiveNotebook);
     });
   };
 
-  const [isRenameModalOpen, setRenameModalOpen] = useState<boolean>(false);
-
   const closeRenameModal = () => setRenameModalOpen(false);
 
-  const confirmRenameNotebook = async (newName: string) => {
+  const onConfirmRenameNotebook = async (newName: string) => {
     if (!activeNotebookTab) return;
 
     const hasNameChanged = activeNotebookTab.label === newName;
@@ -127,6 +162,11 @@ const NotebooksPage = () => {
       <NoteEditor
         ref={noteEditorRef}
         onContentUpdate={handleEditorContentChange}
+        disabled={
+          !notebookTabs.length ||
+          activeTabIndex < 0 ||
+          activeTabIndex >= notebookTabs.length
+        }
       />
       <div style={{ float: "left", margin: "0 10px 0 50px" }}>
         <button
@@ -145,14 +185,14 @@ const NotebooksPage = () => {
       <RenameNotebookModal
         isOpen={isRenameModalOpen}
         onClose={closeRenameModal}
-        onSave={confirmRenameNotebook}
+        onSave={onConfirmRenameNotebook}
         purpose="rename"
         currentName={activeNotebookTab?.label || ""}
       ></RenameNotebookModal>
       <ConfirmModal
         isOpen={isConfirmModalOpen}
         onCancel={closeConfirmModal}
-        onConfirm={confirmDeleteNotebook}
+        onConfirm={onConfirmDeleteNotebook}
         name={activeNotebookTab?.label || ""}
       />
     </div>

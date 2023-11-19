@@ -12,7 +12,7 @@ import {
   requestCreateNotebook,
   requestNotebookUpdate,
 } from "../api/NotebookAPI";
-import { UpdateNotebookDTO } from "../types";
+import { Notebook, UpdateNotebookDTO } from "../types";
 
 const { LOADING, LOAD, CREATE, DELETE, ERROR, UPDATE } = NotebookReducerTypes;
 
@@ -67,13 +67,15 @@ export const createGetNotebookByIdAction =
 
 export const createCreateNotebookAction =
   (state: NotebookState, dispatch: NotebookDispatch) =>
-  async (name: string, owner: string): Promise<void> => {
+  async (name: string, owner: string): Promise<Notebook[] | undefined> => {
     try {
       dispatch({ type: LOADING });
 
       const response = await requestCreateNotebook(name, owner);
 
       dispatch({ type: CREATE, payload: response.notebook });
+
+      return response.notebook;
     } catch (error) {
       console.error(error);
 
