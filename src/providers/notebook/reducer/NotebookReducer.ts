@@ -62,8 +62,7 @@ const deleteNotebookReducer = (
   oldNotebooks: Notebook[],
   id: number
 ): NotebookState => {
-  if (!oldNotebooks)
-    throw Error("Empty List Of Notebooks");
+  if (!oldNotebooks) throw Error("Empty List Of Notebooks");
   return {
     loading: false,
     data: oldNotebooks.filter((notebook) => {

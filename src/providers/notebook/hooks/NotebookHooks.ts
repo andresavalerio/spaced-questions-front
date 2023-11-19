@@ -93,7 +93,7 @@ export const createDeleteNotebookAction =
 
       dispatch({ type: DELETE, payload: id });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       dispatch({ type: ERROR });
     }
   };
@@ -109,6 +109,6 @@ export const createUpdateNotebookAction =
       dispatch({ type: UPDATE, payload: response.notebook });
     } catch (error) {
       dispatch({ type: ERROR });
-      console.log(error);
+      console.error(error);
     }
   };

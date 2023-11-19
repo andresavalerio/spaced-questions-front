@@ -1,11 +1,11 @@
-import { renderHook } from "@testing-library/react";
-import { useNotebookProvider } from "./NotebookHooks";
-import { NotebookProvider } from "../NotebookProvider";
-import { ReactNode } from "react";
-import { setupMockServer } from "helpers/tests";
-import { notebookHandlers } from "../api/NotebookMockServer";
 import { act } from "react-dom/test-utils";
 import { Notebook } from "../types";
+import { ReactNode } from "react";
+import { renderHook } from "@testing-library/react";
+import { setupMockServer } from "helpers/tests";
+import { NotebookProvider } from "../NotebookProvider";
+import { notebookHandlers } from "../api/NotebookMockServer";
+import { useNotebookProvider } from "./NotebookHooks";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <NotebookProvider>{children}</NotebookProvider>
@@ -18,7 +18,7 @@ const notebookTemplate: Notebook = {
   id: 111,
   name: "caderno de geo",
   owner: "Pedro",
-  content: "Mucho texto meu amigo",
+  content: "Muito texto meu amigo",
 };
 
 describe("NotebookHooks", () => {
@@ -48,10 +48,7 @@ describe("NotebookHooks", () => {
       const { result } = renderNotebookHooks();
 
       await act(async () => {
-        await result.current.actions.getNotebookById(
-          "pedro",
-          "Caderno de Física"
-        );
+        await result.current.actions.getNotebookById("pedro", 4);
       });
 
       expect(result.current.state).toHaveProperty("loading", false);
@@ -65,14 +62,11 @@ describe("NotebookHooks", () => {
       const { result } = renderNotebookHooks();
 
       await act(async () => {
-        await result.current.actions.deleteNotebookById(
-          "pedro",
-          "Caderno de Física"
-        );
+        await result.current.actions.deleteNotebookById("pedro", 4);
       });
 
       expect(result.current.state).toHaveProperty("loading", false);
-      expect(result.current.state).toHaveProperty("data", undefined);
+      expect(result.current.state).toHaveProperty("data", []);
     });
   });
 
@@ -80,63 +74,90 @@ describe("NotebookHooks", () => {
     it("should create a notebook", async () => {
       const { result } = renderNotebookHooks();
       await act(async () => {
-        await result.current.actions.createNotebook(notebookTemplate);
+        await result.current.actions.createNotebook(
+          notebookTemplate.name,
+          notebookTemplate.owner as string
+        );
       });
 
-      expect(result.current.state).toHaveProperty("loading", false);
-      expect(result.current.state.data).toBeDefined();
-      expect(result.current.state.data![0]).toHaveProperty(
-        "name",
-        "caderno de geo"
-      );
-      expect(result.current.state.data![0]).toHaveProperty("owner", "Pedro");
-      expect(result.current.state.data![0]).toHaveProperty(
-        "content",
-        "Mucho texto meu amigo"
-      );
+      const state = result.current.state;
+
+      const { data } = state;
+
+      expect(state).toHaveProperty("loading", false);
+
+      expect(data).toBeDefined();
+
+      expect(data![0]).toHaveProperty("name", "caderno de geo");
+      expect(data![0]).toHaveProperty("owner", "Pedro");
     });
   });
 
   describe("rename notebook", () => {
     it("should rename a notebook", async () => {
       const { result } = renderNotebookHooks();
-      const currentNotebookName = "Caderno de Ciência";
-      await act(async () => {
-        await result.current.actions.renameNotebook(
-          "pedro",
-          currentNotebookName,
-          "Caderno de outro assunto"
-        );
-      });
-      expect(result.current.state.loading).toBe(false);
-      expect(result.current.state.data).toBeDefined();
 
-      expect(result.current.state.data![0]).toHaveProperty("owner", "pedro");
-      expect(result.current.state.data![0]).toHaveProperty(
-        "name",
-        "Caderno de outro assunto"
-      );
+      const newName = "Caderno de outro assunto";
+      const owner = "pedro";
+      const notebookId = 1;
+
+      await act(async () => {
+        const { loadNotebooks } = result.current.actions;
+
+        await loadNotebooks(owner);
+      });
+
+      await act(async () => {
+        const updateData = { newName };
+
+        const { updateNotebook } = result.current.actions;
+
+        await updateNotebook(owner, notebookId, updateData);
+      });
+
+      const { loading, data } = result.current.state;
+
+      expect(data).toBeDefined();
+      expect(loading).toBe(false);
+
+      const firstData = data![0];
+
+      expect(firstData).toHaveProperty("owner", owner);
+      expect(firstData).toHaveProperty("name", newName);
     });
   });
 
   describe("update notebook", () => {
     it("should update a notebook", async () => {
       const { result } = renderNotebookHooks();
-      const currentNotebookName = "Caderno de Ciência";
-      await act(async () => {
-        await result.current.actions.updateNotebook(
-          "pedro",
-          currentNotebookName
-        );
-      });
-      expect(result.current.state.loading).toBe(false);
-      expect(result.current.state.data).toBeDefined();
 
-      expect(result.current.state.data![0]).toHaveProperty("owner", "pedro");
-      expect(result.current.state.data![0]).toHaveProperty(
-        "name",
-        "Caderno de outro assunto"
-      );
+      const owner = "pedro";
+      const notebookId = 1;
+      const newContent = "Muito Conhecimento";
+
+      await act(async () => {
+        const { loadNotebooks } = result.current.actions;
+
+        await loadNotebooks(owner);
+      });
+
+      await act(async () => {
+        const updateData = { newContent };
+
+        const { updateNotebook } = result.current.actions;
+
+        await updateNotebook(owner, notebookId, updateData);
+      });
+
+      const state = result.current.state;
+
+      expect(state.loading).toBe(false);
+      expect(state.data).toBeDefined();
+
+      const firstData = state.data![0];
+
+      expect(firstData).toHaveProperty("owner", "pedro");
+      expect(firstData).toHaveProperty("content", newContent);
     });
   });
 });

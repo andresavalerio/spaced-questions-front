@@ -54,14 +54,11 @@ const getNotebookByOwnerHandler = rest.get(
   async (req, res, ctx) => {
     const owner = req.params["owner"];
 
-    if (!owner || typeof owner !== "string")
-      return res(ctx.delay(), ctx.status(200), ctx.json([]));
-
-    const isNobody = !owner;
+    if (typeof owner !== "string") return res(ctx.delay(), ctx.status(400));
 
     return res(
       ctx.status(200),
-      ctx.json({ notebook: isNobody ? [] : repository } as NotebooksAPIResponse)
+      ctx.json({ notebook: repository } as NotebooksAPIResponse)
     );
   }
 );
@@ -135,14 +132,6 @@ const updateNotebookHandler = rest.patch(
   }
 );
 
-export const notebookHandlers: RequestHandler[] = [
-  createNotebookHandler,
-  getNotebookByOwnerHandler,
-  removeNotebookByOwnerHandler,
-  getNotebookByOwnerAndIdHandler,
-  updateNotebookHandler,
-];
-
 const findIndexById = (id: number) => (notebook: Notebook) => {
   const sameId = notebook.id === id;
 
@@ -174,3 +163,11 @@ export const resetMockServer = () => {
     ]
   );
 };
+
+export const notebookHandlers: RequestHandler[] = [
+  createNotebookHandler,
+  updateNotebookHandler,
+  getNotebookByOwnerHandler,
+  removeNotebookByOwnerHandler,
+  getNotebookByOwnerAndIdHandler,
+];
