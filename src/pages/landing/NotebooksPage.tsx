@@ -9,6 +9,8 @@ import NoteEditor, {
 } from "components/note-editor/NoteEditor";
 import TabBar, { NotebookTab } from "components/tab-bar/TabBar";
 import ConfirmModal from "components/confirm-modal/ConfirmModal";
+import RenameNotebookModal from "components/modal-new-tab/ModalNewTab";
+import { UpdateNotebookDTO } from "providers/notebook/types";
 
 const NotebooksPage = () => {
   const noteEditorRef = useRef<NoteEditorReference>(null);
@@ -20,7 +22,7 @@ const NotebooksPage = () => {
 
   const notebookTabs: NotebookTab[] = notebookState.data.map((note) => ({
     id: note.id as number,
-    content: note?.content || '',
+    content: note?.content || "",
     label: note.name,
   }));
 
@@ -62,7 +64,7 @@ const NotebooksPage = () => {
     if (nameAlreadyUsed || newNotebookName.trim() === "") return;
 
     notebookActions.createNotebook(newNotebookName, owner).then(() => {
-      setActiveTabIndex(notebookTabs.length );
+      setActiveTabIndex(notebookTabs.length);
     });
   };
 
@@ -91,6 +93,29 @@ const NotebooksPage = () => {
     });
   };
 
+  const [isRenameModalOpen, setRenameModalOpen] = useState<boolean>(false);
+
+  const closeRenameModal = () => setRenameModalOpen(false);
+
+  const confirmRenameNotebook = async (newName: string) => {
+    if (!activeNotebookTab) return;
+
+    const hasNameChanged = activeNotebookTab.label === newName;
+
+    if (!newName || newName === "" || hasNameChanged) {
+      setRenameModalOpen(false);
+      return;
+    }
+
+    const notebookId = activeNotebookTab.id;
+
+    notebookActions
+      .updateNotebook(owner, notebookId, { newName } as UpdateNotebookDTO)
+      .then(() => {
+        setRenameModalOpen(false);
+      });
+  };
+
   return (
     <div>
       <TabBar
@@ -104,7 +129,12 @@ const NotebooksPage = () => {
         onContentUpdate={handleEditorContentChange}
       />
       <div style={{ float: "left", margin: "0 10px 0 50px" }}>
-        <button className="landing-page-button">Renomear Caderno</button>
+        <button
+          className="landing-page-button"
+          onClick={() => setRenameModalOpen(true)}
+        >
+          Renomear Caderno
+        </button>
         <button
           className="landing-page-button"
           onClick={() => setConfirmModalOpen(true)}
@@ -112,6 +142,13 @@ const NotebooksPage = () => {
           Excluir Caderno
         </button>
       </div>
+      <RenameNotebookModal
+        isOpen={isRenameModalOpen}
+        onClose={closeRenameModal}
+        onSave={confirmRenameNotebook}
+        purpose="rename"
+        currentName={activeNotebookTab?.label || ""}
+      ></RenameNotebookModal>
       <ConfirmModal
         isOpen={isConfirmModalOpen}
         onCancel={closeConfirmModal}
