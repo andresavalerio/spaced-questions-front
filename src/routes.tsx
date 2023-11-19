@@ -2,7 +2,7 @@ import { RouteObject } from "react-router-dom";
 import App from "./App";
 import LoginLayout from "layouts/LoginLayout/LoginLayout";
 import UserLayout from "layouts/UserLayout/UserLayout";
-import NotebooksPage from "./pages/landing/NotebooksPage";
+import NotebooksPage from "./pages/Notebooks/NotebooksPage";
 import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
 import LoginPage from "./pages/login/LoginPage";
 import RegistrationPage from "./pages/registration/RegistrationPage";

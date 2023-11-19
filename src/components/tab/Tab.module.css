@@ -1,0 +1,74 @@
+.tab-container {
+  position: relative;
+  padding: 8px 8px;
+  border-radius: 10px 10px 0 0;
+  margin: 0;
+  border: 1px #c7c7c7 solid;
+  height: 15px;
+  width: 130px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Montserrat;
+  font-weight: 600;
+}
+
+.tab-container.active {
+  background: #3a5940;
+  color: white;
+  transform: height(-3px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.tab-container.inactive {
+  background: white;
+  color: black;
+  transform: none;
+  box-shadow: none;
+  &:hover {
+    background: #c7c7c7;
+  }
+}
+
+.tab-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.dot {
+  height: var(--config-circle-size, 15px);
+  width: var(--config-circle-size, 15px);
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.alt-container {
+  --config-circle-size: 18px;
+
+  display: flex;
+  gap: 5px;
+
+  position: absolute;
+  top: calc(var(--config-circle-size) / 2 * (-1));
+  left: calc(var(--config-circle-size) / 2 * (-1));
+}
+
+.change-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #7569fe;
+}
+
+.delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff1c1c;
+}
