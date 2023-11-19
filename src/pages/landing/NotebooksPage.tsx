@@ -20,7 +20,7 @@ const NotebooksPage = () => {
 
   const notebookTabs: NotebookTab[] = notebookState.data.map((note) => ({
     id: note.id as number,
-    content: note.content,
+    content: note?.content || '',
     label: note.name,
   }));
 
