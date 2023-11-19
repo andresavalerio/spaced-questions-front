@@ -62,7 +62,7 @@ const NotebooksPage = () => {
     if (nameAlreadyUsed || newNotebookName.trim() === "") return;
 
     notebookActions.createNotebook(newNotebookName, owner).then(() => {
-      setActiveTabIndex(notebookTabs.length - 1);
+      setActiveTabIndex(notebookTabs.length );
     });
   };
 
