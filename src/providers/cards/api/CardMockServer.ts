@@ -4,6 +4,10 @@ import { Card, GetCardsAPIResponse } from "../types";
 
 const getCardsEndpoint = buildEndpointPath("/user/cards/:owner/:notebook");
 
+const requestCardModificationEndpoint = buildEndpointPath(
+  "/user/cards/:owner/:cardId"
+);
+
 const getCardsHandler = rest.get(getCardsEndpoint, async (req, res, ctx) => {
   const user = req.params["owner"];
   const notebook = req.params["notebook"];
@@ -31,4 +35,11 @@ const getCardsHandler = rest.get(getCardsEndpoint, async (req, res, ctx) => {
   );
 });
 
-export const cardHandlers = [getCardsHandler];
+const requestCardAlteraionHandler = rest.patch(
+  requestCardModificationEndpoint,
+  async (req, res, ctx) => {
+    return res(ctx.delay(), ctx.status(200));
+  }
+);
+
+export const cardHandlers = [getCardsHandler, requestCardAlteraionHandler];

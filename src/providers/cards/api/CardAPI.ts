@@ -16,4 +16,22 @@ export const requestCardFromUserNotebook = async (login: string, notebook: strin
 
     return response.json() as unknown as GetCardsAPIResponse;
 
-}
+} 
+export const requestCardAlteraion = async (owner: string, cardId: string | number, modificationRequest: CardQuestionModification) => {
+
+    const request: RequestInit = {
+        method: "PATCH",
+        body: JSON.stringify(modificationRequest)
+    }
+
+    const response = await fetchAPI(`/user/cards/${owner}/${cardId}`, request)
+
+    if (response.status === 401) throw new UserDontExistError(
+        `The user ${owner} dosn't exist`
+    );
+
+    if (response.status === 400) throw new CardsBedRequest(
+        `Bad Request`
+    )
+
+} 

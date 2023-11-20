@@ -1,12 +1,17 @@
 export type Card = {
-  question: string;
-  answer: string;
-};
+  id: string;
+  title: string;
+  content: string;
+  notebookId: string;
+}
 
 export type GetCardsAPIResponse = {
   notebook: string;
   cards: Card[];
 };
+export type CardQuestionModification = {
+  questionModification: string
+}
 
 export type UserCardDTO = {
   user: string;

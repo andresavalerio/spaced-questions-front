@@ -1,16 +1,17 @@
 import { setupMockServer } from "helpers/tests";
-import { requestCardFromUserNotebook } from "./CardAPI";
+import { requestCardAlteraion, requestCardFromUserNotebook } from "./CardAPI";
 import { cardHandlers } from "./CardMockServer";
 import * as fetching from "helpers/fetch";
+import { CardQuestionModification } from "../types";
 
 describe(`card API`, () => {
   setupMockServer(cardHandlers);
 
   describe(`Card API request characteristics(contract with back)`, () => {
-    const fetchingMock = vi.spyOn(fetching, "fetchAPI");
+    const fetchingMockApi = vi.spyOn(fetching, "fetchAPI");
 
     beforeEach(() => {
-      fetchingMock.mockClear();
+      fetchingMockApi.mockClear();
       //   resetMockServer();
     });
 
@@ -20,8 +21,10 @@ describe(`card API`, () => {
 
       await requestCardFromUserNotebook(owner, notebookId);
 
-      expect(fetchingMock).toHaveBeenCalledOnce();
-      expect(fetchingMock).toBeCalledWith(`/user/cards/${owner}/${notebookId}`);
+      expect(fetchingMockApi).toHaveBeenCalledOnce();
+      expect(fetchingMockApi).toBeCalledWith(
+        `/user/cards/${owner}/${notebookId}`
+      );
     });
 
     it(`Should request for the cards from owner pedro based on the notebook of 'fisic' with id as string`, async () => {
@@ -30,8 +33,32 @@ describe(`card API`, () => {
 
       await requestCardFromUserNotebook(owner, notebookId);
 
-      expect(fetchingMock).toHaveBeenCalledOnce();
-      expect(fetchingMock).toBeCalledWith(`/user/cards/${owner}/${notebookId}`);
+      expect(fetchingMockApi).toHaveBeenCalledOnce();
+      expect(fetchingMockApi).toBeCalledWith(
+        `/user/cards/${owner}/${notebookId}`
+      );
+    });
+
+    it("should request for the card question, from owner pedro, to be altered based on the request changes", async () => {
+      const owner = "pedro";
+      const cardId = 3;
+
+      const cardQuestionModification = {
+        questionModification: "more clear an precise card question",
+      } as CardQuestionModification;
+
+      const httpPatchMethod: RequestInit = {
+        method: "PATCH",
+      };
+
+      await requestCardAlteraion(owner, cardId, cardQuestionModification);
+
+      expect(fetchingMockApi).toHaveBeenCalledOnce();
+
+      const fetchAPIUsedParameter = fetchingMockApi.mock.calls[0];
+
+      expect(fetchAPIUsedParameter[0]).toBe(`/user/cards/${owner}/${cardId}`);
+      expect(fetchAPIUsedParameter[1]).toMatchObject(httpPatchMethod);
     });
   });
 
