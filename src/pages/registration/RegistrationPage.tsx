@@ -96,7 +96,7 @@ const RegistrationPage = () => {
         }}
       />
       <Form.Button disabled={!isButtonEnabled}>Cadastrar</Form.Button>
-      <Form.HelperText label="Já possui cadastro?" redirectTo="/login" />
+      <Form.HelperText label="Já possui cadastro?" redirectTo="/" />
     </Form.Container>
   );
 };

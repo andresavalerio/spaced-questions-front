@@ -1,4 +1,5 @@
 import { User, UserReducerTypes, UserReducers, UserState } from "../types";
+import { removeLocalToken } from "../utils/UserUtils";
 
 const { CREATE, ERROR, LOADING, LOGIN, LOGOUT } = UserReducerTypes;
 
@@ -25,6 +26,7 @@ export const userReducer = (state: UserState, action: UserReducers) => {
 };
 
 const resetStateReducer = (): UserState => {
+  removeLocalToken();
   return { loading: false };
 };
 

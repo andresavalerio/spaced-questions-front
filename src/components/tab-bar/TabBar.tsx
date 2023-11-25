@@ -69,7 +69,7 @@ const TabBar: React.FC<TabBarProps> = ({
         </div>
       </button>
       <div className={styles["cards-vizualization-container"]}>
-        <Link to={"cards"}>
+        <Link to={"../cards"}>
           <button className={styles["cards-vizualization-button"]}>
             <div className={styles["card-button-container"]}>
               <div>

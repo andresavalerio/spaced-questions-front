@@ -3,8 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import styles from "./UserImage.module.css";
+import { useUserProvider } from "providers/user/hooks/UserHooks";
 
 const UserImage = ({ showUserImage = true }) => {
+
+  const { actions } = useUserProvider();
+
   const [isTooltipVisible, setTooltipVisible] = useState(false);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   const userImageRef = useRef<HTMLDivElement | null>(null);
@@ -45,7 +49,9 @@ const UserImage = ({ showUserImage = true }) => {
               className={styles["Header-tooltip"]}
               ref={tooltipRef} // Adiciona a ref � tooltip
             >
-              <Link to="/">
+              <Link onClick={() => {
+                  actions.logoutUser();
+              }} to="/">
                 <FontAwesomeIcon
                   className="faArrowRightFromBracket"
                   icon={faArrowRightFromBracket}

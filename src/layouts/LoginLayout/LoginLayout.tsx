@@ -6,7 +6,7 @@ import { isUserLogged } from "providers/user/utils/UserUtils";
 const LoginLayout = () => {
   const { state } = useUserProvider();
 
-  if (isUserLogged(state)) return <Navigate to={"/"} />;
+  if (isUserLogged(state)) return <Navigate to={"/user"} />;
 
   return (
     <div className={styles["login-container"]}>

@@ -1,4 +1,4 @@
-import { RouteObject } from "react-router-dom";
+import { Navigate, RouteObject, redirect } from "react-router-dom";
 import App from "./App";
 import LoginLayout from "layouts/LoginLayout/LoginLayout";
 import UserLayout from "layouts/UserLayout/UserLayout";
@@ -8,6 +8,9 @@ import LoginPage from "./pages/login/LoginPage";
 import RegistrationPage from "./pages/registration/RegistrationPage";
 import CardsPage from "pages/cards/cardsPage";
 import { cardLoader } from "providers/cards/loader/card-loader";
+import LoadingPage from "pages/Loading/LoadingPage";
+
+
 
 const routes: RouteObject[] = [
   {
@@ -15,10 +18,17 @@ const routes: RouteObject[] = [
     element: <App />,
     children: [
       {
+        path: "/",
         element: <LoginLayout />,
         children: [
           {
-            path: "login",
+            index: true,
+            loader: () => {
+              return redirect("/login");
+            },
+          },
+          {
+            path: "/login",
             element: <LoginPage />,
           },
           {
@@ -32,11 +42,17 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: "/",
+        path: "/user",
         element: <UserLayout />,
         children: [
           {
-            path: "/",
+            index: true,
+            loader: () => {
+              return redirect("notebooks");
+            },
+          },
+          {
+            path: "notebooks",
             element: <NotebooksPage />,
           },
           {

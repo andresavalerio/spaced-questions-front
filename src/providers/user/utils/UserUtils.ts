@@ -6,3 +6,7 @@ export const isUserLogged = (state: UserState) => {
 
   return hasData && isNotLoading;
 };
+
+export const removeLocalToken = () => {
+  if (localStorage.getItem("token")) localStorage.removeItem("token");
+};
