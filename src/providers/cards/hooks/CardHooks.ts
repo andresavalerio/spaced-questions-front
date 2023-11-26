@@ -1,6 +1,6 @@
 import React from "react";
 import { CardContext, CardDispatchContext } from "../CardProvider";
-import { CardDispatch, CardState, CardsReducerTypes } from "../types";
+import { CardDispatch, CardsReducerTypes } from "../types";
 import { requestCardFromUserNotebook } from "../api/CardAPI";
 
 const useCardContext = () => React.useContext(CardContext);
@@ -17,25 +17,22 @@ export const useCardProvider = () => {
   return {
     state,
     actions: {
-      getCards: createGetCardsAction(state, dispatch),
+      getCards: createGetCardsAction(dispatch),
     },
   };
 };
 
-const { CREATE, LOADED, LOADING, ERROR } = CardsReducerTypes;
+const { LOADED, LOADING, ERROR } = CardsReducerTypes;
 
 const createGetCardsAction =
-  (state: CardState, dispatch: CardDispatch) =>
-  async (user: string, notebook: string): Promise<void> => {
+  (dispatch: CardDispatch) =>
+  async (user: string, notebookId: string): Promise<void> => {
     try {
       dispatch({ type: LOADING });
 
-      const response = await requestCardFromUserNotebook(user, notebook);
+      const response = await requestCardFromUserNotebook(user, notebookId);
 
-      dispatch({
-        type: LOADED,
-        payload: response.cards,
-      });
+      dispatch({ type: LOADED, payload: response });
     } catch (error) {
       dispatch({ type: ERROR });
       throw error;

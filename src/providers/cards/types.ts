@@ -3,10 +3,7 @@ export type Card = {
   answer: string;
 };
 
-export type GetCardsAPIResponse = {
-  notebook: string;
-  cards: Card[];
-};
+export type GetCardsAPIResponse = Card[];
 
 export type UserCardDTO = {
   user: string;

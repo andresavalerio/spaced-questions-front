@@ -1,3 +1,3 @@
 export class UserDontExistError extends Error {}
 
-export class CardsBedRequest extends Error {}
+export class CardsBadRequest extends Error {}

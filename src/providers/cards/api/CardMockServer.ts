@@ -4,30 +4,39 @@ import { Card, GetCardsAPIResponse } from "../types";
 
 const getCardsEndpoint = buildEndpointPath("/user/cards/:owner/:notebook");
 
+const generateCards = (length: number) => {
+  const cards: Card[] = [];
+
+  for (let index = 0; index < length; index++) {
+    const newCard = {
+      question: index.toString(),
+      answer: (index + 1).toString(),
+    };
+
+    cards.push(newCard);
+  }
+
+  return cards;
+};
+
 const getCardsHandler = rest.get(getCardsEndpoint, async (req, res, ctx) => {
   const user = req.params["owner"];
   const notebook = req.params["notebook"];
 
-  if (user.includes("joe doe")) return res(ctx.delay(), ctx.status(401));
+  const isUnathourized = user.includes("joe doe");
 
-  if (notebook.includes("none")) return res(ctx.delay(), ctx.status(400));
-  const responseCards = (() => {
-    const cards: Card[] = [];
-    for (let i = 0; i < 10; i++)
-      cards.push({
-        question: i.toString(),
-        answer: (i + 1).toString(),
-      } as Card);
-    return cards;
-  })();
+  if (isUnathourized) return res(ctx.delay(), ctx.status(401));
+
+  const isBadRequest = notebook.includes("none");
+
+  if (isBadRequest) return res(ctx.delay(), ctx.status(400));
+
+  const responseCards = generateCards(10);
 
   return res(
     ctx.delay(),
     ctx.status(200),
-    ctx.json({
-      notebook: notebook,
-      cards: responseCards,
-    } as GetCardsAPIResponse)
+    ctx.json(responseCards as GetCardsAPIResponse)
   );
 });
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import "./NotebooksPage.css";
 import { useUserProvider } from "providers/user/hooks/UserHooks";
@@ -33,16 +33,6 @@ const NotebooksPage = () => {
   const [isConfirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
 
   const [isRenameModalOpen, setRenameModalOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    notebookActions.loadNotebooks(owner).then(() => {
-      const hasNotebooks = !!notebookState.data.length;
-
-      if (hasNotebooks) {
-        noteEditorRef.current?.setActiveNotebook(notebookTabs[0]);
-      }
-    });
-  }, []);
 
   if (!isUserLogged(userState)) return <Navigate to={"/login"} />;
 
@@ -151,10 +141,16 @@ const NotebooksPage = () => {
       });
   };
 
+  const hasNoNotebookSelected =
+    !notebookTabs.length ||
+    activeTabIndex < 0 ||
+    activeTabIndex >= notebookTabs.length;
+
   return (
     <div>
       <TabBar
         tabs={notebookTabs}
+        selectedNotebookId={activeNotebookTab?.id || -1}
         activeTab={activeTabIndex}
         onTabClick={handleTabClick}
         onAddTab={createNewNotebookTab}
@@ -164,11 +160,7 @@ const NotebooksPage = () => {
       <NoteEditor
         ref={noteEditorRef}
         onContentUpdate={handleEditorContentChange}
-        disabled={
-          !notebookTabs.length ||
-          activeTabIndex < 0 ||
-          activeTabIndex >= notebookTabs.length
-        }
+        disabled={hasNoNotebookSelected}
       />
       <RenameNotebookModal
         isOpen={isRenameModalOpen}

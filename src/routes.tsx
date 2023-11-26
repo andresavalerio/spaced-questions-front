@@ -2,12 +2,11 @@ import { RouteObject, redirect } from "react-router-dom";
 import App, { AppWrapper } from "./App";
 import LoginLayout from "layouts/LoginLayout/LoginLayout";
 import UserLayout from "layouts/UserLayout/UserLayout";
-import NotebooksPage from "./pages/Notebooks/NotebooksPage";
+import NotebooksPage from "./pages/notebooks/NotebooksPage";
 import ForgotPasswordPage from "./pages/forgot-password/ForgotPasswordPage";
 import LoginPage from "./pages/login/LoginPage";
 import RegistrationPage from "./pages/registration/RegistrationPage";
-import CardsPage from "pages/cards/cardsPage";
-import { cardLoader } from "providers/cards/loader/card-loader";
+import CardsPage from "pages/cards/CardsPage";
 
 const routes: RouteObject[] = [
   {
@@ -43,7 +42,7 @@ const routes: RouteObject[] = [
                 },
               },
               { path: "notebooks", element: <NotebooksPage /> },
-              { path: "cards", loader: cardLoader, element: <CardsPage /> },
+              { path: "cards/:notebookId", element: <CardsPage /> },
             ],
           },
         ],

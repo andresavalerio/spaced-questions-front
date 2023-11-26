@@ -1,19 +1,17 @@
 import { fetchAPI } from "helpers/fetch";
 import { GetCardsAPIResponse } from "../types";
-import { CardsBedRequest, UserDontExistError } from "../erros";
+import { CardsBadRequest, UserDontExistError } from "../erros";
 
-export const requestCardFromUserNotebook = async (login: string, notebook: string) => {
+export const requestCardFromUserNotebook = async (
+  owner: string,
+  notebook: string
+) => {
+  const response = await fetchAPI(`/user/cards/${owner}/${notebook}`);
 
-    const response = await fetchAPI(`/user/cards/${login}/${notebook}`)
+  if (response.status === 401)
+    throw new UserDontExistError(`The user ${owner} dosn't exist`);
 
-    if (response.status === 401) throw new UserDontExistError(
-        `The user ${login} dosn't exist`
-    );
+  if (response.status === 400) throw new CardsBadRequest(`Bad Request`);
 
-    if (response.status === 400) throw new CardsBedRequest(
-        `Bad Request`
-    )
-
-    return response.json() as unknown as GetCardsAPIResponse;
-
-}
+  return response.json() as unknown as GetCardsAPIResponse;
+};

@@ -11,7 +11,7 @@ import {
   requestGetUser,
   requestUserLogin,
 } from "../api/UserAPI";
-import { getToken, isUserLogged, setToken } from "../utils/UserUtils";
+import { isUserLogged, setToken } from "../utils/UserUtils";
 import { UserAlreadyLoggedError, UserWasNotLoggedError } from "../errors";
 
 const useUserContext = () => React.useContext(UserContext);
@@ -53,8 +53,6 @@ export const createLoginUserAction =
       if (!response) throw new Error();
 
       setToken(response.token);
-
-      console.log(getToken());
 
       dispatch({
         type: LOGIN,

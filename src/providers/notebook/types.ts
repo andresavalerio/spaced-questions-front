@@ -1,5 +1,5 @@
 export type Notebook = {
-  id?: number;
+  id?: string;
   name: string;
   owner?: string;
   content: string;

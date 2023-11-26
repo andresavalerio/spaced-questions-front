@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardState,
-  CardsReducer,
-  CardsReducerTypes,
-} from "../types";
+import { Card, CardState, CardsReducer, CardsReducerTypes } from "../types";
 
 const { CREATE, LOADING, LOADED, ERROR } = CardsReducerTypes;
 
@@ -23,7 +18,7 @@ export const cardsReducer = (state: CardState, action: CardsReducer) => {
 };
 
 const resetStateReducer = (): CardState => {
-  return { loading: false };
+  return { loading: false, data: [] };
 };
 
 const userCardsReducer = (payload: Card[]): CardState => {
