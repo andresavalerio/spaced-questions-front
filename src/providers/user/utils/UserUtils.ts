@@ -10,3 +10,9 @@ export const isUserLogged = (state: UserState) => {
 export const removeLocalToken = () => {
   if (localStorage.getItem("token")) localStorage.removeItem("token");
 };
+
+export const hasToken = () => !!localStorage.getItem("token");
+
+export const setToken = (token: string) => localStorage.setItem("token", token);
+
+export const getToken = () => localStorage.getItem("token");

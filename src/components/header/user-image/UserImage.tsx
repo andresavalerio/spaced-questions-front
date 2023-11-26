@@ -6,7 +6,6 @@ import styles from "./UserImage.module.css";
 import { useUserProvider } from "providers/user/hooks/UserHooks";
 
 const UserImage = ({ showUserImage = true }) => {
-
   const { actions } = useUserProvider();
 
   const [isTooltipVisible, setTooltipVisible] = useState(false);
@@ -49,9 +48,12 @@ const UserImage = ({ showUserImage = true }) => {
               className={styles["Header-tooltip"]}
               ref={tooltipRef} // Adiciona a ref � tooltip
             >
-              <Link onClick={() => {
+              <Link
+                onClick={() => {
                   actions.logoutUser();
-              }} to="/">
+                }}
+                to="/"
+              >
                 <FontAwesomeIcon
                   className="faArrowRightFromBracket"
                   icon={faArrowRightFromBracket}

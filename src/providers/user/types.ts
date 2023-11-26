@@ -74,3 +74,5 @@ export type LoginUserDTO = {
   login: string;
   password: string;
 };
+
+export type GetUserResponseDTO = User;

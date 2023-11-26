@@ -7,7 +7,7 @@ const notfound_pattern = "notfound";
 
 const loginUserEndpoint = buildEndpointPath("/user/login");
 
-const createUserEndpoint = buildEndpointPath("/user");
+const baseUserEndpoint = buildEndpointPath("/user");
 
 const loginUserHandler = rest.post(loginUserEndpoint, async (req, res, ctx) => {
   const body = (await req.json()) as LoginUserDTO;
@@ -38,20 +38,39 @@ const loginUserHandler = rest.post(loginUserEndpoint, async (req, res, ctx) => {
   );
 });
 
-const createUserHandler = rest.post(
-  createUserEndpoint,
-  async (req, res, ctx) => {
-    const body = (await req.json()) as CreateUserDTO;
+const createUserHandler = rest.post(baseUserEndpoint, async (req, res, ctx) => {
+  const body = (await req.json()) as CreateUserDTO;
 
-    const isDuplicatedEmail = body.email.includes("duplicate");
-    const isDuplicatedUsername = body.username.includes("duplicate");
+  const isDuplicatedEmail = body.email.includes("duplicate");
+  const isDuplicatedUsername = body.username.includes("duplicate");
 
-    const isDuplicatedUser = isDuplicatedEmail || isDuplicatedUsername;
+  const isDuplicatedUser = isDuplicatedEmail || isDuplicatedUsername;
 
-    if (isDuplicatedUser) return res(ctx.status(409));
+  if (isDuplicatedUser) return res(ctx.status(409));
 
-    return res(ctx.status(201));
-  }
-);
+  return res(ctx.status(201));
+});
 
-export const userHandlers = [loginUserHandler, createUserHandler];
+const getUserHandler = rest.get(baseUserEndpoint, async (req, res, ctx) => {
+  const hasAuthorization = !!req.headers.get("authorization");
+
+  if (!hasAuthorization) return res(ctx.status(400));
+
+  return res(
+    ctx.status(200),
+    ctx.json({
+      active: true,
+      createdAt: new Date(),
+      email: "email@gmail.com",
+      fullName: "Test User",
+      username: "test",
+      userRole: "Free",
+    })
+  );
+});
+
+export const userHandlers = [
+  loginUserHandler,
+  createUserHandler,
+  getUserHandler,
+];

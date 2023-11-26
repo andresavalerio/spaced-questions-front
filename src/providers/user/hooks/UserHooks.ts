@@ -6,8 +6,12 @@ import {
   UserReducerTypes,
   UserState,
 } from "../types";
-import { requestCreateUser, requestUserLogin } from "../api/UserAPI";
-import { isUserLogged } from "../utils/UserUtils";
+import {
+  requestCreateUser,
+  requestGetUser,
+  requestUserLogin,
+} from "../api/UserAPI";
+import { getToken, isUserLogged, setToken } from "../utils/UserUtils";
 import { UserAlreadyLoggedError, UserWasNotLoggedError } from "../errors";
 
 const useUserContext = () => React.useContext(UserContext);
@@ -24,6 +28,7 @@ export const useUserProvider = () => {
   return {
     state,
     actions: {
+      autoLogin: createAutoLoginUserAction(state, dispatch),
       loginUser: createLoginUserAction(state, dispatch),
       logoutUser: createLogoutUserAction(state, dispatch),
       createUser: createCreateUserAction(dispatch),
@@ -47,7 +52,9 @@ export const createLoginUserAction =
 
       if (!response) throw new Error();
 
-      localStorage.setItem("token", response.token);
+      setToken(response.token);
+
+      console.log(getToken());
 
       dispatch({
         type: LOGIN,
@@ -81,4 +88,17 @@ const createLogoutUserAction =
     }
 
     dispatch({ type: LOGOUT });
+  };
+
+const createAutoLoginUserAction =
+  (state: UserState, dispatch: UserDispatch) => async () => {
+    if (isUserLogged(state)) throw new UserAlreadyLoggedError();
+
+    try {
+      const response = await requestGetUser();
+
+      dispatch({ type: LOGIN, payload: response });
+    } catch (error) {
+      dispatch({ type: ERROR });
+    }
   };

@@ -1,10 +1,16 @@
 import { fetchAPI } from "helpers/fetch";
-import { CreateUserDTO, LoginUserDTO, UserLoginAPIResponse } from "../types";
+import {
+  CreateUserDTO,
+  GetUserResponseDTO,
+  LoginUserDTO,
+  UserLoginAPIResponse,
+} from "../types";
 import {
   UserAlreadyExistsError,
   UserDontExistError,
   UserNotAuthorizedError,
   UserRequestError,
+  UserTokenInvalidError,
 } from "../errors";
 
 export const requestUserLogin = async (login: string, password: string) => {
@@ -39,4 +45,15 @@ export const requestCreateUser = async (newUser: CreateUserDTO) => {
   if (response.status === 409) throw new UserAlreadyExistsError();
 
   if (notCreated) throw Error();
+};
+
+export const requestGetUser = async () => {
+  const requestBody: RequestInit = {
+    method: "GET",
+  };
+  const response = await fetchAPI("/user", requestBody);
+
+  if (response.status !== 200) throw new UserTokenInvalidError();
+
+  return response.json() as Promise<GetUserResponseDTO>;
 };
