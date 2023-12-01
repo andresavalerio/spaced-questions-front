@@ -3,6 +3,7 @@ import { buildEndpointPath } from "helpers/api";
 import { Card, GetCardsAPIResponse } from "../types";
 
 const getCardsEndpoint = buildEndpointPath("/user/cards/:owner/:notebook");
+const answerCardEndpoint = buildEndpointPath("/user/cards/:owner/:cardId");
 
 const generateCards = (length: number) => {
   const cards: Card[] = [];
@@ -40,4 +41,14 @@ const getCardsHandler = rest.get(getCardsEndpoint, async (req, res, ctx) => {
   );
 });
 
-export const cardHandlers = [getCardsHandler];
+const answerCardHandler = rest.post(
+  answerCardEndpoint,
+  async (req, res, ctx) => {
+    const user = req.params["owner"];
+    const cardId = req.params["cardId"];
+
+    return res(ctx.delay(), ctx.status(200));
+  }
+);
+
+export const cardHandlers = [getCardsHandler, answerCardHandler];
