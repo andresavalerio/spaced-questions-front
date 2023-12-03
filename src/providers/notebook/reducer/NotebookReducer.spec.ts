@@ -8,11 +8,12 @@ import {
 
 const initialState: NotebookState = {
   loading: false,
+  data: [],
 };
 
 describe("NotebookReducer", () => {
   beforeEach(() => {
-    initialState.data = undefined;
+    initialState.data = [];
     initialState.loading = false;
   });
 
@@ -69,7 +70,7 @@ describe("NotebookReducer", () => {
   it("reducer should be on deleted state", () => {
     const loadedState = {
       loading: false,
-      data: [{id: 12}, {id: 15}] as Notebook[],
+      data: [{ id: 12 }, { id: 15 }] as Notebook[],
     } as NotebookState;
 
     const action: NotebookReducers = {
@@ -80,17 +81,18 @@ describe("NotebookReducer", () => {
     const newState = notebookReducer(loadedState, action);
 
     expect(newState.data).toHaveLength(1);
-    expect(newState.data![0]).toHaveProperty("id",15);
+    expect(newState.data![0]).toHaveProperty("id", 15);
     expect(newState).toHaveProperty("loading", false);
   });
-  
+
   it("reducer should be throw errow on Delete operation for empty data from previou state", () => {
     const action: NotebookReducers = {
       type: NotebookReducerTypes.DELETE,
       payload: 12,
     };
 
-    expect(() => {notebookReducer(initialState, action);}).toThrowError("Empty List Of Notebooks")
-    
+    expect(() => {
+      notebookReducer(initialState, action);
+    }).toThrowError("Empty List Of Notebooks");
   });
 });
